@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة أسواق النفع العام | وزارة البيئة والمياه والزراعة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mewa: {
+                            50: '#f0f9f4',
+                            100: '#dbf0e4',
+                            600: '#006837',
+                            700: '#00542c',
+                            800: '#034424',
+                            900: '#02381e',
+                        },
+                        naamaGold: {
+                            100: '#fcf8ec',
+                            400: '#e3b84c',
+                            500: '#c59b27',
+                            600: '#a7801a',
+                        }
+                    },
+                    fontFamily: {
+                        tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
+        .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
+        .naama-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px -2px rgba(0, 104, 55, 0.05);
+            transition: all 0.25s ease-in-out;
+        }
+        .naama-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px -4px rgba(0, 104, 55, 0.1);
+            border-color: #c59b27;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- شريط ذهبي علوي -->
+    <div class="h-1.5 gold-line w-full"></div>
+
+    <!-- شريط الخدمات العلوي -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                <span class="font-bold text-slate-700">المملكة العربية السعودية | بوابة أسواق النفع العام الوطنية</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="review_requests.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-naamaGold-500"></i> شاشة الرقابة
+                </a>
+                <span class="text-slate-300">|</span>
+                <span class="text-mewa-700 font-bold bg-mewa-50 px-3 py-0.5 rounded-full border border-mewa-200">المنظومة الوطنية الموحدة</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ترويسة الصفحة مع لوجو الوزارة -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 sm:h-24 gap-4">
+            
+            <!-- الشعار وعنوان المنصة -->
+            <div class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                <a href="index.html" class="flex items-center gap-3 flex-shrink-0">
+                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 sm:h-16 w-auto object-contain flex-shrink-0">
+                </a>
+                <div class="border-r-2 border-slate-200 pr-3.5 sm:pr-4 flex flex-col justify-center flex-shrink-0">
+                    <h1 class="text-xl sm:text-2xl font-black text-mewa-800 tracking-tight leading-tight whitespace-nowrap">أسواق النفع العام</h1>
+                    <p class="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap">البوابة الموحدة لإدارة وتداول المنتجات الزراعية والغذائية</p>
+                </div>
+            </div>
+
+            <!-- قسم النفاذ الوطني والروابط السريعة للمستفيدين -->
+            <div class="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
+                <nav class="hidden lg:flex items-center gap-2 text-xs font-bold">
+                    <a href="merchant_submit.html" class="text-mewa-700 hover:text-mewa-900 bg-mewa-50 hover:bg-mewa-100 border border-mewa-200 px-3 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap">
+                        <i data-lucide="file-plus" class="w-4 h-4 text-mewa-600"></i> تقديم طلب
+                    </a>
+                    <a href="merchant_tracking.html" class="text-slate-700 hover:text-mewa-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap">
+                        <i data-lucide="clipboard-list" class="w-4 h-4 text-naamaGold-600"></i> متابعة التوريد
+                    </a>
+                    <a href="service_center_orders.html" class="text-purple-800 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap font-bold">
+                        <i data-lucide="package" class="w-4 h-4 text-purple-700"></i> استلام وتجهيز الطلبات
+                    </a>
+                    <a href="store.html" class="text-slate-700 hover:text-emerald-700 bg-slate-50 hover:bg-emerald-50 border border-slate-200 px-3 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap">
+                        <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-600"></i> متجر المستهلك
+                    </a>
+                    <a href="my_orders.html" class="text-emerald-800 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap">
+                        <i data-lucide="receipt-text" class="w-4 h-4 text-emerald-600"></i> مشترياتي
+                    </a>
+                </nav>
+
+                <!-- زر تسجيل الدخول عبر النفاذ / بطاقة المستخدم بعد الدخول -->
+                <div id="nafath-auth-container" class="lg:border-r lg:border-slate-200 lg:pr-3 flex-shrink-0">
+                    <!-- يتم حقن زر الدخول أو كرت المستخدم هنا عبر nafath.js -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- البنر الترحيبي الرئيسي -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full space-y-10">
+        
+        <div class="relative bg-gradient-to-r from-mewa-900 via-mewa-800 to-mewa-700 rounded-3xl overflow-hidden shadow-xl p-8 sm:p-12 text-white border-b-4 border-naamaGold-500">
+            <div class="relative z-10 max-w-3xl space-y-4">
+                <span class="bg-naamaGold-500 text-mewa-950 text-xs font-black px-3.5 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> تحت إشراف وزارة البيئة والمياه والزراعة
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black leading-tight">المنصة الوطنية لربط أسواق النفع العام</h2>
+                <p class="text-sm sm:text-base text-emerald-100 leading-relaxed font-normal">
+                    منظومة رقمية تضمن حوكمة تدفق المنتجات الزراعية والحيوانية والغذائية، وتمكّن المزارع والتاجر من عرض منتجاته ومتابعة اعتمادها واختيار قنوات التوصيل، وصولاً للمستهلك النهائي.
+                </p>
+            </div>
+        </div>
+
+        <!-- بطاقات الخدمات المستقلة للمستفيدين (دون إظهار شاشة الأدمن هنا) -->
+        <div class="space-y-4">
+            <div class="flex items-center gap-2 border-r-4 border-naamaGold-500 pr-3">
+                <h3 class="text-xl font-black text-slate-900">بوابات وخدمات المنصة</h3>
+                <span class="text-xs text-slate-500 font-semibold">(مخصصة للتاجر والمزارع والمستهلك)</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- 1. شاشة تقديم الطلب (للتاجر/المزارع) -->
+                <div class="bg-white p-7 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
+                            <i data-lucide="file-plus-2" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">بوابة التاجر والمزارع</span>
+                        <h4 class="text-lg font-black text-slate-900">1. تقديم طلب إدراج جديد</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            صفحة مخصصة لإدخال بيانات المنشأة أو المزرعة، وتحديد الأصناف والكميات والأسعار المقترحة وإرسالها للاعتماد.
+                        </p>
+                    </div>
+                    <div class="pt-6">
+                        <a href="merchant_submit.html" class="w-full bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                            <span>تقديم الطلب</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. شاشة متابعة الطلبات وقناة البيع (لوحة موحدة: التوريد + استلام الطلبات) -->
+                <div class="bg-white p-7 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
+                            <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">بوابة التاجر ومركز الخدمة</span>
+                        <h4 class="text-lg font-black text-slate-900">2. متابعة الطلبات وقناة البيع</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            لوحة موحدة لمتابعة قرارات الاعتماد وسجل التوريد، واستلام وتجهيز طلبات الشراء وتعيين أسطول الشحن وتحديث حالات التوصيل.
+                        </p>
+                    </div>
+                    <div class="pt-6">
+                        <a href="merchant_tracking.html" class="w-full bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                            <span>متابعة الطلبات وقناة البيع</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. متجر المستهلك والجمهور -->
+                <div class="bg-white p-7 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
+                            <i data-lucide="store" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-[11px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">المتجر الإلكتروني</span>
+                        <h4 class="text-lg font-black text-slate-900">3. متجر أسواق النفع العام</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            استعراض وشراء المنتجات الزراعية والغذائية الطازجة المعتمدة رسمياً، مع إتاحة التوصيل المباشر أو عبر وسطاء لوجستيين.
+                        </p>
+                    </div>
+                    <div class="pt-6">
+                        <a href="store.html" class="w-full bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                            <span>فتح متجر المستهلك</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- بنر تطبيق الجوال (متجر أبل ومتجر جوجل) بهوية منصة نما -->
+            <div class="bg-gradient-to-r from-emerald-50/70 via-white to-amber-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-white text-mewa-600 border border-emerald-200 shadow-xs flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="smartphone" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-mewa-600 text-white font-black text-[10px] px-2.5 py-0.5 rounded-full">جديد للمستهلك</span>
+                            <h4 class="text-sm sm:text-base font-black text-slate-900">تطبيق أسواق النفع العام للجوال (Mobile App)</h4>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+                            تصفح المنتجات الزراعية الطازجة، الشراء والدفع الفوري عبر (Apple Pay / مدى)، وتتبع الشاحنات المبردة لحظياً.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 flex-shrink-0">
+                    <!-- 1. أيقونة متجر أبل App Store -->
+                    <a href="mobile_app.html" class="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl border border-slate-800 shadow-sm hover:shadow transition flex items-center gap-2.5 min-w-[145px]">
+                        <svg class="w-5 h-5 fill-current text-white flex-shrink-0" viewBox="0 0 24 24">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.84c.64-.78 1.08-1.87.96-2.96-.93.04-2.07.62-2.73 1.4-.58.67-1.1 1.77-.96 2.84 1.04.08 2.09-.5 2.73-1.28"/>
+                        </svg>
+                        <div class="text-right leading-tight">
+                            <span class="text-[9px] text-slate-400 block font-normal">تحميل من</span>
+                            <span class="text-xs font-black text-white block tracking-tight">App Store</span>
+                        </div>
+                    </a>
+
+                    <!-- 2. أيقونة متجر جوجل Google Play -->
+                    <a href="mobile_app.html" class="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl border border-slate-800 shadow-sm hover:shadow transition flex items-center gap-2.5 min-w-[145px]">
+                        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M3.6 2.3c-.3.3-.4.8-.4 1.4v16.6c0 .6.1 1.1.4 1.4l9.1-9.7-9.1-9.7z"/>
+                            <path fill="#FBBC04" d="M16.7 15.8l-4-4.2-9.1 9.7c.3.3.8.4 1.4.1l11.7-5.6z"/>
+                            <path fill="#EA4335" d="M3.6 2.3l9.1 9.7 4-4.2-11.7-5.6c-.6-.3-1.1-.2-1.4.1z"/>
+                            <path fill="#34A853" d="M20.2 10.7l-3.5-1.7-4 3 4 3 3.5-1.7c.9-.4.9-2.2 0-2.6z"/>
+                        </svg>
+                        <div class="text-right leading-tight">
+                            <span class="text-[9px] text-slate-400 block font-normal">احصل عليه من</span>
+                            <span class="text-xs font-black text-white block tracking-tight">Google Play</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- التذييل الرسمي (مع رابط هادئ لمنسوبي إدارة الأسواق) -->
+    <footer class="bg-slate-900 text-slate-400 text-xs border-t-2 border-naamaGold-500 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-9 w-auto bg-white/95 p-1 rounded">
+                <span class="text-slate-300 font-bold">وزارة البيئة والمياه والزراعة © 2026</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 text-slate-500">
+                <a href="merchant_submit.html" class="hover:text-white">تقديم طلب إدراج</a>
+                <span>•</span>
+                <a href="merchant_tracking.html" class="hover:text-white font-bold text-slate-300">متابعة الطلبات وقناة البيع</a>
+                <span>•</span>
+                <a href="store.html" class="hover:text-white">متجر أسواق النفع العام</a>
+                <span>•</span>
+                <a href="my_orders.html" class="hover:text-white">مشترياتي وفواتيري</a>
+                <span>•</span>
+                <a href="review_requests.html" class="text-slate-600 hover:text-amber-400 transition" title="دخول المراقبين ومفتشي إدارة السوق">بوابة الرقابة الإدارية</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="static/js/nafath.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

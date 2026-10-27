@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشترياتي وفواتيري | منصة أسواق النفع العام - نما</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mewa: {
+                            50: '#f0f9f4',
+                            100: '#dbf0e4',
+                            600: '#006837',
+                            700: '#00542c',
+                            800: '#034424',
+                            900: '#02381e',
+                        },
+                        naamaGold: {
+                            100: '#fcf8ec',
+                            400: '#e3b84c',
+                            500: '#c59b27',
+                            600: '#a7801a',
+                        }
+                    },
+                    fontFamily: {
+                        tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="static/js/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
+        .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
+        .naama-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px -2px rgba(0, 104, 55, 0.05);
+        }
+        .highlight-order {
+            animation: pulse-border 2.5s ease-in-out infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: #006837; box-shadow: 0 0 0 3px rgba(0, 104, 55, 0.25); }
+            50% { border-color: #c59b27; box-shadow: 0 0 0 5px rgba(197, 155, 39, 0.35); }
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #printable-invoice, #printable-invoice * { visibility: visible; }
+            #printable-invoice { position: absolute; left: 0; top: 0; width: 100%; border: none !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- الشريط الذهبي العلوي -->
+    <div class="h-1.5 gold-line w-full"></div>
+
+    <!-- شريط الخدمات المصغر -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                <span class="font-bold text-slate-700">بوابة المستفيد | استعراض المشتريات، الفواتير الإلكترونية، والتقييم والاعتراضات</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="home" class="w-3.5 h-3.5"></i> الرئيسية
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="store.html" class="text-mewa-700 hover:underline font-bold flex items-center gap-1">
+                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-mewa-600"></i> متجر النفع العام
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="merchant_submit.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="sprout" class="w-3.5 h-3.5 text-mewa-600"></i> تقديم طلب بيع
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="merchant_tracking.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="clipboard-list" class="w-3.5 h-3.5 text-naamaGold-600"></i> متابعة طلباتي
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="service_center_orders.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="package-check" class="w-3.5 h-3.5 text-purple-600"></i> استلام وتجهيز الطلبات
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="review_requests.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-naamaGold-500"></i> شاشة الرقابة
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ترويسة الصفحة الرسمية -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 w-auto object-contain">
+                    <div class="border-r-2 border-slate-200 pr-3">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-black text-mewa-800">مشترياتي وفواتيري الزراعية</h1>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded border border-emerald-200">خدمة المستفيدين</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500">سندات الاستلام الإلكترونية، تقييم المحاصيل، وتقديم الملاحظات والاعتراضات</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- معلومات الدخول وزر العودة للمتجر -->
+            <div class="flex items-center gap-3">
+                <a href="store.html" class="bg-mewa-600 hover:bg-mewa-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                    <i data-lucide="shopping-bag" class="w-4 h-4 text-naamaGold-400"></i>
+                    <span>مواصلة التسوق</span>
+                </a>
+                <div id="nafath-auth-container"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- بانر تعريفي مع إحصائيات الطلبات -->
+    <section class="bg-gradient-to-r from-mewa-900 via-mewa-800 to-mewa-700 text-white py-7 border-b-2 border-naamaGold-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="space-y-1.5">
+                    <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-0.5 rounded-full text-xs font-bold text-naamaGold-400 border border-white/15">
+                        <i data-lucide="receipt-text" class="w-3.5 h-3.5"></i>
+                        <span>سجل المشتريات المعتمد برمز QR الموحد</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-black text-white">إدارة طلباتك وسندات الاستلام الزراعية</h2>
+                    <p class="text-xs text-slate-200 max-w-2xl leading-relaxed">
+                        يمكنك هنا تتبع حالة شحن المحاصيل، عرض وطباعة فواتير الشراء المعتمدة، تقييم جودة المنتجات، أو تقديم اعتراض رسمي لإدارة الرقابة وسلامة الغذاء.
+                    </p>
+                </div>
+
+                <!-- بطاقات إحصائية سريعة -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                    <div class="bg-white/10 backdrop-blur p-3 rounded-xl border border-white/15 text-center">
+                        <p class="text-[11px] text-slate-300">إجمالي الطلبات</p>
+                        <p id="stat-total" class="text-xl font-black text-white mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-3 rounded-xl border border-white/15 text-center">
+                        <p class="text-[11px] text-slate-300">تم التسليم</p>
+                        <p id="stat-delivered" class="text-xl font-black text-emerald-300 mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-3 rounded-xl border border-white/15 text-center">
+                        <p class="text-[11px] text-slate-300">قيد التوصيل</p>
+                        <p id="stat-shipping" class="text-xl font-black text-amber-300 mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-3 rounded-xl border border-white/15 text-center">
+                        <p class="text-[11px] text-slate-300">الاعتراضات</p>
+                        <p id="stat-disputes" class="text-xl font-black text-rose-300 mt-0.5">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- المحتوى الرئيسي للمشتريات -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
+
+        <!-- شريط البحث والتبويبات -->
+        <div class="naama-card p-4 rounded-2xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            
+            <!-- تبويبات الحالة -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar flex-wrap sm:flex-nowrap" id="status-tabs">
+                <button onclick="setStatusFilter('all')" data-status="all" class="status-btn active bg-mewa-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                    <span>جميع الطلبات</span>
+                    <span id="tab-count-all" class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusFilter('shipping')" data-status="shipping" class="status-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                    <i data-lucide="truck" class="w-3.5 h-3.5 text-amber-600"></i>
+                    <span>قيد النقل والتوصيل</span>
+                    <span id="tab-count-shipping" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
+                </button>
+                <button onclick="setStatusFilter('delivered')" data-status="delivered" class="status-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+                    <span>تم التسليم</span>
+                    <span id="tab-count-delivered" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
+                </button>
+                <button onclick="setStatusFilter('disputed')" data-status="disputed" class="status-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
+                    <span>شكاوى واعتراضات</span>
+                    <span id="tab-count-disputed" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
+                </button>
+            </div>
+
+            <!-- مربع البحث -->
+            <div class="relative w-full sm:w-72">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="orders-search-input" oninput="handleSearch(this.value)" placeholder="ابحث برقم الطلب أو اسم المحصول..." class="w-full text-xs pr-9 pl-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-mewa-600 focus:outline-none transition">
+            </div>
+        </div>
+
+        <!-- قائمة بطاقات الطلبات -->
+        <div id="orders-container" class="space-y-4">
+            <!-- سيتم توليد بطاقات الطلبات ديناميكياً بواسطة JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- نافذة سند الشراء الإلكتروني (Invoice & Scannable QR Modal) -->
+    <div id="invoice-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            
+            <button onclick="closeInvoiceModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition no-print">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- محتوى السند القابل للطباعة -->
+            <div id="printable-invoice" class="p-6 sm:p-8 space-y-6">
+                
+                <!-- رأس السند مع اللوجو الرسمي -->
+                <div class="flex items-center justify-between border-b-2 border-mewa-700 pb-4">
+                    <div class="flex items-center gap-3">
+                        <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-16 w-auto object-contain">
+                        <div>
+                            <h2 class="text-sm font-black text-mewa-800">وزارة البيئة والمياه والزراعة</h2>
+                            <p class="text-[11px] text-slate-500 font-semibold">منصة أسواق النفع العام الوطنية - نما</p>
+                        </div>
+                    </div>
+                    <div class="text-left space-y-1">
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-300">سند مؤكد ومعتمد</span>
+                        <p class="text-xs font-mono font-black text-slate-800" id="inv-order-id">ORD-2026-XXXX</p>
+                    </div>
+                </div>
+
+                <!-- عنوان السند -->
+                <div class="text-center space-y-0.5">
+                    <h3 class="text-lg font-black text-slate-900">سند استلام وحجز منتجات زراعية</h3>
+                    <p class="text-xs text-slate-500" id="inv-date">--</p>
+                </div>
+
+                <!-- بيانات المستلم والطلب -->
+                <div class="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">اسم المستلم:</span>
+                        <span id="inv-cust-name" class="font-bold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">رقم الجوال:</span>
+                        <span id="inv-cust-phone" class="font-mono font-bold text-slate-800" dir="ltr">--</span>
+                    </div>
+                    <div class="col-span-2">
+                        <span class="text-slate-400 text-[11px] block">عنوان التوصيل:</span>
+                        <span id="inv-cust-addr" class="font-bold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">طريقة الدفع:</span>
+                        <span id="inv-payment-method" class="font-bold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">حالة الدفع:</span>
+                        <span class="font-bold text-emerald-700 flex items-center gap-1">تم التحصيل بنجاح <i data-lucide="check" class="w-3.5 h-3.5"></i></span>
+                    </div>
+                </div>
+
+                <!-- جدول المحاصيل المشتراة -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-slate-100 text-slate-600 font-bold">
+                            <tr>
+                                <th class="p-2.5">المنتج الزراعي</th>
+                                <th class="p-2.5 text-center">الكمية</th>
+                                <th class="p-2.5 text-center">سعر الوحدة</th>
+                                <th class="p-2.5 text-left">الإجمالي</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inv-items-table" class="divide-y divide-slate-100">
+                            <!-- بنود الفاتورة -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- الإجماليات -->
+                <div class="space-y-1.5 text-xs bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                    <div class="flex justify-between text-slate-600">
+                        <span>المجموع الفرعي للمحاصيل:</span>
+                        <span id="inv-subtotal" class="font-bold text-slate-800">0.00 ر.س</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>الفرز والنقل المبرد المعتمد:</span>
+                        <span class="font-bold text-mewa-700">مشمول</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-dashed border-slate-200">
+                        <span>المبلغ الإجمالي المدفوع:</span>
+                        <span id="inv-total" class="text-mewa-700 font-black text-base">0.00 ر.س</span>
+                    </div>
+                </div>
+
+                <!-- رمز الاستجابة السريعة (QR Code) الحقيقي للطلب -->
+                <div class="p-3.5 bg-emerald-50/70 rounded-2xl border border-emerald-200/90 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3.5 w-full sm:w-auto">
+                        <div class="p-2 bg-white rounded-xl border border-emerald-300 shadow-sm inline-block flex-shrink-0">
+                            <div id="modal-qrcode-container" class="w-[96px] h-[96px] flex items-center justify-center bg-white"></div>
+                        </div>
+                        <div class="space-y-1 text-right flex-grow">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center gap-1 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                    <i data-lucide="qr-code" class="w-3 h-3"></i> رمز تفاصيل الطلب
+                                </span>
+                                <span class="text-[11px] font-mono text-emerald-800 font-bold" id="inv-qr-code-text">ORD-2026-XXXX</span>
+                            </div>
+                            <p class="text-xs font-black text-slate-800">امسح الرمز بالجوال للوصول المباشر للطلب</p>
+                            <p class="text-[10px] text-slate-600 leading-relaxed">
+                                يتيح مسح الرمز استعراض كامل السند، تقييم المحصول، وإرسال الملاحظات أو تقديم شكوى واعتراض للرقابة الميدانية.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- أزرار الإجراءات داخل النافذة -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3 no-print rounded-b-3xl">
+                <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>طباعة السند</span>
+                </button>
+                <button onclick="closeInvoiceModal()" class="bg-mewa-600 hover:bg-mewa-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    <span>تم</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- نافذة تقييم الطلب وإرسال الملاحظات (Rating & Feedback Modal) -->
+    <div id="rating-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            
+            <button onclick="closeRatingModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="p-6 sm:p-7 space-y-5">
+                
+                <!-- رأس النافذة -->
+                <div class="text-center space-y-1 border-b border-slate-100 pb-4">
+                    <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mx-auto border border-amber-200 shadow-2xs">
+                        <i data-lucide="star" class="w-6 h-6 fill-amber-400"></i>
+                    </div>
+                    <h3 class="text-base font-black text-slate-900">تقييم الطلب والملاحظات</h3>
+                    <p class="text-xs text-slate-500">رقم الطلب: <span id="rate-modal-order-id" class="font-mono font-bold text-slate-800">ORD-2026-XXXX</span></p>
+                </div>
+
+                <!-- النجوم التفاعلية -->
+                <div class="text-center space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">تقييمك الإجمالي للطلب والمزرعة:</label>
+                    <div class="flex items-center justify-center gap-2" id="star-picker">
+                        <button type="button" onclick="setRatingScore(1)" class="star-btn text-slate-300 hover:text-amber-400 p-1 transition" data-score="1"><i data-lucide="star" class="w-7 h-7"></i></button>
+                        <button type="button" onclick="setRatingScore(2)" class="star-btn text-slate-300 hover:text-amber-400 p-1 transition" data-score="2"><i data-lucide="star" class="w-7 h-7"></i></button>
+                        <button type="button" onclick="setRatingScore(3)" class="star-btn text-slate-300 hover:text-amber-400 p-1 transition" data-score="3"><i data-lucide="star" class="w-7 h-7"></i></button>
+                        <button type="button" onclick="setRatingScore(4)" class="star-btn text-slate-300 hover:text-amber-400 p-1 transition" data-score="4"><i data-lucide="star" class="w-7 h-7"></i></button>
+                        <button type="button" onclick="setRatingScore(5)" class="star-btn text-slate-300 hover:text-amber-400 p-1 transition" data-score="5"><i data-lucide="star" class="w-7 h-7"></i></button>
+                    </div>
+                    <span id="rating-label" class="inline-block text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">اختر عدد النجوم (1 إلى 5)</span>
+                </div>
+
+                <!-- محاور التقييم الثلاثة -->
+                <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-700 flex items-center gap-1.5"><i data-lucide="leaf" class="w-3.5 h-3.5 text-mewa-600"></i> طزاجة وجودة المحصول:</span>
+                        <div class="flex gap-1.5">
+                            <label class="cursor-pointer text-[11px] font-bold px-2 py-0.5 rounded border border-slate-200 bg-white has-[:checked]:bg-emerald-600 has-[:checked]:text-white">
+                                <input type="radio" name="freshness" value="ممتاز" checked class="hidden"> ممتاز
+                            </label>
+                            <label class="cursor-pointer text-[11px] font-bold px-2 py-0.5 rounded border border-slate-200 bg-white has-[:checked]:bg-emerald-600 has-[:checked]:text-white">
+                                <input type="radio" name="freshness" value="جيد" class="hidden"> جيد
+                            </label>
+                            <label class="cursor-pointer text-[11px] font-bold px-2 py-0.5 rounded border border-slate-200 bg-white has-[:checked]:bg-emerald-600 has-[:checked]:text-white">
+                                <input type="radio" name="freshness" value="مقبول" class="hidden"> مقبول
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-700 flex items-center gap-1.5"><i data-lucide="scale" class="w-3.5 h-3.5 text-amber-600"></i> دقة الأوزان والمواصفات:</span>
+                        <div class="flex gap-1.5">
+                            <label class="cursor-pointer text-[11px] font-bold px-2 py-0.5 rounded border border-slate-200 bg-white has-[:checked]:bg-emerald-600 has-[:checked]:text-white">
+                                <input type="radio" name="weight" value="دقيق جداً" checked class="hidden"> دقيق
+                            </label>
+                            <label class="cursor-pointer text-[11px] font-bold px-2 py-0.5 rounded border border-slate-200 bg-white has-[:checked]:bg-emerald-600 has-[:checked]:text-white">
+                                <input type="radio" name="weight" value="مطابق" class="hidden"> مطابق
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-700 flex items-center gap-1.5"><i data-lucide="truck" class="w-3.5 h-3.5 text-blue-600"></i> سرعة التوصيل وسلامة التبريد:</span>
+                        <div class="flex gap-1.5">
+                            <label class="cursor-pointer text-[11px] font-bold px-2 py-0.5 rounded border border-slate-200 bg-white has-[:checked]:bg-emerald-600 has-[:checked]:text-white">
+                                <input type="radio" name="delivery" value="سريع ومبرد" checked class="hidden"> ممتاز
+                            </label>
+                            <label class="cursor-pointer text-[11px] font-bold px-2 py-0.5 rounded border border-slate-200 bg-white has-[:checked]:bg-emerald-600 has-[:checked]:text-white">
+                                <input type="radio" name="delivery" value="عادي" class="hidden"> عادي
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- حقل الملاحظات -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">ملاحظاتك واقتراحاتك للبائع والمنصة:</label>
+                    <textarea id="rate-comment" rows="3" placeholder="اكتب رأيك بصراحة حول جودة المحصول، التغليف، وسرعة الخدمة..." class="w-full text-xs p-3 rounded-xl border border-slate-200 focus:bg-white focus:border-mewa-600 focus:outline-none transition"></textarea>
+                </div>
+
+                <!-- زر الإرسال -->
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeRatingModal()" class="text-xs text-slate-600 hover:text-slate-800 font-bold px-4 py-2 rounded-xl transition">إلغاء</button>
+                    <button type="button" onclick="submitOrderRating()" class="bg-mewa-600 hover:bg-mewa-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>إرسال التقييم</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- نافذة تقديم شكوى أو اعتراض على الطلب (Dispute & Complaint Modal) -->
+    <div id="dispute-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            
+            <button onclick="closeDisputeModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="p-6 sm:p-7 space-y-4">
+                
+                <!-- رأس النافذة مع تنبيه رسمي -->
+                <div class="space-y-2 border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-200">
+                            <i data-lucide="alert-octagon" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-black text-slate-900">تقديم اعتراض أو شكوى رسمية</h3>
+                            <p class="text-[11px] text-slate-500">للطلب رقم: <span id="dispute-order-id" class="font-mono font-bold text-slate-800">ORD-2026-XXXX</span></p>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-200 text-[11px] text-amber-900 leading-relaxed flex items-start gap-2">
+                        <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+                        <span>تتم مراجعة الشكوى مباشرة من مفتشي وزارة البيئة والمياه والزراعة الميدانيين بسوق النفع العام لضمان سلامة الغذاء وحقوق المستهلك.</span>
+                    </div>
+                </div>
+
+                <!-- سبب الشكوى -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">نوع الشكوى / سبب الاعتراض:</label>
+                    <select id="dispute-reason" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-bold focus:bg-white focus:outline-none focus:border-mewa-600 transition">
+                        <option value="تلف أو ذبول في المحصول الزراعي">تلف أو ذبول في المحصول الزراعي</option>
+                        <option value="نقص في الوزن أو كمية العبوات المعتمدة">نقص في الوزن أو كمية العبوات المعتمدة</option>
+                        <option value="تأخر غير مبرر في التوصيل وتأثر الطزاجة">تأخر غير مبرر في التوصيل وتأثر الطزاجة</option>
+                        <option value="عدم مطابقة الصنف أو الدرجة للمواصفات">عدم مطابقة الصنف أو الدرجة للمواصفات</option>
+                        <option value="كسر أو عيب في عبوات التعبئة والتغليف">كسر أو عيب في عبوات التعبئة والتغليف</option>
+                        <option value="مشكلة في آلية الدفع أو الحساب">مشكلة في آلية الدفع أو الحساب</option>
+                        <option value="سبب آخر">سبب آخر</option>
+                    </select>
+                </div>
+
+                <!-- تفاصيل المشكلة -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">شرح وتفاصيل الاعتراض:</label>
+                    <textarea id="dispute-details" rows="3" placeholder="اشرح المشكلة بدقة (مثال: وجدنا نقصاً مقداره 1 كجم في صندوق الطماطم، أو لوحظ ذبول في الأوراق...)" class="w-full text-xs p-3 rounded-xl border border-slate-200 focus:bg-white focus:border-mewa-600 focus:outline-none transition"></textarea>
+                </div>
+
+                <!-- رقم الجوال للمتابعة -->
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">رقم جوال للتواصل لمتابعة البلاغ:</label>
+                    <input type="text" id="dispute-phone" placeholder="05XXXXXXXX" class="w-full text-xs p-2.5 rounded-xl border border-slate-200 font-mono text-left focus:bg-white focus:border-mewa-600 focus:outline-none transition">
+                </div>
+
+                <!-- إرفاق صورة إثبات -->
+                <div class="border-2 border-dashed border-slate-200 p-3 rounded-xl text-center hover:bg-slate-50 transition cursor-pointer" onclick="document.getElementById('dispute-file').click()">
+                    <input type="file" id="dispute-file" class="hidden" accept="image/*" onchange="handleDisputeFile(this)">
+                    <i data-lucide="camera" class="w-6 h-6 text-slate-400 mx-auto"></i>
+                    <p class="text-[11px] font-bold text-slate-700 mt-1" id="file-label">إرفاق صورة للمحصول (اختياري)</p>
+                    <p class="text-[10px] text-slate-400">تدعم صور JPG, PNG حتى 5 ميجابايت</p>
+                </div>
+
+                <!-- أزرار الإجراء -->
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeDisputeModal()" class="text-xs text-slate-600 hover:text-slate-800 font-bold px-4 py-2 rounded-xl transition">إلغاء</button>
+                    <button type="button" onclick="submitDispute()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
+                        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                        <span>إرسال الاعتراض الرسمي</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- التذييل الرسمي -->
+    <footer class="bg-slate-900 text-slate-400 text-xs border-t-2 border-naamaGold-500 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-9 w-auto bg-white/95 p-1 rounded">
+                <span class="text-slate-300 font-bold">وزارة البيئة والمياه والزراعة - منصة نما © 2026</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="index.html" class="hover:text-white transition">الرئيسية</a>
+                <span>•</span>
+                <a href="store.html" class="hover:text-white transition">متجر النفع العام</a>
+                <span>•</span>
+                <a href="merchant_submit.html" class="hover:text-white transition">بوابة المزارع</a>
+                <span>•</span>
+                <a href="merchant_tracking.html" class="hover:text-white transition">متابعة الطلبات</a>
+                <span>•</span>
+                <a href="review_requests.html" class="hover:text-white transition">شاشة الرقابة</a>
+            </div>
+            <p class="text-slate-500">متجر أسواق النفع العام - كافة الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- الإشعار المنبثق (Toast) -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+        <div id="toast-inner" class="bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500">
+            <span id="toast-msg">تمت العملية بنجاح</span>
+        </div>
+    </div>
+
+    <!-- جافاسكريبت إدارة المشتريات والتقييمات والاعتراضات -->
+    <script>
+        // بيانات الطلبات الافتراضية الأولية المطابقة للواقع وللصورة
+        const SEED_ORDERS = [
+            {
+                orderId: "ORD-2026-5656",
+                date: "2026-10-27T07:24:00Z",
+                formattedDate: "الثلاثاء، 27 أكتوبر 2026 في 10:24 ص",
+                customer_name: "محمد صالح القحطاني",
+                customer_phone: "0554123987",
+                customer_address: "الرياض - حي النخيل - شارع الملك عبدالعزيز",
+                paymentMethod: "cod",
+                items: [
+                    {
+                        id: 104,
+                        name: "كوسة بلدية نجدية طازجة",
+                        category: "خضروات",
+                        merchant_name: "مزارع السهول الذهبية",
+                        market_name: "سوق عتيقة المركزي",
+                        region: "الرياض",
+                        governorate: "الرياض",
+                        image_url: "static/images/products/zucchini.jpg",
+                        unit: "كرتون (4 كجم)",
+                        price: 18.0,
+                        qty: 1,
+                        lineTotal: 18.0
+                    }
+                ],
+                subtotal: 18.0,
+                total: 18.0,
+                status: "delivered",
+                statusText: "تم التسليم بنجاح",
+                rating: null,
+                feedback: null,
+                dispute: null
+            },
+            {
+                orderId: "ORD-2026-4821",
+                date: "2026-10-26T14:15:00Z",
+                formattedDate: "الإثنين، 26 أكتوبر 2026 في 02:15 م",
+                customer_name: "محمد صالح القحطاني",
+                customer_phone: "0554123987",
+                customer_address: "الرياض - حي النخيل - شارع الملك عبدالعزيز",
+                paymentMethod: "mada",
+                items: [
+                    {
+                        id: 101,
+                        name: "طماطم محمية فاخرة (صنف سكارليت)",
+                        category: "خضروات",
+                        merchant_name: "مزرعة واحة الخير (الخرج)",
+                        market_name: "سوق النفع العام المركزي بالخرج",
+                        region: "الرياض",
+                        governorate: "الخرج",
+                        image_url: "static/images/products/tomatoes.jpg",
+                        unit: "صندوق (6 كجم)",
+                        price: 28.5,
+                        qty: 2,
+                        lineTotal: 57.0
+                    },
+                    {
+                        id: 105,
+                        name: "تمر سكري القصيم مفتل ملكي",
+                        category: "تمور",
+                        merchant_name: "مزارع نخيل بريدة الفاخرة",
+                        market_name: "سوق الخضار والتمور المركزي ببريدة (مدينة التمور)",
+                        region: "القصيم",
+                        governorate: "بريدة",
+                        image_url: "static/images/products/dates_sukari.jpg",
+                        unit: "كرتون (3 كجم)",
+                        price: 85.0,
+                        qty: 1,
+                        lineTotal: 85.0
+                    }
+                ],
+                subtotal: 142.0,
+                total: 142.0,
+                status: "delivered",
+                statusText: "تم التسليم بنجاح",
+                rating: {
+                    score: 5,
+                    freshness: "ممتاز",
+                    weight: "دقيق جداً",
+                    delivery: "سريع ومبرد",
+                    comment: "ما شاء الله طماطم طازجة جداً والسكري مفتل ونظيف.. بارك الله في جهود المزارعين ومنصة نما."
+                },
+                feedback: "تقييم مكتمل 5/5",
+                dispute: null
+            },
+            {
+                orderId: "ORD-2026-3914",
+                date: "2026-10-25T11:40:00Z",
+                formattedDate: "الأحد، 25 أكتوبر 2026 في 11:40 ص",
+                customer_name: "محمد صالح القحطاني",
+                customer_phone: "0554123987",
+                customer_address: "الرياض - حي النخيل - شارع الملك عبدالعزيز",
+                paymentMethod: "applepay",
+                items: [
+                    {
+                        id: 108,
+                        name: "رمان الطائف سكري نخب أول",
+                        category: "فواكه",
+                        merchant_name: "بساتين الهدا الطائفية",
+                        market_name: "سوق الفواكه الموسمية بالهدا",
+                        region: "مكة المكرمة",
+                        governorate: "الطائف",
+                        image_url: "static/images/products/pomegranates.jpg",
+                        unit: "كرتون (5 كجم)",
+                        price: 45.0,
+                        qty: 1,
+                        lineTotal: 45.0
+                    }
+                ],
+                subtotal: 45.0,
+                total: 45.0,
+                status: "out_for_delivery",
+                statusText: "قيد التوصيل المبرد المعتمد",
+                rating: null,
+                feedback: null,
+                dispute: null
+            }
+        ];
+
+        let allOrders = [];
+        let currentStatusFilter = 'all';
+        let searchQuery = '';
+        let activeActionOrderId = null;
+        let selectedRatingScore = 5;
+
+        // تهيئة الصفحة
+        function initOrders() {
+            try {
+                const stored = localStorage.getItem('my_store_orders');
+                if (stored) {
+                    allOrders = JSON.parse(stored);
+                    // دمج البيانات الافتراضية إن كانت غير متواجدة
+                    SEED_ORDERS.forEach(so => {
+                        if (!allOrders.some(o => o.orderId === so.orderId)) {
+                            allOrders.push(so);
+                        }
+                    });
+                } else {
+                    allOrders = [...SEED_ORDERS];
+                    localStorage.setItem('my_store_orders', JSON.stringify(allOrders));
+                }
+            } catch (e) {
+                allOrders = [...SEED_ORDERS];
+            }
+
+            updateStats();
+            renderOrders();
+
+            // فحص وجود order_id في الرابط للتمرير والتمييز المباشر
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetOrderId = urlParams.get('order_id');
+            if (targetOrderId) {
+                setTimeout(() => {
+                    highlightTargetOrder(targetOrderId);
+                }, 400);
+            }
+        }
+
+        function highlightTargetOrder(orderId) {
+            const el = document.getElementById(`order-card-${orderId}`);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.classList.add('highlight-order');
+                showToast(`تم فتح تفاصيل الطلب (${orderId}) الممسوح عبر رمز QR`);
+            }
+        }
+
+        function updateStats() {
+            const total = allOrders.length;
+            const delivered = allOrders.filter(o => o.status === 'delivered').length;
+            const shipping = allOrders.filter(o => o.status === 'out_for_delivery' || o.status === 'shipping' || o.status === 'new').length;
+            const disputes = allOrders.filter(o => !!o.dispute).length;
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-delivered').innerText = delivered;
+            document.getElementById('stat-shipping').innerText = shipping;
+            document.getElementById('stat-disputes').innerText = disputes;
+
+            document.getElementById('tab-count-all').innerText = total;
+            document.getElementById('tab-count-delivered').innerText = delivered;
+            document.getElementById('tab-count-shipping').innerText = shipping;
+            document.getElementById('tab-count-disputed').innerText = disputes;
+        }
+
+        function setStatusFilter(status) {
+            currentStatusFilter = status;
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                if (btn.getAttribute('data-status') === status) {
+                    btn.classList.add('active', 'bg-mewa-600', 'text-white', 'shadow-sm');
+                    btn.classList.remove('bg-slate-100', 'text-slate-700');
+                } else {
+                    btn.classList.remove('active', 'bg-mewa-600', 'text-white', 'shadow-sm');
+                    btn.classList.add('bg-slate-100', 'text-slate-700');
+                }
+            });
+            renderOrders();
+        }
+
+        function handleSearch(val) {
+            searchQuery = val.trim().toLowerCase();
+            renderOrders();
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('orders-container');
+            let filtered = [...allOrders];
+
+            if (currentStatusFilter === 'delivered') {
+                filtered = filtered.filter(o => o.status === 'delivered');
+            } else if (currentStatusFilter === 'shipping') {
+                filtered = filtered.filter(o => o.status === 'out_for_delivery' || o.status === 'shipping' || o.status === 'new');
+            } else if (currentStatusFilter === 'disputed') {
+                filtered = filtered.filter(o => !!o.dispute);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(o => {
+                    const matchId = (o.orderId || '').toLowerCase().includes(searchQuery);
+                    const matchCust = (o.customer_name || '').toLowerCase().includes(searchQuery);
+                    const matchItems = (o.items || []).some(it => 
+                        (it.name || '').toLowerCase().includes(searchQuery) ||
+                        (it.merchant_name || '').toLowerCase().includes(searchQuery) ||
+                        (it.market_name || '').toLowerCase().includes(searchQuery)
+                    );
+                    return matchId || matchCust || matchItems;
+                });
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="naama-card p-12 text-center rounded-2xl">
+                        <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="inbox" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-700">لا توجد طلبات تطابق الفلترة المحددة</h4>
+                        <p class="text-xs text-slate-400 mt-1">تأكد من رقم الطلب أو تصفح متجر أسواق النفع العام لشراء محاصيل طازجة</p>
+                        <a href="store.html" class="inline-flex items-center gap-2 mt-4 bg-mewa-600 hover:bg-mewa-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                            <span>التسوق الآن</span>
+                        </a>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = filtered.map(order => {
+                const isDelivered = order.status === 'delivered';
+                const hasDispute = !!order.dispute;
+                const hasRating = !!order.rating;
+
+                const paymentName = {
+                    'mada': 'بطاقة مدى الإلكترونية',
+                    'applepay': 'خدمة Apple Pay',
+                    'sadad': 'نظام سداد للمدفوعات',
+                    'cod': 'الدفع عند الاستلام'
+                }[order.paymentMethod] || 'مدى';
+
+                return `
+                    <div id="order-card-${order.orderId}" class="naama-card p-5 sm:p-6 rounded-2xl transition-all duration-300 hover:shadow-md space-y-4">
+                        
+                        <!-- رأس بطاقة الطلب -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl ${isDelivered ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'} flex items-center justify-center shrink-0">
+                                    <i data-lucide="${isDelivered ? 'package-check' : 'truck'}" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="text-sm font-black text-slate-900 font-mono">${order.orderId}</h3>
+                                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full ${isDelivered ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
+                                            ${isDelivered ? 'تم التسليم بنجاح' : (order.statusText || 'قيد النقل والتوصيل المبرد')}
+                                        </span>
+                                        ${hasDispute ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> يوجد اعتراض قيد الفحص</span>' : ''}
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">${order.formattedDate || order.date}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 self-end sm:self-auto text-xs">
+                                <div class="text-left sm:text-right">
+                                    <span class="text-[10px] text-slate-400 block">الإجمالي المدفوع:</span>
+                                    <span class="text-base font-black text-mewa-700">${order.total.toFixed(2)} ر.س</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- قائمة المحاصيل داخل الطلب -->
+                        <div class="space-y-2">
+                            ${(order.items || []).map(item => `
+                                <div class="flex items-center justify-between p-2.5 bg-slate-50/70 hover:bg-slate-50 rounded-xl border border-slate-200/80 transition">
+                                    <div class="flex items-center gap-3">
+                                        <img src="${item.image_url || 'static/images/products/tomatoes.jpg'}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover border border-slate-200 shrink-0">
+                                        <div>
+                                            <h4 class="text-xs font-bold text-slate-800">${item.name}</h4>
+                                            <p class="text-[10px] text-slate-500 flex items-center gap-1.5 mt-0.5">
+                                                <i data-lucide="store" class="w-3 h-3 text-emerald-700"></i>
+                                                <span>${item.merchant_name || 'مزرعة معتمدة'}</span>
+                                                <span class="text-slate-300">•</span>
+                                                <i data-lucide="map-pin" class="w-3 h-3 text-amber-600"></i>
+                                                <span>${item.market_name || 'سوق النفع العام المركزي'}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="text-left font-mono">
+                                        <span class="text-xs font-bold text-slate-700 block">${item.qty} × ${item.price.toFixed(2)} ر.س</span>
+                                        <span class="text-[11px] text-slate-400 font-bold">${item.unit}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- بيانات التوصيل والدفع -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 bg-white rounded-xl border border-slate-100 text-[11px] text-slate-600">
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>المستلم: <strong>${order.customer_name}</strong></span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span class="truncate" title="${order.customer_address}">العنوان: <strong>${order.customer_address}</strong></span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="credit-card" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>طريقة الدفع: <strong>${paymentName}</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- قسم التقييم الحالي إن وجد -->
+                        ${hasRating ? `
+                            <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-200/80 flex items-center justify-between text-xs">
+                                <div class="space-y-0.5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-amber-900">تقييمك لهذا الطلب:</span>
+                                        <div class="flex text-amber-500">
+                                            ${Array.from({length: order.rating.score || 5}).map(() => '<i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>').join('')}
+                                        </div>
+                                    </div>
+                                    ${order.rating.comment ? `<p class="text-[11px] text-slate-600 italic">"${order.rating.comment}"</p>` : ''}
+                                </div>
+                                <button onclick="openRatingModal('${order.orderId}')" class="text-[11px] font-bold text-amber-700 hover:text-amber-800 hover:underline">
+                                    تعديل التقييم
+                                </button>
+                            </div>
+                        ` : ''}
+
+                        <!-- قسم الشكوى أو الاعتراض الحالي إن وجد -->
+                        ${hasDispute ? `
+                            <div class="bg-rose-50/80 p-3 rounded-xl border border-rose-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div class="space-y-0.5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-mono">${order.dispute.ticketId}</span>
+                                        <span class="font-bold text-rose-900">${order.dispute.reason}</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600">${order.dispute.details}</p>
+                                    <span class="text-[10px] text-rose-700 font-bold block mt-1">حالة البلاغ: قيد التحقق الميداني من مراقبي وزارة البيئة والمياه والزراعة</span>
+                                </div>
+                                <span class="bg-white text-rose-700 font-bold px-2.5 py-1 rounded-lg border border-rose-200 text-[10px] shrink-0 self-start sm:self-center">
+                                    تذكرة نشطة
+                                </span>
+                            </div>
+                        ` : ''}
+
+                        <!-- أزرار الإجراءات على بطاقة الطلب -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                            
+                            <!-- زر السند والباركود -->
+                            <button onclick="openInvoiceModalById('${order.orderId}')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 border border-slate-200">
+                                <i data-lucide="receipt" class="w-3.5 h-3.5 text-mewa-600"></i>
+                                <span>سند الاستلام ورمز QR</span>
+                            </button>
+
+                            <div class="flex items-center gap-2">
+                                <!-- زر التقييم -->
+                                <button onclick="openRatingModal('${order.orderId}')" class="bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 border border-amber-200">
+                                    <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-500"></i>
+                                    <span>${hasRating ? 'تحديث التقييم' : 'تقييم الطلب والملاحظات'}</span>
+                                </button>
+
+                                <!-- زر الاعتراض / الشكوى -->
+                                <button onclick="openDisputeModal('${order.orderId}')" class="bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 border border-rose-200">
+                                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
+                                    <span>${hasDispute ? 'إضافة تفاصيل للاعتراض' : 'تقديم شكوى أو اعتراض'}</span>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // فتح نافذة سند الشراء وتوليد رمز QR
+        function openInvoiceModalById(orderId) {
+            const order = allOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            document.getElementById('inv-order-id').innerText = order.orderId;
+            document.getElementById('inv-date').innerText = order.formattedDate || order.date;
+            document.getElementById('inv-cust-name').innerText = order.customer_name;
+            document.getElementById('inv-cust-phone').innerText = order.customer_phone;
+            document.getElementById('inv-cust-addr').innerText = order.customer_address;
+
+            const paymentMap = {
+                'mada': 'بطاقة مدى الإلكترونية (Mada)',
+                'applepay': 'خدمة الدفع Apple Pay',
+                'sadad': 'نظام سداد للمدفوعات (SADAD)',
+                'cod': 'الدفع نقداً عند الاستلام'
+            };
+            document.getElementById('inv-payment-method').innerText = paymentMap[order.paymentMethod] || 'مدى';
+
+            let subtotal = 0;
+            const tableBody = document.getElementById('inv-items-table');
+            tableBody.innerHTML = (order.items || []).map(item => {
+                const lineTotal = item.price * item.qty;
+                subtotal += lineTotal;
+                return `
+                    <tr>
+                        <td class="p-2.5 font-bold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-center font-mono font-bold">${item.qty} ${item.unit}</td>
+                        <td class="p-2.5 text-center font-mono">${item.price.toFixed(2)} ر.س</td>
+                        <td class="p-2.5 text-left font-black text-mewa-700">${lineTotal.toFixed(2)} ر.س</td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('inv-subtotal').innerText = `${subtotal.toFixed(2)} ر.س`;
+            document.getElementById('inv-total').innerText = `${subtotal.toFixed(2)} ر.س`;
+
+            // توليد رمز QR الحقيقي للطلب
+            const relativeTarget = `my_orders.html?order_id=${encodeURIComponent(order.orderId)}`;
+            let fullQrUrl = relativeTarget;
+            try {
+                fullQrUrl = new URL(relativeTarget, window.location.href).href;
+            } catch (e) {
+                fullQrUrl = relativeTarget;
+            }
+            const qrContainer = document.getElementById('modal-qrcode-container');
+            const qrCodeText = document.getElementById('inv-qr-code-text');
+            if (qrCodeText) qrCodeText.innerText = order.orderId;
+
+            if (qrContainer) {
+                qrContainer.innerHTML = '';
+                try {
+                    if (typeof QRCode !== 'undefined') {
+                        new QRCode(qrContainer, {
+                            text: fullQrUrl,
+                            width: 96,
+                            height: 96,
+                            colorDark: "#006837",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.M
+                        });
+                    }
+                } catch (e) {
+                    console.error("QR Code generation error:", e);
+                }
+            }
+
+            const modal = document.getElementById('invoice-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeInvoiceModal() {
+            const modal = document.getElementById('invoice-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // نافذة التقييم
+        function openRatingModal(orderId) {
+            activeActionOrderId = orderId;
+            const order = allOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            document.getElementById('rate-modal-order-id').innerText = order.orderId;
+            const currentScore = order.rating ? order.rating.score : 5;
+            setRatingScore(currentScore);
+
+            const commentInput = document.getElementById('rate-comment');
+            commentInput.value = order.rating ? (order.rating.comment || '') : '';
+
+            const modal = document.getElementById('rating-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeRatingModal() {
+            const modal = document.getElementById('rating-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeActionOrderId = null;
+        }
+
+        function setRatingScore(score) {
+            selectedRatingScore = score;
+            const labels = {
+                5: "★ 5 من 5 (ممتاز جداً - نخب أول)",
+                4: "★ 4 من 5 (جيد جداً)",
+                3: "★ 3 من 5 (جيد)",
+                2: "★ 2 من 5 (مقبول)",
+                1: "★ 1 من 5 (غير راضٍ)"
+            };
+            document.getElementById('rating-label').innerText = labels[score] || `${score} نجوم`;
+
+            document.querySelectorAll('.star-btn').forEach(btn => {
+                const btnScore = parseInt(btn.getAttribute('data-score'));
+                if (btnScore <= score) {
+                    btn.classList.add('text-amber-400');
+                    btn.classList.remove('text-slate-300');
+                    btn.querySelector('i')?.classList.add('fill-amber-400');
+                } else {
+                    btn.classList.remove('text-amber-400');
+                    btn.classList.add('text-slate-300');
+                    btn.querySelector('i')?.classList.remove('fill-amber-400');
+                }
+            });
+        }
+
+        function submitOrderRating() {
+            if (!activeActionOrderId) return;
+            const order = allOrders.find(o => o.orderId === activeActionOrderId);
+            if (!order) return;
+
+            const comment = document.getElementById('rate-comment').value.trim();
+            const freshness = document.querySelector('input[name="freshness"]:checked')?.value || 'ممتاز';
+            const weight = document.querySelector('input[name="weight"]:checked')?.value || 'دقيق';
+            const delivery = document.querySelector('input[name="delivery"]:checked')?.value || 'ممتاز';
+
+            order.rating = {
+                score: selectedRatingScore,
+                freshness: freshness,
+                weight: weight,
+                delivery: delivery,
+                comment: comment,
+                rated_at: new Date().toISOString()
+            };
+            order.feedback = `تم التقييم (${selectedRatingScore}/5)`;
+
+            saveOrdersToStorage();
+            closeRatingModal();
+            renderOrders();
+            updateStats();
+            showToast(`تم حفظ تقييمك للطلب (${activeActionOrderId}) بنجاح. شكراً لمشاركتك!`);
+        }
+
+        // نافذة الشكاوى والاعتراضات
+        function openDisputeModal(orderId) {
+            activeActionOrderId = orderId;
+            const order = allOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            document.getElementById('dispute-order-id').innerText = order.orderId;
+            document.getElementById('dispute-phone').value = order.customer_phone || '';
+            document.getElementById('dispute-details').value = order.dispute ? order.dispute.details : '';
+            if (order.dispute && order.dispute.reason) {
+                document.getElementById('dispute-reason').value = order.dispute.reason;
+            }
+
+            const modal = document.getElementById('dispute-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeDisputeModal() {
+            const modal = document.getElementById('dispute-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeActionOrderId = null;
+        }
+
+        function handleDisputeFile(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('file-label').innerText = `تم اختيار: ${input.files[0].name}`;
+            }
+        }
+
+        function submitDispute() {
+            if (!activeActionOrderId) return;
+            const order = allOrders.find(o => o.orderId === activeActionOrderId);
+            if (!order) return;
+
+            const reason = document.getElementById('dispute-reason').value;
+            const details = document.getElementById('dispute-details').value.trim();
+            const phone = document.getElementById('dispute-phone').value.trim();
+
+            if (!details) {
+                showToast("يرجى كتابة تفاصيل وسبب الاعتراض", true);
+                return;
+            }
+
+            const ticketId = `TKT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+            order.dispute = {
+                ticketId: ticketId,
+                reason: reason,
+                details: details,
+                phone: phone,
+                createdAt: new Date().toISOString(),
+                status: 'under_inspection'
+            };
+
+            saveOrdersToStorage();
+            closeDisputeModal();
+            renderOrders();
+            updateStats();
+            showToast(`تم رفع الاعتراض بنجاح برقم تذكرة (${ticketId}). سيتم التواصل معك من قِبل مفتش الوزارة.`);
+        }
+
+        function saveOrdersToStorage() {
+            try {
+                localStorage.setItem('my_store_orders', JSON.stringify(allOrders));
+            } catch (e) {
+                console.warn("Storage error:", e);
+            }
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const inner = document.getElementById('toast-inner');
+            const msgEl = document.getElementById('toast-msg');
+
+            msgEl.innerText = msg;
+            if (isError) {
+                inner.className = "bg-rose-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-rose-500";
+            } else {
+                inner.className = "bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500";
+            }
+
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+            }, 4000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initOrders();
+            lucide.createIcons();
+        });
+    </script>
+    <script src="static/js/nafath.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

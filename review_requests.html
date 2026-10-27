@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شاشة معالجة ومراجعة الطلبات | إدارة أسواق النفع العام - نما</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mewa: {
+                            50: '#f0f9f4',
+                            100: '#dbf0e4',
+                            600: '#006837',
+                            700: '#00542c',
+                            800: '#034424',
+                            900: '#02381e',
+                        },
+                        naamaGold: {
+                            100: '#fcf8ec',
+                            400: '#e3b84c',
+                            500: '#c59b27',
+                            600: '#a7801a',
+                        }
+                    },
+                    fontFamily: {
+                        tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
+        .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
+        .naama-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px -2px rgba(0, 104, 55, 0.05);
+        }
+        .section-tag {
+            border-right: 4px solid #c59b27;
+            padding-right: 12px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- الشريط الذهبي العلوي -->
+    <div class="h-1.5 gold-line w-full"></div>
+
+    <!-- شريط الرقابة المصغر -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-naamaGold-500 inline-block animate-pulse"></span>
+                <span class="font-bold text-slate-700">بوابة الرقابة والاعتماد (مفتشو إدارة أسواق النفع العام)</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-mewa-700 hover:underline font-bold flex items-center gap-1">
+                    <i data-lucide="home" class="w-3.5 h-3.5"></i> الرئيسية
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="submit_request.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="file-plus" class="w-3.5 h-3.5"></i> الانتقال لشاشة تقديم الطلب
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ترويسة الصفحة الرسمية مع لوجو الوزارة -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 w-auto object-contain">
+                    <div class="border-r-2 border-slate-200 pr-3">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-black text-mewa-800">شاشة معالجة ومراجعة طلبات المنتجات</h1>
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded">صلاحية إدارية</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500">تدقيق الكميات، الاعتماد الجزئي والكلي، وضبط معايير السوق</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="loadAdminRequests()" class="bg-mewa-600 hover:bg-mewa-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow flex items-center gap-1.5 transition">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-naamaGold-400"></i>
+                    <span>تحديث الطلبات</span>
+                </button>
+                <div id="nafath-auth-container"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-8">
+
+        <!-- لوحة المؤشرات الرقابية -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="naama-card p-5 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-2 h-full bg-amber-500"></div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold">طلبات بانتظار المراجعة والاعتماد</p>
+                        <h4 id="stat-pending" class="text-2xl font-black text-amber-600 mt-1">0</h4>
+                    </div>
+                    <div class="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="naama-card p-5 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-2 h-full bg-mewa-600"></div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold">إجمالي الأصناف المعتمدة</p>
+                        <h4 id="stat-approved" class="text-2xl font-black text-mewa-700 mt-1">0</h4>
+                    </div>
+                    <div class="w-11 h-11 bg-mewa-50 text-mewa-600 rounded-xl flex items-center justify-center">
+                        <i data-lucide="check-check" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="naama-card p-5 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-2 h-full bg-naamaGold-500"></div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold">إيرادات المنصة</p>
+                        <h4 id="stat-platform-fee" class="text-2xl font-black text-naamaGold-600 mt-1">0 ر.س</h4>
+                    </div>
+                    <div class="w-11 h-11 bg-naamaGold-100 text-naamaGold-600 rounded-xl flex items-center justify-center">
+                        <i data-lucide="landmark" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="naama-card p-5 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-2 h-full bg-slate-700"></div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold">إجمالي المبيعات التراكمية</p>
+                        <h4 id="stat-total-sales" class="text-2xl font-black text-slate-900 mt-1">0 ر.س</h4>
+                    </div>
+                    <div class="w-11 h-11 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تنبيه الاشتراطات والتعليمات الرقابية -->
+        <div class="bg-gradient-to-l from-mewa-900 to-mewa-800 text-white p-6 rounded-2xl shadow-md border-r-8 border-naamaGold-500 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                    <span class="bg-naamaGold-500 text-mewa-950 text-xs font-black px-2 py-0.5 rounded">صلاحيات المعالجة</span>
+                    <h3 class="text-base font-black">خيارات الإدارة في مراجعة كل طلب:</h3>
+                </div>
+                <p class="text-xs text-emerald-100 leading-relaxed max-w-4xl">
+                    1. <b>الموافقة الكاملة</b> لكافة الأصناف والكميات. &nbsp;|&nbsp; 
+                    2. <b>الموافقة الجزئية</b> (اعتماد أصناف مطابقة ورفض أخرى مخالفة). &nbsp;|&nbsp; 
+                    3. <b>تعديل الكمية</b> للحد من الإغراق وموازنة العرض. &nbsp;|&nbsp; 
+                    4. <b>الرفض المسبب</b> مع تدوين السبب رسمياً للتاجر.
+                </p>
+            </div>
+        </div>
+
+        <!-- جدول وسجل طلبات التوريد الواردة مع شريط البحث والفلترة -->
+        <div class="naama-card p-6 rounded-3xl space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
+                <div>
+                    <h3 class="text-base font-black text-slate-900 section-tag flex items-center gap-2">
+                        سجل طلبات التوريد الواردة بانتظار البت الرقابي
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">جدول البيانات الأساسية لكل طلب؛ انقر على زر "معاينة وبحث الطلب" لعرض أصنافه وتحديد القرار الرقابي</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="admin-requests-count-badge" class="text-xs bg-mewa-50 text-mewa-700 font-bold px-3 py-1 rounded-full border border-mewa-200">0 طلب</span>
+                </div>
+            </div>
+
+            <!-- شريط البحث السريع والفلترة -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
+                <div class="md:col-span-2 relative">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute top-3 right-3"></i>
+                    <input type="text" id="admin-search-input" oninput="filterAdminRequests()" placeholder="ابحث برقم الطلب، اسم المنشأة، السوق، المحافظة، المنتج، أو رقم السجل..." class="w-full pr-9 pl-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none">
+                </div>
+                <div>
+                    <select id="admin-status-filter" onchange="filterAdminRequests()" class="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-700">
+                        <option value="all">جميع الحالات الرقابية</option>
+                        <option value="pending">بانتظار المعالجة والاعتماد</option>
+                        <option value="approved">معتمد بالكامل</option>
+                        <option value="partially_approved">موافقة جزئية / تعديل كمية</option>
+                        <option value="rejected">مرفوض بالكامل</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- جدول الطلبات المتكامل -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm bg-white">
+                <table class="w-full text-right text-xs border-collapse">
+                    <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200">
+                        <tr>
+                            <th class="p-3.5 whitespace-nowrap">رقم الطلب وتاريخه</th>
+                            <th class="p-3.5 whitespace-nowrap">مقدم الطلب ونوع الوثيقة</th>
+                            <th class="p-3.5 whitespace-nowrap">النطاق الجغرافي والسوق</th>
+                            <th class="p-3.5 whitespace-nowrap text-center">حالة الطلب</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-requests-table-body" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="4" class="p-10 text-center text-slate-400 font-medium">
+                                جاري تحميل سجل طلبات التوريد...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- تنبيه عند عدم وجود نتائج للبحث -->
+            <div id="no-admin-results-msg" class="hidden p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed font-medium">
+                لا توجد طلبات توريد واردة مطابقة لمعايير البحث الحالية
+            </div>
+        </div>
+
+    </main>
+
+    <!-- نافذة منبثقة تفاعلية: تفاصيل ومعالجة أصناف الطلب (Review Modal) -->
+    <div id="review-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
+        <div class="relative bg-white rounded-3xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150">
+            <!-- ترويسة المودال -->
+            <div class="bg-gradient-to-l from-mewa-950 via-mewa-900 to-mewa-800 text-white p-5 px-6 flex items-center justify-between border-b-2 border-naamaGold-500">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20">
+                        <i data-lucide="clipboard-check" class="w-5 h-5 text-naamaGold-400"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 id="modal-req-title" class="text-base font-black text-white">تفاصيل الطلب: #000</h3>
+                            <span id="modal-req-status-badge"></span>
+                        </div>
+                        <p id="modal-req-subtitle" class="text-xs text-slate-300 mt-0.5">مراجعة الأصناف وتحديد القرار الرقابي (قبول / تعديل الكمية / رفض)</p>
+                    </div>
+                </div>
+                <button onclick="closeReviewModal()" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition focus:outline-none">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- محتوى المودال القابل للتمرير -->
+            <div class="p-6 space-y-5 overflow-y-auto flex-grow text-xs">
+                <!-- بطاقة البيانات الأساسية للطلب -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                    <div>
+                        <span class="block text-slate-400 text-[10px] font-bold">المنشأة / مقدم الطلب:</span>
+                        <span id="modal-entity-name" class="font-black text-slate-900 text-xs mt-0.5 block"></span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 text-[10px] font-bold">الوثيقة الرسمية:</span>
+                        <span id="modal-doc-record" class="font-bold text-mewa-800 bg-mewa-50 px-2 py-0.5 rounded border border-mewa-200 inline-block mt-0.5"></span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 text-[10px] font-bold">النطاق الجغرافي والسوق:</span>
+                        <span id="modal-market-info" class="font-bold text-slate-800 mt-0.5 block"></span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 text-[10px] font-bold">آلية البيع والتوريد:</span>
+                        <span id="modal-fulfillment-info" class="font-bold text-amber-900 mt-0.5 block"></span>
+                    </div>
+                </div>
+
+                <!-- شريط بارز يوضح ملخص الأصناف والكميات وآلية التوريد -->
+                <div class="bg-gradient-to-r from-emerald-50 to-slate-50 p-3.5 rounded-2xl border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 text-[10px] font-bold block">ملخص بنود التوريد والكميات:</span>
+                            <span id="modal-items-summary" class="font-black text-slate-900 text-xs"></span>
+                        </div>
+                    </div>
+                    <div id="modal-fulfillment-badge"></div>
+                </div>
+
+                <!-- قائمة أصناف الطلب وقرارات المعالجة -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <h4 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                            <i data-lucide="boxes" class="w-4 h-4 text-mewa-600"></i>
+                            أصناف ومنتجات التوريد المطلوب اعتمادها:
+                        </h4>
+                        <span class="text-[11px] text-slate-500 font-medium">اختر القرار الرقابي لكل صنف على حدة</span>
+                    </div>
+
+                    <div id="modal-items-container" class="space-y-4">
+                        <!-- يتم حقن بطاقات الأصناف هنا ديناميكياً -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ذيل المودال وأزرار الحفظ -->
+            <div class="p-4 px-6 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="text-[11px] text-slate-500 flex items-center gap-1.5">
+                    <i data-lucide="info" class="w-4 h-4 text-naamaGold-600 flex-shrink-0"></i>
+                    <span>الملاحظات إلزامية ومهمة في حال رفض الصنف أو تعديل كميته لتظهر للتاجر وتوثق رقابياً.</span>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="closeReviewModal()" class="w-1/2 sm:w-auto px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold hover:bg-slate-100 transition text-xs">
+                        إلغاء
+                    </button>
+                    <button onclick="submitModalDecision()" class="w-1/2 sm:w-auto bg-mewa-600 hover:bg-mewa-700 text-white font-black px-6 py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-2 text-xs transition">
+                        <i data-lucide="check-check" class="w-4 h-4 text-naamaGold-400"></i>
+                        <span>تثبيت واعتماد القرار الرقابي للطلب</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- التذييل الرسمي -->
+    <footer class="bg-slate-900 text-slate-400 text-xs border-t-2 border-naamaGold-500 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-9 w-auto bg-white/95 p-1 rounded">
+                <span class="text-slate-300 font-bold">وزارة البيئة والمياه والزراعة - منصة نما © 2026</span>
+            </div>
+            <p class="text-slate-500">نظام رقابة ومعالجة طلبات أسواق النفع العام</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+        <div id="toast-inner" class="bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500">
+            <span id="toast-msg">تمت العملية بنجاح</span>
+        </div>
+    </div>
+
+    <script>
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const inner = document.getElementById('toast-inner');
+            const msg = document.getElementById('toast-msg');
+            msg.innerText = message;
+            if (isError) {
+                inner.className = "bg-rose-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-rose-500";
+            } else {
+                inner.className = "bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500";
+            }
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        const DEFAULT_ADMIN_REQUESTS = [
+            {
+                id: 101,
+                merchant_name: "مزرعة النخيل الذهبية",
+                business_record: "سجل زراعي / سعودي جاب: 1010982341",
+                region: "الرياض",
+                governorate: "الخرج",
+                market: "سوق الخضار والتمور المركزي بالخرج",
+                fulfillment_mode: "direct",
+                broker_name: null,
+                created_at: "2026-10-27 09:30",
+                status: "pending",
+                items: [
+                    {
+                        id: 1,
+                        name: "تمر خلاص الخرج الفاخر (درجة أولى)",
+                        category: "تمور",
+                        image_url: "https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 600,
+                        approved_qty: 600,
+                        unit: "كرتون (3 كجم)",
+                        unit_price: 45.0,
+                        approval_status: "pending",
+                        rejection_reason: ""
+                    },
+                    {
+                        id: 2,
+                        name: "طماطم محمية قطاف اليوم",
+                        category: "خضروات",
+                        image_url: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 1200,
+                        approved_qty: 1200,
+                        unit: "كجم",
+                        unit_price: 3.8,
+                        approval_status: "pending",
+                        rejection_reason: ""
+                    }
+                ]
+            },
+            {
+                id: 102,
+                merchant_name: "مربي ماشية معتمد (سعود الشمري)",
+                business_record: "بطاقة صحية بيطرية: VET-2026-9812",
+                region: "المنطقة الشرقية",
+                governorate: "حفر الباطن",
+                market: "سوق الماشية والأعلاف المركزي بحفر الباطن",
+                fulfillment_mode: "broker",
+                broker_name: "شركة الشرق اللوجستية لأسواق النفع العام",
+                created_at: "2026-10-27 10:15",
+                status: "pending",
+                items: [
+                    {
+                        id: 3,
+                        name: "أغنام نعيمي بلدي (جذعان)",
+                        category: "مواشي حية",
+                        image_url: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 40,
+                        approved_qty: 40,
+                        unit: "رأس",
+                        unit_price: 1450.0,
+                        approval_status: "pending",
+                        rejection_reason: ""
+                    },
+                    {
+                        id: 4,
+                        name: "خراف نجدية أصيلة",
+                        category: "مواشي حية",
+                        image_url: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 25,
+                        approved_qty: 25,
+                        unit: "رأس",
+                        unit_price: 1600.0,
+                        approval_status: "pending",
+                        rejection_reason: ""
+                    }
+                ]
+            },
+            {
+                id: 103,
+                merchant_name: "مؤسسة الموانئ للاستيراد الزراعي",
+                business_record: "إذن استيراد: IMP-SA-2026-5541",
+                region: "مكة المكرمة",
+                governorate: "جدة",
+                market: "سوق الخضار والفواكه المركزي بالصفا (جدة)",
+                fulfillment_mode: "direct",
+                broker_name: null,
+                created_at: "2026-10-27 11:00",
+                status: "pending",
+                items: [
+                    {
+                        id: 5,
+                        name: "برتقال أبو صرة إفريقي درجة أولى",
+                        category: "فواكه",
+                        image_url: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 3000,
+                        approved_qty: 3000,
+                        unit: "كجم",
+                        unit_price: 4.2,
+                        approval_status: "pending",
+                        rejection_reason: ""
+                    }
+                ]
+            }
+        ];
+
+        let loadedAdminRequests = [];
+        let currentModalRequestId = null;
+        let currentModalItemsState = [];
+
+        function updateAnalyticsDisplay(requests) {
+            let pendingCount = 0;
+            let approvedCount = 0;
+            let totalSales = 0;
+
+            requests.forEach(req => {
+                req.items.forEach(it => {
+                    if (it.approval_status === 'pending') {
+                        pendingCount++;
+                    } else if (it.approval_status === 'approved') {
+                        approvedCount++;
+                        totalSales += (it.approved_qty || 0) * (it.unit_price || 0);
+                    }
+                });
+            });
+
+            const platformFee = totalSales * 0.05; // رسم المنصة التقديري 5%
+
+            document.getElementById('stat-pending').innerText = pendingCount;
+            document.getElementById('stat-approved').innerText = approvedCount;
+            document.getElementById('stat-platform-fee').innerText = platformFee.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + ' ر.س';
+            document.getElementById('stat-total-sales').innerText = totalSales.toLocaleString('en-US') + ' ر.س';
+        }
+
+        async function loadAnalytics() {
+            try {
+                const res = await fetch('/api/analytics');
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('stat-pending').innerText = data.pending_approvals;
+                    document.getElementById('stat-approved').innerText = data.approved_products;
+                    document.getElementById('stat-platform-fee').innerText = data.platform_fee + ' ر.س';
+                    document.getElementById('stat-total-sales').innerText = data.total_sales + ' ر.س';
+                    return;
+                }
+            } catch (e) {
+                // fallback محسوب ديناميكياً
+            }
+            if (loadedAdminRequests && loadedAdminRequests.length > 0) {
+                updateAnalyticsDisplay(loadedAdminRequests);
+            }
+        }
+
+        async function loadAdminRequests() {
+            let requests = [];
+            try {
+                const res = await fetch('/api/admin/requests');
+                if (res.ok) {
+                    requests = await res.json();
+                }
+            } catch (e) {
+                // خطأ أو تشغيل مباشر
+            }
+
+            // إذا كانت الردود فارغة أو غير متوفرة، نقرأ من التخزين المحلي والطلبات النموذجية
+            if (!requests || requests.length === 0) {
+                const localData = JSON.parse(localStorage.getItem('my_requests') || "[]");
+                if (localData && localData.length > 0) {
+                    const existingIds = new Set(localData.map(r => r.id));
+                    const missingDefaults = DEFAULT_ADMIN_REQUESTS.filter(d => !existingIds.has(d.id));
+                    requests = [...localData, ...missingDefaults];
+                } else {
+                    requests = DEFAULT_ADMIN_REQUESTS;
+                }
+            }
+
+            loadedAdminRequests = requests;
+            updateAnalyticsDisplay(requests);
+            renderAdminTable(requests);
+        }
+
+        function filterAdminRequests() {
+            const searchTerm = (document.getElementById('admin-search-input')?.value || '').trim().toLowerCase();
+            const statusFilter = document.getElementById('admin-status-filter')?.value || 'all';
+
+            const filtered = loadedAdminRequests.filter(req => {
+                // فلترة الحالة
+                const matchesStatus = statusFilter === 'all' 
+                    || req.status === statusFilter 
+                    || req.items.some(it => it.approval_status === statusFilter);
+
+                if (!matchesStatus) return false;
+
+                // فلترة البحث
+                if (!searchTerm) return true;
+
+                const searchInText = `
+                    ${req.id} 
+                    REQ-${req.id}
+                    ${req.merchant_name || ''} 
+                    ${req.business_record || ''} 
+                    ${req.region || ''} 
+                    ${req.governorate || ''} 
+                    ${req.market || ''}
+                    ${req.items.map(i => i.name + ' ' + i.category).join(' ')}
+                `.toLowerCase();
+
+                return searchInText.includes(searchTerm);
+            });
+
+            renderAdminTable(filtered);
+        }
+
+        function renderAdminTable(requests) {
+            const tableBody = document.getElementById('admin-requests-table-body');
+            const noResults = document.getElementById('no-admin-results-msg');
+            const badge = document.getElementById('admin-requests-count-badge');
+
+            if (badge) badge.innerText = `${requests ? requests.length : 0} طلب`;
+
+            if (!requests || requests.length === 0) {
+                tableBody.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+
+            const statusLabels = {
+                'pending': '<span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-300 text-[11px] px-2.5 py-1 rounded-full font-bold"><i data-lucide="clock" class="w-3 h-3"></i> بانتظار المعالجة</span>',
+                'reviewed': '<span class="inline-flex items-center gap-1 bg-blue-50 text-blue-800 border border-blue-300 text-[11px] px-2.5 py-1 rounded-full font-bold"><i data-lucide="check" class="w-3 h-3"></i> تمت المعالجة</span>',
+                'partially_approved': '<span class="inline-flex items-center gap-1 bg-purple-50 text-purple-800 border border-purple-300 text-[11px] px-2.5 py-1 rounded-full font-bold"><i data-lucide="git-commit" class="w-3 h-3"></i> موافقة جزئية / تعديل</span>',
+                'approved': '<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] px-2.5 py-1 rounded-full font-bold"><i data-lucide="check-check" class="w-3 h-3"></i> معتمد بالكامل</span>',
+                'rejected': '<span class="inline-flex items-center gap-1 bg-rose-50 text-rose-800 border border-rose-300 text-[11px] px-2.5 py-1 rounded-full font-bold"><i data-lucide="x-circle" class="w-3 h-3"></i> مرفوض بالكامل</span>'
+            };
+
+            let rowsHtml = requests.map(req => {
+                const marketText = req.market || 'السوق المركزي';
+                const regionText = req.region ? `${req.region} (${req.governorate || ''})` : '';
+
+                return `
+                    <tr class="hover:bg-slate-50/80 transition duration-150">
+                        <td class="p-3.5 whitespace-nowrap align-middle">
+                            <button type="button" onclick="openReviewModal(${req.id})" class="text-right group focus:outline-none block cursor-pointer" title="انقر لعرض تفاصيل الطلب والأصناف والبت الرقابي">
+                                <span class="font-black text-mewa-700 group-hover:text-mewa-900 group-hover:bg-mewa-100 text-xs inline-flex items-center gap-1.5 bg-mewa-50 hover:bg-mewa-100 px-3 py-1.5 rounded-xl border border-mewa-200 transition shadow-sm">
+                                    <span>#REQ-${req.id}</span>
+                                    <span class="text-xs group-hover:scale-110 transition-transform">🔍</span>
+                                </span>
+                                <span class="text-[11px] text-slate-400 block mt-1 font-medium">${req.created_at || '2026-10-27'}</span>
+                            </button>
+                        </td>
+                        <td class="p-3.5 whitespace-nowrap align-middle">
+                            <span class="font-bold text-slate-900 block">${req.merchant_name}</span>
+                            <span class="font-bold text-mewa-800 bg-mewa-50 px-2 py-0.5 rounded border border-mewa-200 text-[10px] inline-block mt-0.5">${req.business_record || 'وثيقة رسمية'}</span>
+                        </td>
+                        <td class="p-3.5 whitespace-nowrap align-middle">
+                            <span class="font-bold text-emerald-900 block text-xs">${marketText}</span>
+                            <span class="text-[11px] text-slate-500 block">${regionText}</span>
+                        </td>
+                        <td class="p-3.5 whitespace-nowrap align-middle text-center">
+                            ${statusLabels[req.status] || statusLabels['pending']}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            tableBody.innerHTML = rowsHtml;
+            lucide.createIcons();
+        }
+
+        // ================= دالة إدارة تفاصيل المودال والقرارات =================
+
+        const FALLBACK_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='%23006837' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect width='18' height='18' x='3' y='3' rx='2'/><path d='m3 16 5-5c.9-.9 2.1-.9 3 0l7 7'/><path d='m14 14 1-1c.9-.9 2.1-.9 3 0l3 3'/><circle cx='9' cy='9' r='2'/></svg>";
+
+        function openReviewModal(requestId) {
+            const req = loadedAdminRequests.find(r => r.id === requestId);
+            if (!req) return;
+
+            currentModalRequestId = requestId;
+            // استنساخ عميق للأصناف
+            currentModalItemsState = req.items.map(it => {
+                let initDecision = 'approved';
+                if (it.approval_status === 'rejected') {
+                    initDecision = 'rejected';
+                } else if (it.approval_status === 'approved' && it.approved_qty > 0 && it.approved_qty < it.requested_qty) {
+                    initDecision = 'adjusted';
+                } else if (it.approval_status === 'pending') {
+                    initDecision = 'pending';
+                }
+
+                return {
+                    id: it.id,
+                    name: it.name,
+                    category: it.category,
+                    image_url: it.image_url || FALLBACK_SVG,
+                    requested_qty: it.requested_qty,
+                    approved_qty: it.approved_qty > 0 ? it.approved_qty : it.requested_qty,
+                    unit: it.unit,
+                    unit_price: it.unit_price,
+                    decision: initDecision, // 'approved', 'adjusted', 'rejected', 'pending'
+                    notes: it.rejection_reason || ''
+                };
+            });
+
+            // تعبئة بيانات الرأس
+            document.getElementById('modal-req-title').innerText = `تفاصيل الطلب: #REQ-${req.id}`;
+            document.getElementById('modal-entity-name').innerText = req.merchant_name;
+            document.getElementById('modal-doc-record').innerText = req.business_record || 'وثيقة رسمية معتمدة';
+            document.getElementById('modal-market-info').innerText = `${req.market || 'السوق المركزي'} (${req.region || ''} - ${req.governorate || ''})`;
+            
+            // حساب ملخص الأصناف والكميات الكلية وآلية التوريد
+            const itemsCount = req.items ? req.items.length : 0;
+            const totalQty = req.items ? req.items.reduce((acc, it) => acc + (parseFloat(it.requested_qty) || 0), 0) : 0;
+            const summaryEl = document.getElementById('modal-items-summary');
+            if (summaryEl) {
+                summaryEl.innerText = `${itemsCount} أصناف توريد معروضة (إجمالي الكميات المطلوبة: ${totalQty.toLocaleString('en-US')} وحدة)`;
+            }
+
+            const fulfillmentInfoEl = document.getElementById('modal-fulfillment-info');
+            const fulfillmentBadgeEl = document.getElementById('modal-fulfillment-badge');
+            if (req.broker_name) {
+                if (fulfillmentInfoEl) fulfillmentInfoEl.innerHTML = `<span class="text-amber-800 font-bold">عبر مركز خدمة: ${req.broker_name}</span>`;
+                if (fulfillmentBadgeEl) fulfillmentBadgeEl.innerHTML = `<span class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1 rounded-xl text-xs font-bold"><i data-lucide="truck" class="w-3.5 h-3.5 text-amber-700"></i> مركز خدمة وسيط: ${req.broker_name}</span>`;
+            } else {
+                if (fulfillmentInfoEl) fulfillmentInfoEl.innerHTML = `<span class="text-emerald-800 font-bold">بيع مباشر عبر المنصة</span>`;
+                if (fulfillmentBadgeEl) fulfillmentBadgeEl.innerHTML = `<span class="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 rounded-xl text-xs font-bold"><i data-lucide="store" class="w-3.5 h-3.5 text-emerald-700"></i> بيع مباشر عبر أسواق النفع العام</span>`;
+            }
+
+            const statusBadgeEl = document.getElementById('modal-req-status-badge');
+            if (req.status === 'approved') {
+                statusBadgeEl.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300";
+                statusBadgeEl.innerText = "معتمد بالكامل";
+            } else if (req.status === 'partially_approved') {
+                statusBadgeEl.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 border border-purple-300";
+                statusBadgeEl.innerText = "موافقة جزئية / تعديل كمية";
+            } else if (req.status === 'rejected') {
+                statusBadgeEl.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-900 border border-rose-300";
+                statusBadgeEl.innerText = "مرفوض بالكامل";
+            } else {
+                statusBadgeEl.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300";
+                statusBadgeEl.innerText = "بانتظار البت الرقابي";
+            }
+
+            renderModalItems();
+
+            document.getElementById('review-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeReviewModal() {
+            document.getElementById('review-modal').classList.add('hidden');
+            currentModalRequestId = null;
+            currentModalItemsState = [];
+        }
+
+        function setItemDecision(itemId, newDecision) {
+            const item = currentModalItemsState.find(it => it.id === itemId);
+            if (!item) return;
+
+            item.decision = newDecision;
+            if (newDecision === 'approved') {
+                item.approved_qty = item.requested_qty;
+            } else if (newDecision === 'rejected') {
+                item.approved_qty = 0;
+                if (!item.notes) item.notes = "مخالفة اشتراطات السوق والعبوات المعتمدة";
+            } else if (newDecision === 'adjusted') {
+                if (item.approved_qty >= item.requested_qty) {
+                    item.approved_qty = Math.round(item.requested_qty * 0.7); // اقتراح مبدئي مخفض
+                }
+                if (!item.notes) item.notes = "تعديل الكمية لموازنة العرض في السوق ومنع الإغراق السعري";
+            }
+
+            renderModalItems();
+        }
+
+        function updateItemQuantity(itemId, value) {
+            const item = currentModalItemsState.find(it => it.id === itemId);
+            if (item) {
+                item.approved_qty = parseFloat(value) || 0;
+            }
+        }
+
+        function updateItemNotes(itemId, value) {
+            const item = currentModalItemsState.find(it => it.id === itemId);
+            if (item) {
+                item.notes = value;
+            }
+        }
+
+        function applyPresetReason(itemId, presetValue) {
+            const item = currentModalItemsState.find(it => it.id === itemId);
+            if (item && presetValue) {
+                item.notes = presetValue;
+                const notesInput = document.getElementById(`item-notes-${itemId}`);
+                if (notesInput) notesInput.value = presetValue;
+            }
+        }
+
+        function renderModalItems() {
+            const container = document.getElementById('modal-items-container');
+            if (!container) return;
+
+            container.innerHTML = currentModalItemsState.map((item, idx) => {
+                const isApproved = item.decision === 'approved';
+                const isAdjusted = item.decision === 'adjusted';
+                const isRejected = item.decision === 'rejected';
+
+                let cardBorder = "border-slate-200 bg-white shadow-sm";
+                if (isApproved) cardBorder = "border-emerald-300 bg-emerald-50/20 shadow-sm";
+                if (isAdjusted) cardBorder = "border-amber-300 bg-amber-50/20 shadow-sm";
+                if (isRejected) cardBorder = "border-rose-300 bg-rose-50/20 shadow-sm";
+
+                return `
+                    <div class="naama-card p-4 sm:p-5 rounded-2xl border ${cardBorder} space-y-4 transition">
+                        <!-- ترويسة الصنف ومعلومات التوريد (بدون صورة) -->
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 border-b border-slate-100 pb-3.5">
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-black text-xs flex items-center justify-center border border-slate-200">${idx + 1}</span>
+                                    <h5 class="text-sm font-black text-slate-900">${item.name}</h5>
+                                    <span class="text-[11px] font-bold bg-mewa-50 text-mewa-800 border border-mewa-200 px-2.5 py-0.5 rounded-full">${item.category}</span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2 text-xs">
+                                    <span class="inline-flex items-center gap-1.5 bg-slate-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200 font-bold">
+                                        <i data-lucide="package" class="w-3.5 h-3.5 text-mewa-600"></i>
+                                        <span>الكمية المطلوبة من التاجر:</span>
+                                        <b class="text-mewa-800 font-black">${item.requested_qty} ${item.unit}</b>
+                                    </span>
+                                    <span class="inline-flex items-center gap-1.5 bg-slate-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200 font-bold">
+                                        <i data-lucide="tag" class="w-3.5 h-3.5 text-naamaGold-600"></i>
+                                        <span>السعر المقترح:</span>
+                                        <b class="text-slate-900 font-black">${item.unit_price} ر.س / ${item.unit}</b>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- أزرار القرار الرقابي الثلاثة بتصميم مدمج وحديث -->
+                            <div class="inline-flex items-center p-1 bg-slate-100/90 rounded-xl border border-slate-200 flex-shrink-0 self-start lg:self-center shadow-inner">
+                                <button type="button" onclick="setItemDecision(${item.id}, 'approved')" class="px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${isApproved ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'}">
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                    <span>قبول واعتماد</span>
+                                </button>
+                                <button type="button" onclick="setItemDecision(${item.id}, 'adjusted')" class="px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${isAdjusted ? 'bg-amber-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'}">
+                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                    <span>تعديل الكمية</span>
+                                </button>
+                                <button type="button" onclick="setItemDecision(${item.id}, 'rejected')" class="px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${isRejected ? 'bg-rose-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'}">
+                                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                                    <span>رفض الصنف</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- المساحة التفاعلية بحسب القرار الرقابي المحدد -->
+                        ${isApproved ? `
+                            <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-2 text-emerald-900 font-bold">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                                    <span>معتمد بكامل الكمية المطلوبة للإدراج في السوق: <b class="font-black text-emerald-950">${item.requested_qty} ${item.unit}</b></span>
+                                </div>
+                                <div class="w-full sm:w-72">
+                                    <input type="text" id="item-notes-${item.id}" value="${item.notes || ''}" oninput="updateItemNotes(${item.id}, this.value)" placeholder="ملاحظات رقابية اختيارية..." class="w-full text-xs px-3 py-1.5 rounded-lg border border-emerald-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${isAdjusted ? `
+                            <div class="bg-amber-50/70 border border-amber-300 rounded-xl p-4 space-y-3 text-xs">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-amber-950 mb-1">الكمية المعتمدة للإدراج في السوق: *</label>
+                                        <div class="flex items-center gap-2">
+                                            <input type="number" step="any" min="0" max="${item.requested_qty}" value="${item.approved_qty}" oninput="updateItemQuantity(${item.id}, this.value)" class="w-full text-xs font-black px-3 py-2 rounded-xl border border-amber-300 bg-white ring-2 ring-amber-100 focus:outline-none focus:border-amber-600 text-amber-950">
+                                            <span class="text-xs font-bold text-amber-900 whitespace-nowrap">${item.unit}</span>
+                                        </div>
+                                        <span class="text-[10px] text-amber-800 mt-1 block">الكمية المقترحة من التاجر: ${item.requested_qty} ${item.unit}</span>
+                                    </div>
+                                    <div class="md:col-span-2 space-y-1">
+                                        <div class="flex items-center justify-between">
+                                            <label class="block text-[11px] font-bold text-amber-950">سبب ومبررات تعديل الكمية: *</label>
+                                            <select onchange="applyPresetReason(${item.id}, this.value)" class="text-[10px] font-bold text-slate-700 bg-white border border-amber-300 rounded px-2 py-0.5 focus:outline-none">
+                                                <option value="">-- أسباب ومبررات شائعة --</option>
+                                                <option value="تعديل الكمية لموازنة العرض في السوق ومنع الإغراق السعري">موازنة العرض ومنع الإغراق</option>
+                                                <option value="تعديل الكمية حسب الطاقة الاستيعابية لمبسط السوق المعتمد">حسب طاقة استيعاب المبسط</option>
+                                                <option value="تعديل الكمية بعد الفحص المبدئي للدفعة الموردة">فحص مبدئي للدفعة الموردة</option>
+                                            </select>
+                                        </div>
+                                        <input type="text" id="item-notes-${item.id}" value="${item.notes || ''}" oninput="updateItemNotes(${item.id}, this.value)" placeholder="يرجى كتابة سبب تخفيض/تعديل الكمية المعتمدة..." class="w-full text-xs px-3 py-2 rounded-xl border border-amber-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium text-slate-900">
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${isRejected ? `
+                            <div class="bg-rose-50/70 border border-rose-300 rounded-xl p-4 space-y-2 text-xs">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-rose-200 pb-2">
+                                    <div class="flex items-center gap-2 text-rose-900 font-bold">
+                                        <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600 flex-shrink-0"></i>
+                                        <span>الصنف مرفوض بالكامل ولن يتم إدراجه في السوق (الكمية المعتمدة: 0)</span>
+                                    </div>
+                                    <select onchange="applyPresetReason(${item.id}, this.value)" class="text-[10px] font-bold text-slate-700 bg-white border border-rose-300 rounded px-2 py-1 focus:outline-none self-start sm:self-auto">
+                                        <option value="">-- أسباب الرفض الشائعة --</option>
+                                        <option value="مخالفة اشتراطات السوق والعبوات والتعبئة المعتمدة">مخالفة اشتراطات العبوات والتعبئة</option>
+                                        <option value="منتج غير مصرح به أو خارج الموسم الزراعي">خارج الموسم الزراعي</option>
+                                        <option value="عدم اكتمال الفحص البيطري أو شهادات المطابقة">عدم اكتمال الفحص البيطري</option>
+                                        <option value="الكمية تتجاوز الطاقة الاستيعابية المتاحة في السوق">تجاوز الطاقة الاستيعابية</option>
+                                    </select>
+                                </div>
+                                <div class="pt-1">
+                                    <label class="block text-[11px] font-bold text-rose-800 mb-1">سبب وملاحظات الرفض الرقابي: *</label>
+                                    <input type="text" id="item-notes-${item.id}" value="${item.notes || ''}" oninput="updateItemNotes(${item.id}, this.value)" placeholder="يرجى كتابة سبب رفض هذا الصنف بدقة لتوثيقه رسمياً للتاجر..." class="w-full text-xs px-3 py-2 rounded-xl border border-rose-300 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500 font-medium text-slate-900">
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        async function submitModalDecision() {
+            if (!currentModalRequestId) return;
+
+            // التحقق من تدوين الملاحظات عند التعديل أو الرفض
+            for (let it of currentModalItemsState) {
+                if (it.decision === 'rejected' && (!it.notes || !it.notes.trim())) {
+                    showToast(`يرجى كتابة سبب الرفض للصنف: "${it.name}"`, true);
+                    return;
+                }
+                if (it.decision === 'adjusted' && (!it.notes || !it.notes.trim())) {
+                    showToast(`يرجى كتابة سبب تعديل الكمية للصنف: "${it.name}"`, true);
+                    return;
+                }
+            }
+
+            const reviewsPayload = currentModalItemsState.map(it => ({
+                item_id: it.id,
+                approval_status: it.decision === 'rejected' ? 'rejected' : 'approved',
+                approved_qty: it.decision === 'rejected' ? 0 : it.approved_qty,
+                rejection_reason: (it.decision === 'rejected' || it.decision === 'adjusted') ? it.notes : ""
+            }));
+
+            try {
+                const res = await fetch('/api/admin/review-items', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ request_id: currentModalRequestId, reviews: reviewsPayload })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    showToast(data.message || "تم حفظ واعتماد القرار الرقابي بنجاح");
+                }
+            } catch (e) {
+                // حفظ محلي في التخزين في حالة عدم توفر السيرفر
+            }
+
+            // تحديث السجل في الذاكرة والتخزين المحلي
+            const targetReq = loadedAdminRequests.find(r => r.id === currentModalRequestId);
+            if (targetReq) {
+                currentModalItemsState.forEach(mItem => {
+                    const it = targetReq.items.find(x => x.id === mItem.id);
+                    if (it) {
+                        it.approval_status = mItem.decision === 'rejected' ? 'rejected' : 'approved';
+                        it.approved_qty = mItem.decision === 'rejected' ? 0 : mItem.approved_qty;
+                        it.rejection_reason = mItem.notes;
+                    }
+                });
+
+                const anyApproved = targetReq.items.some(x => x.approval_status === 'approved');
+                const anyRejected = targetReq.items.some(x => x.approval_status === 'rejected');
+                const anyAdjusted = targetReq.items.some(x => x.approval_status === 'approved' && x.approved_qty < x.requested_qty);
+
+                if (anyAdjusted || (anyApproved && anyRejected)) {
+                    targetReq.status = 'partially_approved';
+                } else if (anyApproved) {
+                    targetReq.status = 'approved';
+                } else {
+                    targetReq.status = 'rejected';
+                }
+
+                // حفظ في localStorage
+                try {
+                    localStorage.setItem('my_requests', JSON.stringify(loadedAdminRequests));
+                } catch (e) {}
+            }
+
+            showToast("تم تثبيت واعتماد القرار الرقابي بنجاح!");
+            closeReviewModal();
+            updateAnalyticsDisplay(loadedAdminRequests);
+            renderAdminTable(loadedAdminRequests);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAnalytics();
+            loadAdminRequests();
+        });
+    </script>
+    <script src="static/js/nafath.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقديم طلب إدراج منتجات | منصة أسواق النفع العام - نما</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mewa: {
+                            50: '#f0f9f4',
+                            100: '#dbf0e4',
+                            600: '#006837',
+                            700: '#00542c',
+                            800: '#034424',
+                            900: '#02381e',
+                        },
+                        naamaGold: {
+                            100: '#fcf8ec',
+                            400: '#e3b84c',
+                            500: '#c59b27',
+                            600: '#a7801a',
+                        }
+                    },
+                    fontFamily: {
+                        tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
+        .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
+        .naama-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px -2px rgba(0, 104, 55, 0.05);
+        }
+        .section-tag {
+            border-right: 4px solid #c59b27;
+            padding-right: 12px;
+        }
+        .type-radio:checked + div {
+            border-color: #006837;
+            background-color: #f0f9f4;
+            box-shadow: 0 0 0 2px #006837;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- الشريط الذهبي العلوي -->
+    <div class="h-1.5 gold-line w-full"></div>
+
+    <!-- شريط الخدمات المصغر -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                <span class="font-bold text-slate-700">بوابة المستفيدين (مزرعة / مربي ماشية / مستورد)</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="home" class="w-3.5 h-3.5"></i> الرئيسية
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="merchant_tracking.html" class="text-mewa-700 hover:underline font-bold flex items-center gap-1">
+                    <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i> شاشة متابعة طلباتي
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ترويسة الصفحة الرسمية مع لوجو الوزارة -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 w-auto object-contain">
+                    <div class="border-r-2 border-slate-200 pr-3">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-black text-mewa-800">خدمة تقديم طلب إدراج وتوريد</h1>
+                            <span class="bg-naamaGold-100 text-naamaGold-700 text-xs font-bold px-2 py-0.5 rounded">نما</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500">التحقق اللحظي عبر السجل الزراعي أو شهادة سعودي جاب / البطاقة الصحية / إذن الاستيراد</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="merchant_tracking.html" class="bg-mewa-50 hover:bg-mewa-100 text-mewa-800 border border-mewa-200 text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm shrink-0">
+                    <i data-lucide="list-ordered" class="w-4 h-4 text-mewa-600"></i>
+                    <span>متابعة طلباتي</span>
+                </a>
+                <span class="h-8 w-px bg-slate-200 hidden sm:block"></span>
+                <div id="nafath-auth-container"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي: نموذج التقديم الذكي المطور -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
+
+        <form id="submission-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+
+            <!-- 1. نوع مقدم الطلب الرئيسي -->
+            <div class="naama-card p-6 rounded-3xl space-y-4">
+                <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-base font-black text-slate-900 section-tag">1. تحديد صفة مقدم الطلب</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">اختر صفتك للتحقق من بياناتك من قواعد بيانات وزارة البيئة والمياه والزراعة</p>
+                    </div>
+                    <span class="text-xs bg-naamaGold-100 text-naamaGold-700 font-bold px-2.5 py-1 rounded-full border border-naamaGold-400">إلزامي</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- مزرعة -->
+                    <label class="cursor-pointer">
+                        <input type="radio" name="applicant_type" value="farm" checked onchange="switchApplicantType('farm')" class="hidden type-radio">
+                        <div class="p-4 rounded-2xl border-2 border-slate-200 bg-white transition hover:border-slate-300 flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                                <i data-lucide="sprout" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-slate-900">مزرعة محلية</h4>
+                                <p class="text-xs text-slate-500 mt-1">التحقق عبر السجل الزراعي / شهادة سعودي جاب للمنتجات النباتية والتمور</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- مربي ماشية -->
+                    <label class="cursor-pointer">
+                        <input type="radio" name="applicant_type" value="breeder" onchange="switchApplicantType('breeder')" class="hidden type-radio">
+                        <div class="p-4 rounded-2xl border-2 border-slate-200 bg-white transition hover:border-slate-300 flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                                <i data-lucide="badge-percent" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-slate-900">مربي ماشية</h4>
+                                <p class="text-xs text-slate-500 mt-1">التحقق عبر رقم البطاقة الصحية البيطرية للثروة الحيوانية</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- مستورد -->
+                    <label class="cursor-pointer">
+                        <input type="radio" name="applicant_type" value="importer" onchange="switchApplicantType('importer')" class="hidden type-radio">
+                        <div class="p-4 rounded-2xl border-2 border-slate-200 bg-white transition hover:border-slate-300 flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
+                                <i data-lucide="ship" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-slate-900">مستورد معتمد</h4>
+                                <p class="text-xs text-slate-500 mt-1">التحقق عبر إذن الاستيراد الساري الصادر من الوزارة</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 2. حقل الوثيقة الرسمية والتحقق الفوري -->
+            <div class="naama-card p-6 rounded-3xl space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                    <h2 class="text-base font-black text-slate-900 section-tag" id="doc-section-title">2. التحقق من السجل الزراعي / شهادة سعودي جاب</h2>
+                    <p class="text-xs text-slate-500 mt-0.5" id="doc-section-desc">أدخل رقم السجل الزراعي أو رقم شهادة سعودي جاب الصادرة من الوزارة للتحقق اللحظي</p>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="flex-grow">
+                            <label class="block text-xs font-bold text-slate-700 mb-1" id="doc-input-label">رقم السجل الزراعي / رقم شهادة سعودي جاب *</label>
+                            <input type="text" id="doc-number-input" value="AGRI-2026-98124" class="w-full text-xs font-bold px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                        </div>
+                        <div class="sm:self-end">
+                            <button type="button" onclick="verifyDocument()" id="verify-btn" class="w-full sm:w-auto bg-mewa-600 hover:bg-mewa-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-naamaGold-400"></i>
+                                <span>التحقق من الوثيقة</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- نتيجة التحقق (Verified Badge & Info Box) -->
+                    <div id="verification-result-box" class="bg-emerald-50 border border-emerald-300 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-sm font-black text-emerald-950" id="verified-entity-name">مزرعة واحة الخرج العضوية (سليمان العبدالله)</h4>
+                                    <span class="bg-emerald-200 text-emerald-900 text-[10px] font-extrabold px-2 py-0.5 rounded-full">موثق بسجلات الوزارة</span>
+                                </div>
+                                <p class="text-xs text-emerald-800 mt-0.5 font-medium" id="verified-entity-details">
+                                    النشاط: إنتاج الخضار والتمور المحمية • رخصة سارية حتى 2027
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-left shrink-0">
+                            <span class="text-[11px] text-emerald-700 block font-semibold">حالة المطابقة:</span>
+                            <span class="text-xs font-black text-emerald-900">جاهز للتوريد المعتمد ✔</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. النطاق الجغرافي (المنطقة والمحافظة والسوق) -->
+            <div class="naama-card p-6 rounded-3xl space-y-4">
+                <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-base font-black text-slate-900 section-tag">3. النطاق الجغرافي وسوق النفع العام المستهدف</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">حدد المنطقة والمحافظة ثم اختر سوق النفع العام المعتمد المراد التوريد إليه</p>
+                    </div>
+                    <span class="text-xs bg-naamaGold-100 text-naamaGold-700 font-bold px-2.5 py-1 rounded-full border border-naamaGold-400">إلزامي</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">المنطقة الإدارية *</label>
+                        <select id="region-select" onchange="handleRegionChange()" class="w-full text-xs font-bold px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                            <option value="الرياض">منطقة الرياض</option>
+                            <option value="القصيم">منطقة القصيم</option>
+                            <option value="مكة المكرمة">منطقة مكة المكرمة</option>
+                            <option value="المنطقة الشرقية">المنطقة الشرقية</option>
+                            <option value="المدينة المنورة">منطقة المدينة المنورة</option>
+                            <option value="عسير">منطقة عسير</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">المحافظة *</label>
+                        <select id="governorate-select" onchange="handleGovernorateChange()" class="w-full text-xs font-bold px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                            <!-- تعبأ ديناميكياً -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">السوق (سوق النفع العام) *</label>
+                        <select id="market-select" class="w-full text-xs font-bold px-3.5 py-2.5 rounded-xl border border-mewa-600 bg-white focus:ring-2 focus:ring-mewa-600 focus:outline-none text-mewa-900" required>
+                            <!-- تعبأ ديناميكياً بناءً على المحافظة -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. آلية البيع (مباشر أو مركز خدمة / وسيط) -->
+            <div class="naama-card p-6 rounded-3xl space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                    <h2 class="text-base font-black text-slate-900 section-tag">4. آلية البيع والخدمات اللوجستية</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">حدد هل ستقوم بالتجهيز والتوصيل بنفسك، أو إسنادها لمركز خدمة معتمد</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- خيار 1: بيع مباشر -->
+                        <label class="cursor-pointer">
+                            <input type="radio" name="fulfillment_choice" value="direct" checked onchange="toggleFulfillmentMode('direct')" class="hidden type-radio">
+                            <div class="p-4 rounded-2xl border-2 border-slate-200 bg-white transition hover:border-slate-300 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-mewa-600"></i>
+                                    <h4 class="text-sm font-black text-slate-900">البيع والتسليم المباشر</h4>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">أنا مسؤول ذاتياً عن التعبئة، التغليف، ونقل وتوصيل الدفعة إلى سوق النفع العام أو المستهلك دون وساطة تشغيلية.</p>
+                                <div class="flex items-center gap-1.5 pt-1">
+                                    <span class="inline-block text-[10px] font-bold text-mewa-800 bg-mewa-50 border border-mewa-200 px-2 py-0.5 rounded-full">تسليم مباشر ذاتي</span>
+                                    <span class="inline-block text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">بدون استقطاع خدمات تشغيلية</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- خيار 2: مركز خدمة (وسيط) -->
+                        <label class="cursor-pointer">
+                            <input type="radio" name="fulfillment_choice" value="broker" onchange="toggleFulfillmentMode('broker')" class="hidden type-radio">
+                            <div class="p-4 rounded-2xl border-2 border-slate-200 bg-white transition hover:border-slate-300 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="boxes" class="w-4 h-4 text-naamaGold-600"></i>
+                                    <h4 class="text-sm font-black text-slate-900">البيع عبر مركز خدمة معتمد (وسيط لوجستي)</h4>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">إسناد مهام الاستلام المبرد من المزرعة، الفرز، التعبئة الآلية، والتوصيل لمركز مرخص (تُحتسب نسبة تشغيلية من قيمة المبيعات).</p>
+                                <div class="flex items-center gap-1.5 pt-1">
+                                    <span class="inline-block text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">خدمات لوجستية وفرز متكامل</span>
+                                    <span class="inline-block text-[10px] font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">يتم احتساب نسبة من مبلغ المبيعات</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- اختيار مركز الخدمة وتنبيه احتساب النسبة -->
+                    <div id="service-center-container" class="hidden bg-amber-50/70 border border-amber-300 p-5 rounded-2xl space-y-4">
+                        
+                        <!-- صندوق التنبيه الرسمي باحتساب نسبة الخدمات التشغيلية واللوجستية -->
+                        <div class="bg-gradient-to-l from-amber-50 via-amber-100/70 to-amber-50 border-r-4 border-amber-500 border border-amber-200/90 p-4 rounded-2xl space-y-2 text-amber-950 shadow-xs">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                    <i data-lucide="alert-circle" class="w-4.5 h-4.5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs sm:text-sm font-black text-amber-950">تنبيه مالي وتشغيلي: احتساب نسبة مقابل خدمات مركز الخدمة</h4>
+                                    <p class="text-[11px] text-amber-800 font-bold">بموجب التنظيم المعتمد لمنصة أسواق النفع العام</p>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-amber-950/90 leading-relaxed font-medium pr-10">
+                                عند اختيار <b>البيع عبر مركز خدمة معتمد</b>، سيتم <b>احتساب واقتطاع نسبة محددة من إجمالي قيمة المبيعات</b> لصالح المركز المعتمد، وذلك لتغطية التكاليف التشغيلية لخدمات الاستلام المبرد من موقع الإنتاج، الفرز والتدريج الآلي، التعبئة المعتمدة، وإدارة المخزون والنقل اللوجستي الآمن حتى إتمام البيع.
+                            </p>
+
+                            <div class="flex flex-wrap items-center gap-4 pt-1 pr-10 text-[11px] text-amber-900 font-bold border-t border-amber-200/80">
+                                <span class="flex items-center gap-1.5">
+                                    <i data-lucide="check-circle" class="w-3.5 h-3.5 text-amber-700"></i>
+                                    تظهر النسبة المقتطعة تفصيلياً في تقرير التسوية وفاتورة البيع
+                                </span>
+                                <span class="flex items-center gap-1.5">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-700"></i>
+                                    كافة المراكز والنسب معتمدة وتحت رقابة وزارة البيئة والمياه والزراعة
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- قائمة اختيار المركز المعتمد -->
+                        <div class="space-y-1.5 pt-1">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                                    <i data-lucide="truck" class="w-4 h-4 text-amber-700"></i>
+                                    <span>اختر مركز الخدمة والوسيط المعتمد في نطاق (<span id="center-region-lbl" class="underline font-black">الخرج</span>):</span>
+                                </label>
+                                <span class="text-[10px] bg-white text-amber-900 font-bold px-2.5 py-0.5 rounded-full border border-amber-300">مراكز مرخصة معتمدة</span>
+                            </div>
+                            <select id="selected-broker-center" class="w-full text-xs font-bold px-3.5 py-3 rounded-xl border border-amber-300 bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none text-slate-800 shadow-xs">
+                                <!-- Dynamic Broker Centers -->
+                            </select>
+                            <p class="text-[11px] text-amber-800 font-medium">سيقوم فريق المركز المعتمد بالتواصل المباشر معكم لتنسيق مواعيد الاستلام من المزرعة وفحص الجودة.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. الأصناف والكميات (تتغير خياراتها حسب صفة مقدم الطلب) -->
+            <div class="naama-card p-6 rounded-3xl space-y-4">
+                <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-base font-black text-slate-900 section-tag" id="items-section-title">5. المنتجات والأصناف المصرح بها</h2>
+                        <p class="text-xs text-slate-500 mt-0.5" id="items-section-desc">أدخل تفاصيل الدفعة المراد توريدها لسوق النفع العام</p>
+                    </div>
+                    <button type="button" onclick="addProductItemRow()" class="bg-mewa-50 hover:bg-mewa-100 text-mewa-700 border border-mewa-200 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="plus" class="w-4 h-4 text-mewa-600"></i>
+                        <span>إضافة صنف</span>
+                    </button>
+                </div>
+
+                <div id="items-list-container" class="space-y-3">
+                    <!-- ديناميكي حسب نوع المتقدم -->
+                </div>
+            </div>
+
+            <!-- زر الإرسال النهائي -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-white rounded-2xl border border-slate-200">
+                <div class="text-xs text-slate-500 space-y-0.5">
+                    <p class="font-bold text-slate-800">جاهز لتقديم الطلب؟</p>
+                    <p>سيتم رفع الطلب ومطابقته برمجياً مع سجلات الوزارة ثم إحالته لمفتش السوق للاعتماد النهائي.</p>
+                </div>
+                <button type="submit" class="bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-3.5 px-8 rounded-xl shadow-md flex items-center justify-center gap-2 transition text-xs shrink-0 w-full sm:w-auto">
+                    <i data-lucide="send" class="w-4 h-4 text-naamaGold-400"></i>
+                    <span>إرسال الطلب للاعتماد الرسمي</span>
+                </button>
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- التذييل الرسمي -->
+    <footer class="bg-slate-900 text-slate-400 text-xs border-t-2 border-naamaGold-500 mt-12 py-8">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-9 w-auto bg-white/95 p-1 rounded">
+                <span class="text-slate-300 font-bold">وزارة البيئة والمياه والزراعة - منصة نما © 2026</span>
+            </div>
+            <div class="flex gap-4">
+                <a href="merchant_tracking.html" class="hover:text-white">متابعة الطلبات</a>
+                <span>•</span>
+                <a href="index.html" class="hover:text-white">الرئيسية</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+        <div id="toast-inner" class="bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500">
+            <span id="toast-msg">تمت العملية بنجاح</span>
+        </div>
+    </div>
+
+    <script>
+        // قواعد البيانات الجغرافية لمحافظات وأسواق النفع العام ومراكز الخدمة
+        const REGIONS_DATA = {
+            "الرياض": {
+                governorates: {
+                    "الخرج": [
+                        "سوق الخرج المركزي للخضار والفواكه",
+                        "سوق الأعلاف والمواشي المركزي بالخرج",
+                        "سوق التمور الموسمي بالخرج"
+                    ],
+                    "مدينة الرياض": [
+                        "سوق عتيقة المركزي للخضار والفاكهة",
+                        "سوق الشمال المركزي للخضار (المروج)",
+                        "سوق العزيزية المركزي للأنعام والمواشي",
+                        "سوق الربوة للخضار والفاكهة"
+                    ],
+                    "الدرعية": [
+                        "سوق النفع العام التراثي بالدرعية"
+                    ],
+                    "المجمعة": [
+                        "سوق الخضار والمواشي المركزي بالمجمعة"
+                    ],
+                    "وادي الدواسر": [
+                        "سوق الخضار والتمور المركزي بوادي الدواسر",
+                        "سوق الأعلاف والإنتاج الزراعي بالوادي"
+                    ],
+                    "الدوادمي": [
+                        "سوق النفع العام المركزي بالدوادمي"
+                    ],
+                    "شقراء": [
+                        "سوق الخضار والتمور بشقراء"
+                    ]
+                },
+                brokers: [
+                    { name: "مركز خدمة أسواق الخرج اللوجستي (شركة إمداد) • النسبة التشغيلية: 10%" },
+                    { name: "مركز النفع العام بالرياض المركزي (شركة الحصاد) • النسبة التشغيلية: 8.5%" },
+                    { name: "شركة روافد نجد لخدمات التبريد والشحن • النسبة التشغيلية: 12%" }
+                ]
+            },
+            "القصيم": {
+                governorates: {
+                    "بريدة": [
+                        "مدينة الأنعام وسوق الإبل المركزي ببريدة",
+                        "سوق الخضار والتمور المركزي ببريدة (مدينة التمور)"
+                    ],
+                    "عنيزة": [
+                        "سوق الخضار المركزي بعنيزة",
+                        "سوق ومهرجان التمور الدولي بعنيزة"
+                    ],
+                    "الرس": [
+                        "سوق الخضار والمواشي المركزي بالرس"
+                    ],
+                    "البكيرية": [
+                        "سوق النفع العام بالبكيرية"
+                    ],
+                    "المذنب": [
+                        "سوق الخضار والفاكهة بالمذنب"
+                    ],
+                    "البدائع": [
+                        "سوق البدائع للخضار والإنتاج الزراعي"
+                    ]
+                },
+                brokers: [
+                    { name: "مركز خدمات التمور والخضار ببريدة (شركة نماء القصيم) • النسبة التشغيلية: 9%" },
+                    { name: "مؤسسة واحة عنيزة اللوجستية للفرز والتوزيع • النسبة التشغيلية: 8.5%" }
+                ]
+            },
+            "مكة المكرمة": {
+                governorates: {
+                    "جدة": [
+                        "سوق الخضار والفاكهة المركزي بالصفا (جدة)",
+                        "سوق الأنعام والمواشي المركزي بالخمرة",
+                        "سوق الأسماك المركزي (البنقلة)"
+                    ],
+                    "العاصمة المقدسة": [
+                        "سوق الكعكية المركزي للمواشي والخضار",
+                        "سوق النوارية للمنتجات الزراعية"
+                    ],
+                    "الطائف": [
+                        "سوق الفواكه والخضار المركزي بالطائف",
+                        "سوق الرمان والعسل بالطائف",
+                        "سوق الأنعام المركزي بالحيانية"
+                    ],
+                    "القنفذة": [
+                        "سوق النفع العام المركزي بالقنفذة"
+                    ],
+                    "رابغ": [
+                        "سوق الخضار واللحوم برابغ"
+                    ],
+                    "الليث": [
+                        "سوق النفع العام بالليث"
+                    ]
+                },
+                brokers: [
+                    { name: "مركز كعكية مكة للخدمات اللوجستية والمواشي • النسبة التشغيلية: 10%" },
+                    { name: "شركة ميناء جدة للخدمات المبردة والتوزيع • النسبة التشغيلية: 11%" }
+                ]
+            },
+            "المنطقة الشرقية": {
+                governorates: {
+                    "الدمام": [
+                        "السوق المركزي للخضار والفواكه بالدمام",
+                        "سوق الأنعام المركزي بالدمام"
+                    ],
+                    "الأحساء": [
+                        "سوق الأربعاء وسوق التمور المركزي بالأحساء",
+                        "سوق الخضار واللحوم بالهفوف",
+                        "سوق الأنعام المركزي بالأحساء"
+                    ],
+                    "القطيف": [
+                        "سوق الخميس وسوق الخضار المركزي بالقطيف"
+                    ],
+                    "الجبيل": [
+                        "سوق النفع العام المركزي بالجبيل"
+                    ],
+                    "حفر الباطن": [
+                        "سوق الماشية والأعلاف المركزي بحفر الباطن",
+                        "سوق الفقع والخضار المركزي"
+                    ],
+                    "الخبر": [
+                        "سوق الخضار والمنتجات الطازجة بالخبر"
+                    ]
+                },
+                brokers: [
+                    { name: "مركز واحة الأحساء الزراعي للفرز والتمور • النسبة التشغيلية: 8.5%" },
+                    { name: "شركة الشرق اللوجستية لأسواق النفع العام • النسبة التشغيلية: 10%" }
+                ]
+            },
+            "المدينة المنورة": {
+                governorates: {
+                    "المدينة المنورة": [
+                        "سوق التمور المركزي النموذجي بالمدينة المنورة",
+                        "سوق الكعكي للخضار والفواكه بالمدينة",
+                        "سوق الأنعام المركزي بحمراء الأسد"
+                    ],
+                    "ينبع": [
+                        "سوق النفع العام المركزي بينبع البحر"
+                    ],
+                    "العلا": [
+                        "سوق النفع العام والحمضيات والتمور بالعلا"
+                    ],
+                    "مهد الذهب": [
+                        "سوق الماشية والخضار بمهد الذهب"
+                    ],
+                    "بدر": [
+                        "سوق الخضار واللحوم ببدر"
+                    ]
+                },
+                brokers: [
+                    { name: "مركز خدمات تمور العجوة ومزارع المدينة المعتمد • النسبة التشغيلية: 9.5%" }
+                ]
+            },
+            "عسير": {
+                governorates: {
+                    "خميس مشيط": [
+                        "سوق النفع العام والمواشي المركزي بخميس مشيط",
+                        "سوق الخضار والفواكه المركزي"
+                    ],
+                    "أبها": [
+                        "سوق الخضار والفواكه الموسمي بأبها",
+                        "سوق الثلاثاء الشعبي للنفع العام"
+                    ],
+                    "بيشة": [
+                        "سوق النخيل والتمور المركزي ببيشة",
+                        "سوق الأنعام ببيشة"
+                    ],
+                    "محايل عسير": [
+                        "سوق النفع العام المركزي بمحايل"
+                    ],
+                    "النماص": [
+                        "سوق الخضار والفواكه بالنماص"
+                    ]
+                },
+                brokers: [
+                    { name: "مركز الجنوب للخدمات الزراعية والتوزيع المبرد" }
+                ]
+            }
+        };
+
+        // أنواع الأصناف وقوائم المنتجات والتصنيفات حسب صفة المتقدم
+        const APPLICANT_CONFIGS = {
+            farm: {
+                docTitle: "2. التحقق من السجل الزراعي / شهادة سعودي جاب",
+                docDesc: "أدخل رقم السجل الزراعي أو رقم شهادة سعودي جاب الصادرة من الوزارة للتحقق اللحظي",
+                docLabel: "رقم السجل الزراعي / رقم شهادة سعودي جاب *",
+                defaultDoc: "AGRI-2026-98124",
+                entityName: "مزرعة واحة الخرج النموذجية (سليمان الصالح)",
+                entityDetails: "النشاط: خضروات محمية وتمور عضوية • السجل الزراعي / شهادة سعودي جاب سارية وموثقة بنظام نما",
+                isFreeText: true,
+                categories: ["خضروات طازجة", "فواكه موسمية", "تمور فاخرة", "محاصيل وحبوب", "أعلاف زراعية", "نباتات عطرية"],
+                defaultItem: { name: "طماطم بلدي محمي ممتاز", cat: "خضروات طازجة", unit: "كجم", price: 4.5, qty: 1000 }
+            },
+            breeder: {
+                docTitle: "2. التحقق من البطاقة الصحية البيطرية",
+                docDesc: "أدخل رقم البطاقة الصحية البيطرية للمربي المسجل لدى فروع الوزارة لحصر الثروة الحيوانية",
+                docLabel: "رقم البطاقة الصحية البيطرية *",
+                defaultDoc: "VET-CARD-77412",
+                entityName: "حوش ومربى أنعام نجد (فهد بن راشد)",
+                entityDetails: "النشاط: تربية وتسمين أغنام نعيمي وحري • القطيع المعتمد: 450 رأس مفحوص بيطرياً",
+                isFreeText: false,
+                categories: ["مواشي حية (أغنام)", "مواشي حية (ماعز)", "مواشي حية (إبل)", "مواشي حية (أبقار)", "دواجن وطيور"],
+                availableProducts: [
+                    "خروف نعيمي بلدي (جذع طيب)",
+                    "خروف نعيمي بلدي (ثني)",
+                    "ضأن حري بلدي فاخر",
+                    "خروف نجدي أصيل",
+                    "ماعز عارضي طيب",
+                    "تيس بلدي حنيذ",
+                    "قعود حاشي بلدي (مجاهيم)",
+                    "قعود حاشي بلدي (وضح)",
+                    "عجل بقر بلدي مسمّن"
+                ],
+                defaultItem: { name: "خروف نعيمي بلدي (جذع طيب)", cat: "مواشي حية (أغنام)", unit: "رأس", price: 1650, qty: 50 }
+            },
+            importer: {
+                docTitle: "2. التحقق من إذن الاستيراد المعتمد",
+                docDesc: "أدخل رقم إذن الاستيراد الساري الصادر عبر منصة نما للاستيراد الزراعي والحيواني",
+                docLabel: "رقم إذن الاستيراد المعتمد *",
+                defaultDoc: "IMPORT-PERMIT-2026-0043",
+                entityName: "شركة الحصاد الدولي للاستيراد والتجارة",
+                entityDetails: "المنتجات المصرحة بالإذن: فواكه موسمية مبردة وحيوانات حية من بلد المنشأ المعتمد",
+                isFreeText: false,
+                categories: ["فواكه مستوردة", "خضروات مستوردة", "مواشي حية مستوردة", "لحوم مبردة بالعظم", "حبوب وبقوليات مستوردة"],
+                availableProducts: [
+                    "تفاح أحمر سكري (وارد إذن الاستيراد)",
+                    "برتقال أبو صرة فالنسيا (مستورد)",
+                    "بصل هندي أحمر (وارد ميناء جدة)",
+                    "أغنام جورجية حية (إذن بيطري)",
+                    "أغنام رومانية حية (فحص محجري)",
+                    "لحوم ضأن مبردة طازجة (وارد إذن)",
+                    "موز إكوادوري كرتون نخب أول"
+                ],
+                defaultItem: { name: "تفاح أحمر سكري (وارد إذن الاستيراد)", cat: "فواكه مستوردة", unit: "كرتون (10 كجم)", price: 48, qty: 300 }
+            }
+        };
+
+        // وحدات القياس المقترحة حسب التصنيف والمنتج
+        const CATEGORY_UNITS = {
+            "مواشي حية (أغنام)": ["رأس", "جوز"],
+            "مواشي حية (ماعز)": ["رأس", "جوز"],
+            "مواشي حية (إبل)": ["رأس"],
+            "مواشي حية (أبقار)": ["رأس"],
+            "مواشي حية مستوردة": ["رأس"],
+            "دواجن وطيور": ["جوز", "حبة", "كرتون"],
+            "خضروات طازجة": ["كجم", "صندوق", "كرتون", "سلة", "كيس", "ربطة"],
+            "خضروات مستوردة": ["كرتون", "صندوق", "كيس 10 كجم", "كجم"],
+            "فواكه موسمية": ["كرتون", "صندوق", "سلة", "كجم"],
+            "فواكه مستوردة": ["كرتون (10 كجم)", "صندوق", "كجم"],
+            "تمور فاخرة": ["كرتون (3 كجم)", "صندوق", "كجم", "قطمير"],
+            "محاصيل وحبوب": ["كيس (50 كجم)", "طن", "كجم"],
+            "حبوب وبقوليات مستوردة": ["كيس (50 كجم)", "طن", "كجم"],
+            "أعلاف زراعية": ["بالة", "طن", "حزمة"],
+            "لحوم مبردة بالعظم": ["ذبيحة كاملة", "نصف ذبيحة", "كجم"],
+            "نباتات عطرية": ["ربطة", "حزمة", "صندوق", "كجم"]
+        };
+
+        let currentType = 'farm';
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const inner = document.getElementById('toast-inner');
+            const msg = document.getElementById('toast-msg');
+            msg.innerText = message;
+            if (isError) {
+                inner.className = "bg-rose-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-rose-500";
+            } else {
+                inner.className = "bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500";
+            }
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        function switchApplicantType(type) {
+            currentType = type;
+            const cfg = APPLICANT_CONFIGS[type];
+
+            document.getElementById('doc-section-title').innerText = cfg.docTitle;
+            document.getElementById('doc-section-desc').innerText = cfg.docDesc;
+            document.getElementById('doc-input-label').innerText = cfg.docLabel;
+            document.getElementById('doc-number-input').value = cfg.defaultDoc;
+
+            // تحديث بطاقة التحقق
+            document.getElementById('verified-entity-name').innerText = cfg.entityName;
+            document.getElementById('verified-entity-details').innerText = cfg.entityDetails;
+
+            // تحديث الأصناف الافتراضية
+            resetItemsList(cfg.defaultItem);
+            showToast(`تم تبديل صفة مقدم الطلب إلى: ${type === 'farm' ? 'مزرعة' : (type === 'breeder' ? 'مربي ماشية' : 'مستورد')}`);
+        }
+
+        function verifyDocument() {
+            const btn = document.getElementById('verify-btn');
+            const box = document.getElementById('verification-result-box');
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span> جاري التحقق...`;
+            
+            setTimeout(() => {
+                btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-naamaGold-400"></i><span>تم التحقق بنجاح</span>`;
+                box.classList.remove('hidden');
+                lucide.createIcons();
+                showToast("تم التحقق من مطابقة السجل مع قواعد بيانات وزارة البيئة والمياه والزراعة");
+            }, 700);
+        }
+
+        function handleRegionChange() {
+            const reg = document.getElementById('region-select').value;
+            const govSelect = document.getElementById('governorate-select');
+            const data = REGIONS_DATA[reg] || { governorates: {} };
+            const govNames = Object.keys(data.governorates);
+
+            govSelect.innerHTML = govNames.map(g => `<option value="${g}">${g}</option>`).join('');
+            handleGovernorateChange();
+        }
+
+        function handleGovernorateChange() {
+            const reg = document.getElementById('region-select').value;
+            const gov = document.getElementById('governorate-select').value;
+            const marketSelect = document.getElementById('market-select');
+            const data = REGIONS_DATA[reg] || { governorates: {} };
+            const markets = data.governorates[gov] || ["سوق النفع العام المركزي"];
+
+            marketSelect.innerHTML = markets.map(m => `<option value="${m}">${m}</option>`).join('');
+            updateBrokerCenters();
+        }
+
+        function updateBrokerCenters() {
+            const reg = document.getElementById('region-select').value;
+            const gov = document.getElementById('governorate-select').value;
+            const data = REGIONS_DATA[reg] || { brokers: [] };
+            const brokerSelect = document.getElementById('selected-broker-center');
+            const lbl = document.getElementById('center-region-lbl');
+
+            lbl.innerText = `${reg} - ${gov}`;
+
+            if (!data.brokers || data.brokers.length === 0) {
+                brokerSelect.innerHTML = `<option value="">لا توجد مراكز خدمة مسجلة حالياً في هذه المحافظة</option>`;
+                return;
+            }
+
+            brokerSelect.innerHTML = data.brokers.map((b, idx) => 
+                `<option value="${idx}">${b.name}</option>`
+            ).join('');
+        }
+
+        function toggleFulfillmentMode(mode) {
+            const centerBox = document.getElementById('service-center-container');
+            if (mode === 'broker') {
+                centerBox.classList.remove('hidden');
+                updateBrokerCenters();
+                if (window.lucide) lucide.createIcons();
+            } else {
+                centerBox.classList.add('hidden');
+            }
+        }
+
+        function getUnitsForCategory(category) {
+            return CATEGORY_UNITS[category] || ["كجم", "كرتون", "صندوق", "حبة", "كيس", "رأس"];
+        }
+
+        function onCategoryChange(selectElement) {
+            const row = selectElement.closest('.item-row');
+            const unitSelect = row.querySelector('.item-unit');
+            const selectedCat = selectElement.value;
+            const units = getUnitsForCategory(selectedCat);
+
+            unitSelect.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
+        }
+
+        function resetItemsList(defaultItem) {
+            const container = document.getElementById('items-list-container');
+            container.innerHTML = '';
+            addProductItemRow(defaultItem);
+        }
+
+        function addProductItemRow(customItem = null) {
+            const container = document.getElementById('items-list-container');
+            const cfg = APPLICANT_CONFIGS[currentType];
+            const item = customItem || cfg.defaultItem;
+            const div = document.createElement('div');
+            div.className = "item-row bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 relative";
+
+            // حقل المنتج: خانة نصية للمزرعة، أو قائمة منسدلة لمربي الماشية والمستورد
+            let productFieldHtml = '';
+            if (cfg.isFreeText) {
+                productFieldHtml = `
+                    <input type="text" placeholder="اكتب اسم المنتج أو المحصول الزراعي بحرية..." value="${item.name || ''}" class="item-name text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                `;
+            } else {
+                const options = (cfg.availableProducts || []).map(p => 
+                    `<option value="${p}" ${p === item.name ? 'selected' : ''}>${p}</option>`
+                ).join('');
+                productFieldHtml = `
+                    <select class="item-name text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                        ${options}
+                    </select>
+                `;
+            }
+
+            // قائمة التصنيف المصرح به
+            const categoryOptions = (cfg.categories || []).map(c => 
+                `<option value="${c}" ${c === item.cat ? 'selected' : ''}>${c}</option>`
+            ).join('');
+
+            // قائمة وحدة القياس المتوافقة مع التصنيف
+            const units = getUnitsForCategory(item.cat || cfg.categories[0]);
+            const unitOptions = units.map(u => 
+                `<option value="${u}" ${u === item.unit ? 'selected' : ''}>${u}</option>`
+            ).join('');
+
+            div.innerHTML = `
+                <button type="button" onclick="this.parentElement.remove()" class="absolute top-3 left-3 text-rose-500 hover:text-rose-700 text-xs font-bold flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-rose-200">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> حذف
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">المنتج *</label>
+                        ${productFieldHtml}
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">التصنيف المصرح به *</label>
+                        <select onchange="onCategoryChange(this)" class="item-cat text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                            ${categoryOptions}
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">الكمية / العدد المعروض *</label>
+                        <input type="number" step="any" min="0.01" value="${item.qty}" class="item-qty text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">وحدة القياس *</label>
+                        <select class="item-unit text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                            ${unitOptions}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">السعر المقترح (ر.س) *</label>
+                        <input type="number" step="any" min="0" value="${item.price}" class="item-price text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                    </div>
+                </div>
+
+                <!-- حقل صورة الصنف (اختياري) -->
+                <div class="pt-3 border-t border-slate-200/80">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                            <i data-lucide="camera" class="w-3.5 h-3.5 text-mewa-600"></i>
+                            <span>صورة الصنف</span>
+                            <span class="text-[10px] font-bold text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded-full">اختياري</span>
+                        </label>
+                        <span class="text-[10px] text-slate-400">يمكنك رفع صورة حقيقية للمنتج أو تركها لاستخدام الصورة الرسمية المعتمدة</span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <label class="flex-1 cursor-pointer group">
+                            <input type="file" accept="image/*" class="item-image-file hidden" onchange="handleItemImageUpload(this)">
+                            <input type="hidden" class="item-image-data" value="${item.image_url || ''}">
+                            <div class="border-2 border-dashed border-slate-300 group-hover:border-mewa-600 group-hover:bg-mewa-50/40 transition rounded-xl p-2.5 flex items-center gap-3 bg-white shadow-2xs">
+                                <div class="w-9 h-9 rounded-lg bg-mewa-50 border border-mewa-200 text-mewa-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+                                    <i data-lucide="image-plus" class="w-4.5 h-4.5"></i>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold text-xs text-slate-800 upload-status-text">انقر لرفع صورة من جهازك (اختياري)</div>
+                                    <div class="text-[10px] text-slate-400">يدعم صيغ JPG, PNG, WebP</div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- صندوق المعاينة اللحظي للصورة -->
+                        <div class="item-image-preview hidden shrink-0 flex items-center gap-2.5 bg-white p-2 rounded-xl border border-slate-200 shadow-xs">
+                            <img src="" alt="صورة الصنف" class="w-11 h-11 object-cover rounded-lg border border-slate-200 preview-img">
+                            <div class="text-right">
+                                <span class="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
+                                    <i data-lucide="check" class="w-3 h-3"></i> تم إرفاق الصورة
+                                </span>
+                                <button type="button" onclick="removeItemImage(this)" class="text-[10px] text-rose-600 hover:text-rose-800 font-bold hover:underline inline-flex items-center gap-0.5 mt-0.5">
+                                    <i data-lucide="trash-2" class="w-2.5 h-2.5"></i> حذف الصورة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            lucide.createIcons();
+        }
+
+        function handleItemImageUpload(input) {
+            const file = input.files && input.files[0];
+            const row = input.closest('.item-row');
+            const previewContainer = row.querySelector('.item-image-preview');
+            const previewImg = row.querySelector('.preview-img');
+            const statusText = row.querySelector('.upload-status-text');
+            const hiddenData = row.querySelector('.item-image-data');
+
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showToast("يرجى اختيار ملف صورة صالح (JPG, PNG, WebP)", true);
+                input.value = '';
+                return;
+            }
+
+            if (file.size > 8 * 1024 * 1024) {
+                showToast("حجم الصورة كبير، يرجى اختيار صورة أقل من 8 ميجابايت", true);
+                input.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Url = e.target.result;
+                previewImg.src = base64Url;
+                hiddenData.value = base64Url;
+                previewContainer.classList.remove('hidden');
+                statusText.innerText = file.name.length > 25 ? file.name.substring(0, 22) + '...' : file.name;
+                statusText.classList.add('text-mewa-700');
+                if (window.lucide) lucide.createIcons();
+                showToast(`تم إرفاق صورة للصنف: ${file.name}`);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeItemImage(btn) {
+            const row = btn.closest('.item-row');
+            const fileInput = row.querySelector('.item-image-file');
+            const hiddenData = row.querySelector('.item-image-data');
+            const previewContainer = row.querySelector('.item-image-preview');
+            const previewImg = row.querySelector('.preview-img');
+            const statusText = row.querySelector('.upload-status-text');
+
+            fileInput.value = '';
+            hiddenData.value = '';
+            previewImg.src = '';
+            previewContainer.classList.add('hidden');
+            statusText.innerText = "انقر لرفع صورة من جهازك (اختياري)";
+            statusText.classList.remove('text-mewa-700');
+            showToast("تمت إزالة صورة الصنف");
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const applicantType = document.querySelector('input[name="applicant_type"]:checked').value;
+            const docNumber = document.getElementById('doc-number-input').value;
+            const region = document.getElementById('region-select').value;
+            const governorate = document.getElementById('governorate-select').value;
+            const market = document.getElementById('market-select').value;
+
+            if (!market) {
+                showToast("يرجى اختيار سوق النفع العام المعتمد", true);
+                return;
+            }
+
+            const fulfillmentMode = document.querySelector('input[name="fulfillment_choice"]:checked').value;
+            const brokerSelect = document.getElementById('selected-broker-center');
+            const assignedBroker = fulfillmentMode === 'broker' ? (brokerSelect.options[brokerSelect.selectedIndex]?.text || "مركز خدمة معتمد") : null;
+            const entityName = document.getElementById('verified-entity-name').innerText;
+
+            const rows = document.querySelectorAll('#items-list-container .item-row');
+            const items = [];
+
+            const sampleImages = {
+                farm: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=500&auto=format&fit=crop&q=60",
+                breeder: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=500&auto=format&fit=crop&q=60",
+                importer: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=500&auto=format&fit=crop&q=60"
+            };
+
+            rows.forEach((row, idx) => {
+                const name = row.querySelector('.item-name').value;
+                const category = row.querySelector('.item-cat').value;
+                const qty = parseFloat(row.querySelector('.item-qty').value);
+                const unit = row.querySelector('.item-unit').value;
+                const price = parseFloat(row.querySelector('.item-price').value);
+                const customImage = row.querySelector('.item-image-data')?.value?.trim();
+
+                // إذا رفع المستخدم صورة خاصة يتم استخدامها فوراً، وإلا استخدام صورة نوعية مطابقة أو افتراضية
+                let finalImage = customImage;
+                if (!finalImage) {
+                    const lowerName = (name || '').toLowerCase();
+                    if (lowerName.includes('بطيخ') || lowerName.includes('حبحب')) {
+                        finalImage = 'static/images/products/watermelon_real.jpg';
+                    } else if (lowerName.includes('طماطم')) {
+                        finalImage = 'static/images/products/fresh_greenhouse_tomatoes.jpg';
+                    } else if (lowerName.includes('بطاطس')) {
+                        finalImage = 'static/images/products/fresh_saudi_potatoes.jpg';
+                    } else if (lowerName.includes('تمر') || lowerName.includes('سكري') || lowerName.includes('عجوة') || lowerName.includes('خلاص')) {
+                        finalImage = 'static/images/products/sukari_dates.jpg';
+                    } else if (lowerName.includes('رمان')) {
+                        finalImage = 'static/images/products/fresh_pomegranates.jpg';
+                    } else if (lowerName.includes('مانجو')) {
+                        finalImage = 'static/images/products/tropical_mango_tommy.jpg';
+                    } else if (lowerName.includes('برتقال')) {
+                        finalImage = 'static/images/products/fresh_sweet_oranges.jpg';
+                    } else if (lowerName.includes('عسل')) {
+                        finalImage = 'static/images/products/saudi_sidr_honey.jpg';
+                    } else if (lowerName.includes('خروف') || lowerName.includes('نعيمي') || lowerName.includes('حري') || lowerName.includes('غنم') || lowerName.includes('تيس')) {
+                        finalImage = 'static/images/products/saudi_harri_sheep.jpg';
+                    } else if (lowerName.includes('برسيم') || lowerName.includes('علف') || lowerName.includes('أعلاف')) {
+                        finalImage = 'static/images/products/alfalfa_hay_bale.jpg';
+                    } else {
+                        finalImage = sampleImages[applicantType] || sampleImages.farm;
+                    }
+                }
+
+                if (name && qty && price) {
+                    items.push({
+                        name: name,
+                        category: category,
+                        image_url: finalImage,
+                        requested_qty: qty,
+                        approved_qty: qty, // افتراضي
+                        unit: unit,
+                        unit_price: price,
+                        fulfillment_mode: fulfillmentMode,
+                        broker_name: assignedBroker
+                    });
+                }
+            });
+
+            if (items.length === 0) {
+                showToast("يرجى إدخال صنف واحد على الأقل", true);
+                return;
+            }
+
+            const newRecord = {
+                id: Date.now() % 100000,
+                merchant_name: `${entityName} (${region} - ${governorate} - ${market})`,
+                business_record: `${applicantType === 'farm' ? 'سجل زراعي / سعودي جاب' : (applicantType === 'breeder' ? 'بطاقة صحية' : 'إذن استيراد')}: ${docNumber}`,
+                region: region,
+                governorate: governorate,
+                market: market,
+                fulfillment_mode: fulfillmentMode,
+                broker_name: assignedBroker,
+                created_at: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                status: 'pending',
+                items: items.map((it, i) => ({
+                    id: Date.now() + i,
+                    ...it,
+                    approval_status: 'pending'
+                }))
+            };
+
+            // حفظ الطلب في التخزين المحلي
+            const stored = JSON.parse(localStorage.getItem('my_requests') || "[]");
+            stored.unshift(newRecord);
+            localStorage.setItem('my_requests', JSON.stringify(stored));
+
+            showToast("تم إرسال الطلب واعتماد المطابقة بنجاح! جاري الانتقال لمتابعة الطلب...");
+            setTimeout(() => {
+                window.location.href = "merchant_tracking.html";
+            }, 1500);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            handleRegionChange();
+            resetItemsList();
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+    <script src="static/js/nafath.js"></script>
+</body>
+</html>

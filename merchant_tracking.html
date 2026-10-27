@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متابعة الطلبات وقناة البيع | لوحة تحكم العمليات - نما</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mewa: {
+                            50: '#f0f9f4',
+                            100: '#dbf0e4',
+                            600: '#006837',
+                            700: '#00542c',
+                            800: '#034424',
+                            900: '#02381e',
+                        },
+                        naamaGold: {
+                            100: '#fcf8ec',
+                            400: '#e3b84c',
+                            500: '#c59b27',
+                            600: '#a7801a',
+                        }
+                    },
+                    fontFamily: {
+                        tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
+        .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
+        .naama-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px -2px rgba(0, 104, 55, 0.05);
+        }
+        .section-tag {
+            border-right: 4px solid #c59b27;
+            padding-right: 12px;
+        }
+    </style>
+    <script src="static/js/qrcode.min.js"></script>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- الشريط الذهبي العلوي -->
+    <div class="h-1.5 gold-line w-full"></div>
+
+    <!-- شريط الخدمات المصغر -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                <span class="font-bold text-slate-700">لوحة تحكم العمليات الموحدة | بوابة التاجر والمزارع ومركز الخدمة</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                    <i data-lucide="home" class="w-3.5 h-3.5"></i> الرئيسية
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="service_center_orders.html" class="text-purple-700 hover:underline font-bold flex items-center gap-1">
+                    <i data-lucide="package-check" class="w-3.5 h-3.5 text-purple-600"></i> استلام وتجهيز الطلبات الواردة
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="merchant_submit.html" class="text-mewa-700 hover:underline font-bold flex items-center gap-1">
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> تقديم طلب جديد
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ترويسة الصفحة الرسمية -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 w-auto object-contain">
+                    <div class="border-r-2 border-slate-200 pr-3">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-black text-mewa-800">متابعة الطلبات وقناة البيع</h1>
+                            <span class="bg-naamaGold-100 text-naamaGold-700 text-xs font-bold px-2 py-0.5 rounded">لوحة موحدة</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500">سجل طلبات التوريد والاعتمادات • استلام وتجهيز وشحن طلبات المستهلكين</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="merchant_submit.html" class="bg-mewa-600 hover:bg-mewa-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="plus" class="w-4 h-4 text-naamaGold-400"></i>
+                    <span>تقديم طلب إدراج جديد</span>
+                </a>
+                <button onclick="refreshActiveTab()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-2.5 rounded-xl border border-slate-200 flex items-center gap-1.5 transition">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-mewa-600"></i>
+                    <span>تحديث</span>
+                </button>
+                <div id="nafath-auth-container"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- شريط التبويبات الموحد (Unified Tabs Bar) -->
+    <div class="bg-gradient-to-l from-slate-900 via-mewa-900 to-slate-900 text-white shadow-md sticky top-20 z-30 border-b-2 border-naamaGold-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center justify-between py-2 gap-2">
+                
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <!-- تبويب 1: سجل طلبات التوريد الخاصة بك -->
+                    <button type="button" id="tab-btn-supply" onclick="switchMainTab('supply')" class="main-tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-white text-mewa-900 shadow-sm border border-white">
+                        <i data-lucide="clipboard-list" class="w-4 h-4 text-mewa-700"></i>
+                        <span>سجل طلبات التوريد الخاصة بك</span>
+                        <span id="supply-count-badge" class="bg-mewa-100 text-mewa-900 text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+                    </button>
+
+                    <!-- تبويب 2: استلام وتجهيز الطلبات -->
+                    <button type="button" id="tab-btn-fulfillment" onclick="switchMainTab('fulfillment')" class="main-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15">
+                        <i data-lucide="package-check" class="w-4 h-4 text-naamaGold-400"></i>
+                        <span>استلام وتجهيز الطلبات</span>
+                        <span id="fulfillment-badge" class="bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full">8 طلبات</span>
+                    </button>
+                </div>
+
+                <div class="text-[11px] text-slate-300 hidden md:flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>منظومة الرقابة وسلامة الغذاء - منصة نما</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- المحتوى الرئيسي: شاشة المتابعة وتعيين قناة البيع -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        <!-- حاوية تبويب 1: سجل طلبات التوريد الخاصة بك -->
+        <div id="tab-content-supply" class="space-y-6">
+
+        <!-- بنر توضيحي لحالات الاعتماد وقنوات البيع -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="flex items-start gap-3 bg-amber-50/60 p-3.5 rounded-xl border border-amber-200">
+                <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 font-bold">1</div>
+                <div>
+                    <h4 class="font-bold text-amber-900">بانتظار موافقة الإدارة</h4>
+                    <p class="text-slate-600 mt-0.5">يقوم مراقبو السوق بفحص العينات والكميات واشتراطات العبوات.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3 bg-emerald-50/60 p-3.5 rounded-xl border border-emerald-200">
+                <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 font-bold">2</div>
+                <div>
+                    <h4 class="font-bold text-emerald-950">الأصناف المعتمدة</h4>
+                    <p class="text-slate-600 mt-0.5">يتيح لك النظام اختيار البيع المباشر أو البيع عبر وسيط لوجستي لعرضها بالمتجر.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3 bg-rose-50/60 p-3.5 rounded-xl border border-rose-200">
+                <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center shrink-0 font-bold">3</div>
+                <div>
+                    <h4 class="font-bold text-rose-950">الأصناف المرفوضة</h4>
+                    <p class="text-slate-600 mt-0.5">يتم توضيح سبب الرفض الرقابي بدقة لتتمكن من تلافي الملاحظات.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- جدول وسجل الطلبات مع شريط البحث والفلترة -->
+        <div class="naama-card p-6 rounded-3xl space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
+                <div>
+                    <h3 class="text-base font-black text-slate-900 section-tag flex items-center gap-2">
+                        سجل طلبات التوريد الخاصة بك
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">جدول تفصيلي لمتابعة حالة كل دفعة وتحديد آلية البيع</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="confirmAndActivateAllApproved()" class="bg-[#006837] hover:bg-[#00542c] text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
+                        <i data-lucide="check-check" class="w-4 h-4 text-naamaGold-400"></i>
+                        <span>تأكيد وتفعيل في المتجر لكل الطلبات المقبولة</span>
+                    </button>
+                    <span id="requests-count-badge" class="text-xs bg-mewa-50 text-mewa-700 font-bold px-3 py-1 rounded-full border border-mewa-200">0 طلب</span>
+                </div>
+            </div>
+
+            <!-- شريط البحث السريع والفلترة -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
+                <div class="md:col-span-2 relative">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute top-3 right-3"></i>
+                    <input type="text" id="search-input" oninput="filterRequests()" placeholder="ابحث برقم الطلب، اسم المنتج، المنشأة، السوق، أو رقم السجل..." class="w-full pr-9 pl-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none">
+                </div>
+                <div>
+                    <select id="status-filter" onchange="filterRequests()" class="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-700">
+                        <option value="all">جميع الحالات الرقابية</option>
+                        <option value="pending">بانتظار مراجعة إدارة السوق</option>
+                        <option value="approved">معتمد</option>
+                        <option value="rejected">مرفوض</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- جدول الطلبات المتكامل -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm bg-white">
+                <table class="w-full text-right text-xs border-collapse">
+                    <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200">
+                        <tr>
+                            <th class="p-3.5 whitespace-nowrap">رقم الطلب وتاريخه</th>
+                            <th class="p-3.5 whitespace-nowrap">المنشأة والنطاق الجغرافي والسوق</th>
+                            <th class="p-3.5 whitespace-nowrap">المنتج والتصنيف</th>
+                            <th class="p-3.5 whitespace-nowrap">الكمية والسعر</th>
+                            <th class="p-3.5 whitespace-nowrap text-center">حالة الاعتماد</th>
+                            <th class="p-3.5 whitespace-nowrap text-center">آلية البيع والتوصيل</th>
+                        </tr>
+                    </thead>
+                    <tbody id="merchant-requests-table-body" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="6" class="p-10 text-center text-slate-400 font-medium">
+                                جاري تحميل سجل الطلبات...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- تنبيه عند عدم وجود نتائج للبحث -->
+            <div id="no-results-msg" class="hidden p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed font-medium">
+                لا توجد طلبات مطابقة لمعايير البحث الحالية
+            </div>
+        </div>
+
+
+        </div>
+        <!-- نهاية حاوية تبويب 1 -->
+
+        <!-- حاوية تبويب 2: استلام وتجهيز الطلبات -->
+        <div id="tab-content-fulfillment" class="hidden space-y-6">
+            <!-- بانر تشغيلي مع مؤشرات الأداء الحية (KPIs) -->
+    <section class="bg-gradient-to-r from-mewa-900 via-mewa-800 to-mewa-700 text-white py-6 border-b-2 border-naamaGold-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                
+                <div class="space-y-1.5">
+                    <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-0.5 rounded-full text-xs font-bold text-naamaGold-400 border border-white/15">
+                        <i data-lucide="package" class="w-3.5 h-3.5"></i>
+                        <span>إدارة عمليات البيع والتجهيز المبرد المعتمدة</span>
+                    </div>
+                    <h2 class="text-xl font-black text-white">لوحة تحكم استلام وتجهيز الطلبات بعد الدفع</h2>
+                    <p class="text-xs text-slate-200 max-w-2xl leading-relaxed">
+                        تتيح هذه الشاشة لمراكز الخدمة اللوجستية والمزارعين متابعة أوامر الشراء المدفوعة، بدء عمليات الفرز والوزن، وتعيين أسطول النقل المبرد المعتمد وتحديث حالة الشحنة لحظياً للمشتري.
+                    </p>
+                </div>
+
+                <!-- بطاقات إحصائية للمراحل التشغيلية -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs">
+                    <div class="bg-white/10 backdrop-blur p-2.5 rounded-xl border border-white/15 text-center">
+                        <p class="text-[10px] text-slate-300">جديدة مدفوعة</p>
+                        <p id="kpi-new" class="text-lg font-black text-amber-300 mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-2.5 rounded-xl border border-white/15 text-center">
+                        <p class="text-[10px] text-slate-300">قيد التجهيز المبرد</p>
+                        <p id="kpi-packaging" class="text-lg font-black text-blue-300 mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-2.5 rounded-xl border border-white/15 text-center">
+                        <p class="text-[10px] text-slate-300">مع أسطول النقل</p>
+                        <p id="kpi-shipping" class="text-lg font-black text-purple-300 mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-2.5 rounded-xl border border-white/15 text-center">
+                        <p class="text-[10px] text-slate-300">تم التسليم بنجاح</p>
+                        <p id="kpi-delivered" class="text-lg font-black text-emerald-300 mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-2.5 rounded-xl border border-white/15 text-center">
+                        <p class="text-[10px] text-slate-300">تعثر وتأجيل</p>
+                        <p id="kpi-delayed" class="text-lg font-black text-orange-300 mt-0.5">0</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur p-2.5 rounded-xl border border-white/15 text-center">
+                        <p class="text-[10px] text-slate-300">شكاوى واعتراضات</p>
+                        <p id="kpi-disputed" class="text-lg font-black text-rose-300 mt-0.5">0</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- المحتوى الرئيسي للطلبات -->
+    <div class="space-y-6 pt-6">
+
+        <!-- شريط الفلترة والبحث المتقدم المطور (بدون أي سكرول أفقي نهائياً) -->
+        <div class="naama-card p-5 rounded-3xl space-y-4 shadow-sm bg-white border border-slate-200">
+            
+            <!-- السطر الأول: البحث السريع + فلتر الكيان المسؤول + عداد النتائج -->
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
+                
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+                    <!-- حقل البحث السريع -->
+                    <div class="relative flex-1 sm:max-w-md">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="fulfillment-search-input" oninput="handleSearch(this.value)" placeholder="ابحث برقم الطلب، اسم العميل، الهاتف، الصنف، السائق..." class="w-full text-xs pr-10 pl-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-mewa-600 focus:border-mewa-600 focus:outline-none transition font-medium">
+                    </div>
+
+                    <!-- اختيار الكيان أو مركز الخدمة -->
+                    <div class="relative sm:w-80 shrink-0">
+                        <select id="role-selector" onchange="filterByRole(this.value)" class="w-full text-xs font-bold px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 focus:ring-2 focus:ring-purple-600 focus:outline-none shadow-2xs">
+                            <option value="all">جميع الكيانات ومراكز الخدمة المعتمدة</option>
+                            <option value="broker:شركة إمداد النفع اللوجستية (وسيط أ)">مركز خدمة: شركة إمداد النفع اللوجستية</option>
+                            <option value="broker:مؤسسة الحصاد الأخضر للتوزيع (وسيط ب)">مركز خدمة: مؤسسة الحصاد الأخضر للتوزيع</option>
+                            <option value="broker:شركة طازج للخدمات الزراعية (وسيط ج)">مركز خدمة: شركة طازج للخدمات الزراعية</option>
+                            <option value="merchant:مزرعة واحة الخير">بائع مباشر: مزرعة واحة الخير</option>
+                            <option value="merchant:مزارع نخيل بريدة">بائع مباشر: مزارع نخيل بريدة</option>
+                            <option value="merchant:مزارع وادي الدواسر">بائع مباشر: مزارع وادي الدواسر</option>
+                            <option value="merchant:بساتين الهدا">بائع مباشر: بساتين الهدا الطائفية</option>
+                            <option value="merchant:شركة مراعي الحجاز">بائع مباشر: شركة مراعي الحجاز للمواشي</option>
+                            <option value="merchant:مناحل جبال السروات">بائع مباشر: مناحل جبال السروات (عسير)</option>
+                            <option value="merchant:مزارع جازان الاستوائية">بائع مباشر: مزارع جازان الاستوائية</option>
+                            <option value="merchant:مزارع حائل">بائع مباشر: مزارع حائل للأعلاف</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- عداد النتائج المعروضة -->
+                <div class="flex items-center justify-between sm:justify-end gap-2 text-xs font-bold text-slate-600 shrink-0">
+                    <span class="text-slate-400 font-medium">إجمالي النتائج:</span>
+                    <span id="filtered-orders-counter" class="bg-purple-50 text-purple-900 border border-purple-200 px-3 py-1 rounded-xl text-xs font-black">8 طلبات</span>
+                </div>
+
+            </div>
+
+            <!-- السطر الثاني: تبويبات الحالات التشغيلية (Wrap طبيعي وأنيق بدون سكرول نهائياً) -->
+            <div class="flex flex-wrap items-center gap-2" id="status-tabs">
+                <button onclick="setStatusTab('all')" data-tab="all" class="tab-btn active bg-mewa-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                    <span>جميع الطلبات</span>
+                    <span id="tab-cnt-all" class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusTab('new')" data-tab="new" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-600"></i>
+                    <span>جديدة مدفوعة</span>
+                    <span id="tab-cnt-new" class="bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusTab('packaging')" data-tab="packaging" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="box" class="w-3.5 h-3.5 text-blue-600"></i>
+                    <span>قيد التجهيز المبرد</span>
+                    <span id="tab-cnt-packaging" class="bg-blue-100 text-blue-900 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusTab('shipping')" data-tab="shipping" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="truck" class="w-3.5 h-3.5 text-purple-600"></i>
+                    <span>خرج للتوصيل</span>
+                    <span id="tab-cnt-shipping" class="bg-purple-100 text-purple-900 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusTab('delivered')" data-tab="delivered" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="check-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                    <span>تم التسليم بنجاح</span>
+                    <span id="tab-cnt-delivered" class="bg-emerald-100 text-emerald-900 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusTab('delayed')" data-tab="delayed" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-orange-600"></i>
+                    <span>تعثر وتأجيل</span>
+                    <span id="tab-cnt-delayed" class="bg-orange-100 text-orange-900 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusTab('disputed')" data-tab="disputed" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
+                    <span>شكاوى واعتراضات</span>
+                    <span id="tab-cnt-disputed" class="bg-rose-100 text-rose-900 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setStatusTab('cancelled')" data-tab="cancelled" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="x-circle" class="w-3.5 h-3.5 text-slate-500"></i>
+                    <span>ملغي ومسترد</span>
+                    <span id="tab-cnt-cancelled" class="bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- قائمة كروت الطلبات الواردة -->
+        <div id="orders-list-container" class="space-y-4">
+            <!-- سيتم توليد بطاقات الطلبات ديناميكياً بواسطة JavaScript -->
+        </div>
+        </div>
+        <!-- نهاية المحتوى الرئيسي للطلبات -->
+
+        </div>
+        <!-- نهاية حاوية تبويب 2 -->
+    </main>
+
+
+
+
+<!-- نافذة تعيين مندوب وأسطول التوصيل المبرد (Dispatch Modal) -->
+    <div id="dispatch-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            
+            <button onclick="closeDispatchModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="p-6 sm:p-7 space-y-5">
+                
+                <!-- رأس النافذة -->
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                    <div class="w-11 h-11 bg-purple-50 text-purple-700 rounded-xl flex items-center justify-center shrink-0 border border-purple-200">
+                        <i data-lucide="truck" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-slate-900">إرسال الشحنة مع أسطول النقل المبرد</h3>
+                        <p class="text-xs text-slate-500">للطلب رقم: <span id="disp-order-id" class="font-mono font-bold text-slate-800">ORD-2026-XXXX</span></p>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200 text-[11px] text-emerald-900 leading-relaxed flex items-center gap-2">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-700 shrink-0"></i>
+                    <span>يتم توثيق درجة حرارة صندوق التبريد واعتماد السائق لتأكيد الالتزام بمعايير هيئة الغذاء والنقل المعتمدة.</span>
+                </div>
+
+                <!-- اسم السائق -->
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">اسم مندوب التوصيل المعتمد:</label>
+                    <div class="grid grid-cols-3 gap-2 mb-2">
+                        <button type="button" onclick="selectQuickDriver('فهد الدوسري (أسطول الرياض 1)', '0559812345', 'أ ب ج 1420')" class="p-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 text-[10px] font-bold text-slate-700 text-center">فهد الدوسري</button>
+                        <button type="button" onclick="selectQuickDriver('أحمد الغامدي (أسطول مكة 2)', '0551122334', 'د هـ و 5566')" class="p-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 text-[10px] font-bold text-slate-700 text-center">أحمد الغامدي</button>
+                        <button type="button" onclick="selectQuickDriver('خالد الشمري (أسطول القصيم 3)', '0557788990', 'س ص ع 9988')" class="p-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 text-[10px] font-bold text-slate-700 text-center">خالد الشمري</button>
+                    </div>
+                    <input type="text" id="disp-driver-name" placeholder="اسم السائق أو مندوب النقل" class="w-full p-2.5 rounded-xl border border-slate-200 focus:bg-white focus:border-mewa-600 focus:outline-none transition">
+                </div>
+
+                <!-- رقم جوال السائق -->
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">رقم جوال السائق للتواصل:</label>
+                    <input type="text" id="disp-driver-phone" placeholder="05XXXXXXXX" class="w-full p-2.5 rounded-xl border border-slate-200 font-mono text-left focus:bg-white focus:border-mewa-600 focus:outline-none transition">
+                </div>
+
+                <!-- رقم اللوحة ودرجة التبريد -->
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="space-y-1.5">
+                        <label class="block font-bold text-slate-700">رقم لوحة مركبة التبريد:</label>
+                        <input type="text" id="disp-truck-plate" placeholder="مثال: أ ب ج 1420" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold focus:bg-white focus:border-mewa-600 focus:outline-none transition">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="block font-bold text-slate-700">درجة حرارة الصندوق:</label>
+                        <select id="disp-temperature" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold bg-slate-50 focus:bg-white focus:outline-none focus:border-mewa-600">
+                            <option value="4°C مئوية (خضار وفواكه)">4°C مئوية (خضار وفواكه)</option>
+                            <option value="2°C مئوية (تبريد فائق)">2°C مئوية (تبريد فائق)</option>
+                            <option value="-18°C (تجميد مواشي ولحوم)">-18°C (تجميد مواشي)</option>
+                            <option value="18°C (تمور وعسل)">18°C (تمور وعسل)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ملاحظات إضافية -->
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">ملاحظات تسليم خاصة للسائق:</label>
+                    <textarea id="disp-notes" rows="2" placeholder="مثال: يرجى الاتصال قبل الوصول بـ 15 دقيقة، التسليم عند البوابة الرئيسية..." class="w-full p-2.5 rounded-xl border border-slate-200 focus:bg-white focus:border-mewa-600 focus:outline-none transition"></textarea>
+                </div>
+
+                <!-- أزرار الإجراء -->
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeDispatchModal()" class="text-xs text-slate-600 hover:text-slate-800 font-bold px-4 py-2 rounded-xl transition">إلغاء</button>
+                    <button type="button" onclick="confirmDispatch()" class="bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>تأكيد انطلاق الشحنة للتوصيل</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- نافذة بوليصة التجهيز والشحن المبرد (Packing Waybill Modal) -->
+    <div id="waybill-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            
+            <button onclick="closeWaybillModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition no-print">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- محتوى البوليصة القابل للطباعة -->
+            <div id="printable-waybill" class="p-6 sm:p-8 space-y-6">
+                
+                <!-- رأس البوليصة الرسمي -->
+                <div class="flex items-center justify-between border-b-2 border-mewa-700 pb-4">
+                    <div class="flex items-center gap-3">
+                        <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-16 w-auto object-contain">
+                        <div>
+                            <h2 class="text-sm font-black text-mewa-800">وزارة البيئة والمياه والزراعة</h2>
+                            <p class="text-[11px] text-slate-500 font-semibold">منصة أسواق النفع العام الوطنية - بوليصة التجهيز المبرد</p>
+                        </div>
+                    </div>
+                    <div class="text-left space-y-1">
+                        <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded border border-purple-300">بوليصة تسليم رسمية</span>
+                        <p class="text-xs font-mono font-black text-slate-800" id="wb-order-id">ORD-2026-XXXX</p>
+                    </div>
+                </div>
+
+                <div class="text-center space-y-0.5">
+                    <h3 class="text-lg font-black text-slate-900">أمر تجهيز وتسليم شحنة زراعية مبردة</h3>
+                    <p class="text-xs text-slate-500" id="wb-date">--</p>
+                </div>
+
+                <!-- تفاصيل العميل ومركز الخدمة -->
+                <div class="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">العميل المستلم:</span>
+                        <span id="wb-cust-name" class="font-bold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">رقم جوال المستلم:</span>
+                        <span id="wb-cust-phone" class="font-mono font-bold text-slate-800" dir="ltr">--</span>
+                    </div>
+                    <div class="col-span-2">
+                        <span class="text-slate-400 text-[11px] block">عنوان التوصيل المعتمد:</span>
+                        <span id="wb-cust-addr" class="font-bold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">مندوب النقل المعتمد:</span>
+                        <span id="wb-driver-name" class="font-bold text-purple-900">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[11px] block">مركبة التبريد ودرجة الحرارة:</span>
+                        <span id="wb-truck-info" class="font-bold text-emerald-800">--</span>
+                    </div>
+                </div>
+
+                <!-- جدول المحاصيل المطلوب تجهيزها -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-slate-100 text-slate-600 font-bold">
+                            <tr>
+                                <th class="p-2.5">المحصول الزراعي</th>
+                                <th class="p-2.5">المزرعة الموردة</th>
+                                <th class="p-2.5 text-center">الكمية المطلوبة</th>
+                                <th class="p-2.5 text-center">حالة الفحص والوزن</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wb-items-table" class="divide-y divide-slate-100">
+                            <!-- بنود البوليصة -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- باركود البوليصة والمطابقة -->
+                <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div id="wb-qrcode-container" class="w-[84px] h-[84px] bg-white p-1 rounded-xl border border-slate-300 flex items-center justify-center"></div>
+                        <div class="space-y-0.5 text-xs">
+                            <p class="font-bold text-slate-800">رمز مطابقة الشحنة الرقمي (Supply Chain QR)</p>
+                            <p class="text-[11px] text-slate-500">يمسح بواسطة السائق عند باب المستلم لتوثيق التسليم الفوري.</p>
+                            <span class="inline-block text-[10px] font-mono text-emerald-700 font-bold" id="wb-qr-code-text">ORD-2026-XXXX</span>
+                        </div>
+                    </div>
+                    <div class="text-left text-xs font-mono space-y-1">
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">فحص جودة معتمد</span>
+                        <p class="text-slate-400 text-[10px]">ختم مركز الخدمة المعتمد</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- أزرار الإجراءات داخل النافذة -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3 no-print rounded-b-3xl">
+                <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>طباعة البوليصة</span>
+                </button>
+                <button onclick="closeWaybillModal()" class="bg-mewa-600 hover:bg-mewa-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    <span>إغلاق</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد تسليم الشحنة للعميل (Confirm Delivery Modal) -->
+    <div id="confirm-delivery-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            <button onclick="closeConfirmDeliveryModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="p-6 space-y-4">
+                <div class="text-center space-y-1">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto border border-emerald-200">
+                        <i data-lucide="check-circle-2" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-base font-black text-slate-900">تأكيد تسليم الشحنة للمستلم</h3>
+                    <p class="text-xs text-slate-500 font-mono" id="confirm-del-order-id">ORD-2026-XXXX</p>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1 text-slate-700">
+                    <p><strong>المستلم:</strong> <span id="confirm-del-cust-name">--</span></p>
+                    <p><strong>العنوان:</strong> <span id="confirm-del-cust-addr">--</span></p>
+                </div>
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">ملاحظات مندوب التسليم / توثيق الاستلام:</label>
+                    <input type="text" id="confirm-del-note" placeholder="تم التسليم باليد وبحالة ممتازة ومطابقة للأوزان" class="w-full p-2.5 rounded-xl border border-slate-200 focus:bg-white focus:border-mewa-600 focus:outline-none transition">
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeConfirmDeliveryModal()" class="text-xs text-slate-600 hover:text-slate-800 font-bold px-4 py-2 rounded-xl transition">إلغاء</button>
+                    <button type="button" onclick="executeDeliveryConfirmation()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                        <span>اعتماد التسليم بنجاح</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل تعثر / إعادة جدولة التوصيل (Delay Modal) -->
+    <div id="delay-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            <button onclick="closeDelayModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                    <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center shrink-0 border border-orange-200">
+                        <i data-lucide="clock-alert" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900">تسجيل تعثر أو إعادة جدولة الشحنة</h3>
+                        <p class="text-[11px] text-slate-500 font-mono" id="delay-order-id">ORD-2026-XXXX</p>
+                    </div>
+                </div>
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">سبب التعثر / التأجيل:</label>
+                    <select id="delay-reason-select" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold bg-slate-50 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="تعذر الاتصال بالعميل وقت الوصول">تعذر الاتصال بالعميل وقت الوصول</option>
+                        <option value="طلب العميل تأجيل موعد التسليم لساعة أخرى">طلب العميل تأجيل موعد التسليم لساعة أخرى</option>
+                        <option value="العنوان الجغرافي غير مكتمل ويحتاج لتحديث">العنوان الجغرافي غير مكتمل ويحتاج لتحديث</option>
+                        <option value="العميل غير متواجد بالموقع حالياً">العميل غير متواجد بالموقع حالياً</option>
+                        <option value="ازدحام مروري / صيانة في مسار الطريق">ازدحام مروري / صيانة في مسار الطريق</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">الموعد الجديد المقترح لإعادة التوصيل:</label>
+                    <select id="delay-reschedule-time" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold bg-slate-50 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="اليوم خلال الفترة المسائية (4:00 - 8:00 م)">اليوم خلال الفترة المسائية (4:00 - 8:00 م)</option>
+                        <option value="غداً صباحاً مع أول شحنة مبردة (8:00 - 11:00 ص)">غداً صباحاً مع أول شحنة مبردة (8:00 - 11:00 ص)</option>
+                        <option value="بانتظار تأكيد العميل عبر الواتساب">بانتظار تأكيد العميل عبر الواتساب</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeDelayModal()" class="text-xs text-slate-600 hover:text-slate-800 font-bold px-4 py-2 rounded-xl transition">إلغاء</button>
+                    <button type="button" onclick="executeDelaySubmission()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        <span>تأكيد إعادة الجدولة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة معالجة الشكاوى والاعتراضات (Dispute Resolution Modal) -->
+    <div id="dispute-resolution-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            <button onclick="closeDisputeResolutionModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                    <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center shrink-0 border border-rose-200">
+                        <i data-lucide="scale" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900">معالجة اعتراض العميل والرد على رقابة الوزارة</h3>
+                        <p class="text-[11px] text-slate-500 font-mono" id="disp-res-order-id">ORD-2026-XXXX</p>
+                    </div>
+                </div>
+                <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 text-xs space-y-1">
+                    <p class="font-bold text-rose-900">تذكرة البلاغ: <span id="disp-res-ticket" class="font-mono">TKT-2026-XXXX</span></p>
+                    <p class="text-slate-700"><strong>سبب الشكوى:</strong> <span id="disp-res-reason">--</span></p>
+                    <p class="text-slate-600 text-[11px] italic" id="disp-res-details">"--"</p>
+                </div>
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">الإجراء المتخذ من مركز الخدمة / المزرعة:</label>
+                    <select id="disp-res-action" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold bg-slate-50 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="اعتماد تعويض فوري للعميل بقيمة المحصول">اعتماد تعويض فوري للعميل بقيمة المحصول</option>
+                        <option value="إرسال شحنة بديلة طازجة مجاناً عبر أسطول النقل المبرد">إرسال شحنة بديلة طازجة مجاناً عبر أسطول النقل المبرد</option>
+                        <option value="تقديم إفادة فنية مع إرفاق شهادة معايرة الميزان المعتمدة">تقديم إفادة فنية مع إرفاق شهادة معايرة الميزان المعتمدة</option>
+                        <option value="تم التواصل ودياً مع العميل وحل الإشكال">تم التواصل ودياً مع العميل وحل الإشكال</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5 text-xs">
+                    <label class="block font-bold text-slate-700">رد المنشأة الموجه لمفتش الرقابة والمستهلك:</label>
+                    <textarea id="disp-res-reply" rows="2.5" placeholder="اكتب رد المنشأة الفني أو تفاصيل التسوية المعتمدة..." class="w-full p-2.5 rounded-xl border border-slate-200 focus:bg-white focus:border-mewa-600 focus:outline-none transition"></textarea>
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeDisputeResolutionModal()" class="text-xs text-slate-600 hover:text-slate-800 font-bold px-4 py-2 rounded-xl transition">إلغاء</button>
+                    <button type="button" onclick="executeDisputeResolution()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>إرسال الرد واعتماد التسوية</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- التذييل الرسمي الموحد -->
+    <footer class="bg-slate-900 text-slate-400 text-xs border-t-2 border-naamaGold-500 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-9 w-auto bg-white/95 p-1 rounded">
+                <span class="text-slate-300 font-bold">وزارة البيئة والمياه والزراعة - منصة نما © 2026</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 text-slate-400">
+                <a href="index.html" class="hover:text-white transition">الرئيسية</a>
+                <span>•</span>
+                <a href="merchant_submit.html" class="hover:text-white transition">تقديم طلب إدراج</a>
+                <span>•</span>
+                <a href="merchant_tracking.html" class="hover:text-white transition font-bold text-slate-300">متابعة الطلبات وقناة البيع</a>
+                <span>•</span>
+                <a href="store.html" class="hover:text-white transition">متجر أسواق النفع العام</a>
+                <span>•</span>
+                <a href="my_orders.html" class="hover:text-white transition">مشترياتي وفواتيري</a>
+                <span>•</span>
+                <a href="review_requests.html" class="hover:text-white transition">شاشة الرقابة</a>
+            </div>
+            <p class="text-slate-500 text-[11px]">منصة أسواق النفع العام - كافة الحقوق محفوظة</p>
+        </div>
+    </footer>
+    <!-- نافذة تفاصيل الطلب والصنف المعتمدة -->
+    <div id="request-details-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden my-8 animate-in fade-in zoom-in duration-200">
+            <!-- الهيدر -->
+            <div class="bg-gradient-to-l from-mewa-900 via-mewa-800 to-mewa-900 text-white p-5 flex items-center justify-between border-b-2 border-naamaGold-500">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-naamaGold-400 shrink-0">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-white" id="modal-req-title">تفاصيل طلب التوريد #00000</h3>
+                        <p class="text-[11px] text-slate-300">منظومة الرقابة وسلامة الغذاء - منصة أسواق النفع العام</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeRequestDetailsModal()" class="text-white/80 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- محتوى المودال -->
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto" id="modal-req-content">
+                <!-- يعبأ ديناميكياً -->
+            </div>
+
+            <!-- الفوتر -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                <div class="text-[11px] text-slate-500 font-medium flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-mewa-600"></i>
+                    بيانات موثقة إلكترونياً بسجلات وزارة البيئة والمياه والزراعة
+                </div>
+                <button type="button" onclick="closeRequestDetailsModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-5 py-2 rounded-xl transition">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+        <div id="toast-inner" class="bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500">
+            <span id="toast-msg">تمت العملية بنجاح</span>
+        </div>
+    </div>
+
+    <script>
+        let brokersList = [];
+
+        const DEFAULT_REQUESTS = [
+            {
+                id: 42873,
+                merchant_name: "مزرعة واحة الخرج العضوية (سليمان العبدالله) (الرياض - الخرج - سوق الخرج المركزي للخضار والفواكه)",
+                business_record: "سجل زراعي: AGRI-2026-98124",
+                market: "سوق الخرج المركزي للخضار والفواكه",
+                region: "الرياض",
+                governorate: "الخرج",
+                created_at: "2026-10-27 05:32",
+                status: "reviewed",
+                items: [
+                    {
+                        id: 428731,
+                        name: "طماطم بلدي محمي ممتاز",
+                        category: "خضروات طازجة",
+                        image_url: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 1000,
+                        approved_qty: 1000,
+                        unit: "كجم",
+                        unit_price: 4.5,
+                        approval_status: "approved",
+                        rejection_reason: "",
+                        fulfillment_mode: "broker",
+                        broker_name: "شركة إمداد النفع اللوجستية (وسيط أ)",
+                        assigned_broker_id: 1,
+                        store_active: false
+                    },
+                    {
+                        id: 428732,
+                        name: "بطيخ",
+                        category: "فواكه موسمية",
+                        image_url: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 1000,
+                        approved_qty: 1000,
+                        unit: "كرتون",
+                        unit_price: 4.5,
+                        approval_status: "approved",
+                        rejection_reason: "",
+                        fulfillment_mode: "broker",
+                        broker_name: "شركة إمداد النفع اللوجستية (وسيط أ)",
+                        assigned_broker_id: 1,
+                        store_active: false
+                    }
+                ]
+            },
+            {
+                id: 101,
+                merchant_name: "مزرعة واحة الخير (أبو فهد)",
+                business_record: "سجل زراعي / سعودي جاب: AGRI-2026-98124",
+                market: "سوق الخرج المركزي للخضار والفواكه",
+                region: "الرياض",
+                governorate: "الخرج",
+                created_at: "2026-10-26 12:30",
+                status: "reviewed",
+                items: [
+                    {
+                        id: 1011,
+                        name: "خيار حساوي درجة أولى",
+                        category: "خضروات",
+                        image_url: "https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 500,
+                        approved_qty: 0,
+                        unit: "كجم",
+                        unit_price: 3.0,
+                        approval_status: "rejected",
+                        rejection_reason: "مخالفة اشتراطات السوق والعبوات المعتمدة",
+                        fulfillment_mode: "pending_selection",
+                        broker_name: null
+                    },
+                    {
+                        id: 1012,
+                        name: "تمر عجوة المدينة الفاخر",
+                        category: "تمور",
+                        image_url: "https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=500&auto=format&fit=crop&q=60",
+                        requested_qty: 200,
+                        approved_qty: 200,
+                        unit: "صندوق (3 كجم)",
+                        unit_price: 65.0,
+                        approval_status: "approved",
+                        rejection_reason: "",
+                        fulfillment_mode: "direct",
+                        broker_name: null,
+                        store_active: false
+                    }
+                ]
+            }
+        ];
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const inner = document.getElementById('toast-inner');
+            const msg = document.getElementById('toast-msg');
+            msg.innerText = message;
+            if (isError) {
+                inner.className = "bg-rose-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-rose-500";
+            } else {
+                inner.className = "bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500";
+            }
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        async function fetchBrokers() {
+            try {
+                const res = await fetch('/api/brokers');
+                brokersList = await res.json();
+            } catch (e) {
+                brokersList = [
+                    { id: 1, name: "شركة إمداد النفع اللوجستية (وسيط أ)", rate_percentage: 10.0 },
+                    { id: 2, name: "مؤسسة الحصاد الأخضر للتوزيع (وسيط ب)", rate_percentage: 8.5 },
+                    { id: 3, name: "شركة طازج للخدمات الزراعية (وسيط ج)", rate_percentage: 12.0 }
+                ];
+            }
+        }
+
+        let allRequests = [];
+
+        async function loadMyRequests() {
+            const tableBody = document.getElementById('merchant-requests-table-body');
+            const badge = document.getElementById('requests-count-badge');
+
+            // دمج وتفضيل بيانات التخزين المحلي والطلبات النموذجية لضمان التزامن الفوري
+            const localData = JSON.parse(localStorage.getItem('my_requests') || "[]");
+            let requests = [];
+
+            if (localData && localData.length > 0) {
+                const existingIds = new Set(localData.map(r => r.id));
+                const missingDefaults = DEFAULT_REQUESTS.filter(d => !existingIds.has(d.id));
+                requests = [...localData, ...missingDefaults];
+            } else {
+                try {
+                    const res = await fetch('/api/merchant/my-requests');
+                    const apiData = await res.json();
+                    if (apiData && apiData.length > 0) {
+                        const existingIds = new Set(apiData.map(r => r.id));
+                        const missingDefaults = DEFAULT_REQUESTS.filter(d => !existingIds.has(d.id));
+                        requests = [...missingDefaults, ...apiData];
+                    } else {
+                        requests = DEFAULT_REQUESTS;
+                    }
+                } catch (e) {
+                    requests = DEFAULT_REQUESTS;
+                }
+            }
+
+            allRequests = requests;
+            badge.innerText = `${allRequests.length} طلب`;
+            const supplyBadge = document.getElementById('supply-count-badge'); if (supplyBadge) supplyBadge.innerText = allRequests.length;
+            renderRequestsTable(allRequests);
+        }
+
+        function filterRequests() {
+            const searchTerm = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
+            const statusFilter = document.getElementById('status-filter')?.value || 'all';
+
+            const filtered = allRequests.filter(req => {
+                // فلترة الحالة
+                const matchesStatus = statusFilter === 'all' || req.items.some(it => it.approval_status === statusFilter) || (req.status === statusFilter);
+
+                if (!matchesStatus) return false;
+
+                // فلترة نص البحث
+                if (!searchTerm) return true;
+
+                const searchInText = `
+                    ${req.id} 
+                    ${req.merchant_name || ''} 
+                    ${req.business_record || ''} 
+                    ${req.region || ''} 
+                    ${req.governorate || ''} 
+                    ${req.market || ''}
+                    ${req.items.map(i => i.name + ' ' + i.category).join(' ')}
+                `.toLowerCase();
+
+                return searchInText.includes(searchTerm);
+            });
+
+            renderRequestsTable(filtered);
+        }
+
+        function renderRequestsTable(requests) {
+            const tableBody = document.getElementById('merchant-requests-table-body');
+            const noResults = document.getElementById('no-results-msg');
+
+            if (!requests || requests.length === 0) {
+                tableBody.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+
+            let rowsHtml = '';
+
+            requests.forEach(req => {
+                req.items.forEach((item, itemIdx) => {
+                    let statusBadge = '';
+                    let actionHtml = '';
+
+                    if (item.approval_status === 'pending') {
+                        statusBadge = '<span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-300 text-[11px] px-2.5 py-1 rounded-full font-bold"><i data-lucide="clock" class="w-3 h-3"></i> بانتظار مراجعة إدارة السوق</span>';
+                        actionHtml = '<span class="text-slate-400 text-[11px] font-semibold">متاح بعد الاعتماد</span>';
+                    } else if (item.approval_status === 'rejected') {
+                        statusBadge = `<span class="inline-flex items-center gap-1 bg-rose-50 text-rose-800 border border-rose-300 text-[11px] px-2.5 py-1 rounded-full font-bold"><i data-lucide="x-circle" class="w-3 h-3"></i> مرفوض</span>`;
+                        actionHtml = `<span class="text-rose-700 text-[11px] font-bold block max-w-[200px] leading-tight">${item.rejection_reason || 'مخالفة اشتراطات السوق'}</span>`;
+                    } else if (item.approval_status === 'approved') {
+                        statusBadge = `<span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] px-3 py-1.5 rounded-full font-bold"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> معتمد (${item.approved_qty || item.requested_qty} ${item.unit})</span>`;
+
+                        const isDirect = item.fulfillment_mode === 'direct';
+                        const brokerName = item.broker_name || 'شركة إمداد النفع اللوجستية (وسيط أ)';
+
+                        // لا يمكن التعديل على آلية البيع والتوصيل بعد الاعتماد (حقول disabled غير قابلة للتعديل)
+                        actionHtml = `
+                            <div class="space-y-2 min-w-[210px] max-w-[240px] mx-auto">
+                                <select disabled title="آلية البيع والتوصيل معتمدة رسمياً ولا يمكن تعديلها بعد الاعتماد" class="w-full text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-800 cursor-not-allowed opacity-90 shadow-sm">
+                                    <option value="direct" ${isDirect ? 'selected' : ''}>البيع المباشر من المزرعة</option>
+                                    <option value="broker" ${!isDirect ? 'selected' : ''}>عبر مركز خدمة (وسيط)</option>
+                                </select>
+
+                                ${!isDirect ? `
+                                    <select disabled title="الوسيط اللوجستي معتمد ولا يمكن تعديله بعد الاعتماد" class="w-full text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-800 cursor-not-allowed opacity-90 shadow-sm">
+                                        <option selected>${brokerName}</option>
+                                    </select>
+                                ` : ''}
+
+                                <button type="button" onclick="confirmAndActivateItem(${req.id}, ${item.id})" class="w-full bg-[#006837] hover:bg-[#00542c] text-white text-xs font-black py-2 px-3 rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95">
+                                    <i data-lucide="check" class="w-4 h-4 text-naamaGold-400"></i>
+                                    <span>${item.store_active ? 'تأكيد وتفعيل في المتجر ✔' : 'تأكيد وتفعيل في المتجر'}</span>
+                                </button>
+                            </div>
+                        `;
+                    }
+
+                    rowsHtml += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <!-- رقم وتاريخ الطلب -->
+                            <td class="p-3.5 align-top whitespace-nowrap">
+                                <button type="button" onclick="openRequestDetails(${req.id}, ${item.id})" class="font-black text-mewa-700 hover:text-mewa-900 text-xs hover:underline block text-right group flex items-center gap-1">
+                                    <span>#${req.id}</span>
+                                    <i data-lucide="external-link" class="w-3 h-3 text-slate-400 group-hover:text-mewa-600 transition"></i>
+                                </button>
+                                <div class="text-[10px] text-slate-400 mt-0.5">${req.created_at || '2026-10-27'}</div>
+                            </td>
+
+                            <!-- المنشأة والنطاق الجغرافي والسوق -->
+                            <td class="p-3.5 align-top">
+                                <div class="font-bold text-slate-900 text-xs leading-relaxed">${req.merchant_name || 'المنشأة'}</div>
+                                <div class="text-[10px] text-slate-500 mt-1 flex flex-wrap gap-1">
+                                    ${req.business_record ? `<span class="bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 font-semibold">${req.business_record}</span>` : ''}
+                                    ${req.market ? `<span class="bg-mewa-50 text-mewa-800 px-1.5 py-0.5 rounded border border-mewa-200 font-bold">${req.market}</span>` : ''}
+                                </div>
+                            </td>
+
+                            <!-- المنتج والتصنيف (بدون صورة في الجدول) -->
+                            <td class="p-3.5 align-top">
+                                <div class="font-bold text-slate-800 text-xs">${item.name}</div>
+                                <div class="text-[11px] text-slate-500 mt-0.5">
+                                    التصنيف: <b class="text-slate-700">${item.category}</b>
+                                </div>
+                                <button type="button" onclick="openRequestDetails(${req.id}, ${item.id})" class="inline-flex items-center gap-1 text-[11px] text-mewa-700 hover:text-mewa-800 font-bold bg-mewa-50 hover:bg-mewa-100 border border-mewa-200 px-2 py-0.5 rounded-lg mt-1.5 transition">
+                                    <i data-lucide="eye" class="w-3 h-3 text-mewa-600"></i>
+                                    <span>تفاصيل الطلب</span>
+                                </button>
+                            </td>
+
+                            <!-- الكمية والسعر -->
+                            <td class="p-3.5 align-top whitespace-nowrap">
+                                <div class="font-bold text-slate-800 text-xs">
+                                    ${item.requested_qty} <span class="text-slate-500 font-medium">${item.unit}</span>
+                                </div>
+                                <div class="text-[11px] text-mewa-700 font-bold mt-0.5">
+                                    ${item.unit_price} ر.س / ${item.unit}
+                                </div>
+                            </td>
+
+                            <!-- حالة الاعتماد -->
+                            <td class="p-3.5 align-top text-center whitespace-nowrap">
+                                ${statusBadge}
+                            </td>
+
+                            <!-- آلية البيع والتوصيل والإجراء -->
+                            <td class="p-3.5 align-top text-center">
+                                ${actionHtml}
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+
+            tableBody.innerHTML = rowsHtml;
+            lucide.createIcons();
+        }
+
+        async function confirmAndActivateItem(reqId, itemId) {
+            const stored = JSON.parse(localStorage.getItem('my_requests') || JSON.stringify(allRequests));
+            let targetItem = null;
+
+            stored.forEach(r => {
+                if (r.id == reqId || !reqId) {
+                    (r.items || []).forEach(it => {
+                        if (it.id == itemId) {
+                            it.store_active = true;
+                            it.stock_remaining = it.approved_qty || it.requested_qty;
+                            targetItem = it;
+                        }
+                    });
+                }
+            });
+
+            localStorage.setItem('my_requests', JSON.stringify(stored));
+
+            try {
+                await fetch('/api/merchant/set-fulfillment', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        item_id: itemId,
+                        fulfillment_mode: targetItem ? (targetItem.fulfillment_mode || 'broker') : 'broker',
+                        assigned_broker_id: targetItem ? (targetItem.assigned_broker_id || 1) : 1
+                    })
+                });
+            } catch (e) {
+                // وضع غير متصل
+            }
+
+            showToast(`تم تأكيد وتفعيل صنف (${targetItem ? targetItem.name : 'المنتج'}) في المتجر الإلكتروني بنجاح!`);
+            await loadMyRequests();
+        }
+
+        async function confirmAndActivateAllApproved() {
+            const stored = JSON.parse(localStorage.getItem('my_requests') || JSON.stringify(allRequests));
+            let activatedCount = 0;
+
+            stored.forEach(r => {
+                (r.items || []).forEach(it => {
+                    if (it.approval_status === 'approved') {
+                        it.store_active = true;
+                        it.stock_remaining = it.approved_qty || it.requested_qty;
+                        activatedCount++;
+                    }
+                });
+            });
+
+            if (activatedCount === 0) {
+                showToast("لا توجد طلبات معتمدة جديدة بانتظار التفعيل حالياً", true);
+                return;
+            }
+
+            localStorage.setItem('my_requests', JSON.stringify(stored));
+            showToast(`تم تأكيد وتفعيل ${activatedCount} منتجات معتمدة في المتجر الإلكتروني بنجاح!`);
+            await loadMyRequests();
+        }
+
+        function openRequestDetails(reqId, itemId) {
+            const modal = document.getElementById('request-details-modal');
+            const content = document.getElementById('modal-req-content');
+            const title = document.getElementById('modal-req-title');
+
+            const req = allRequests.find(r => r.id == reqId);
+            if (!req) return;
+            const item = (req.items || []).find(it => it.id == itemId) || req.items[0];
+            if (!item) return;
+
+            title.innerText = `تفاصيل طلب التوريد #${req.id} - ${item.name}`;
+
+            // إعداد شارة حالة الاعتماد
+            let statusBadge = '';
+            if (item.approval_status === 'pending') {
+                statusBadge = '<span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 border border-amber-300 text-xs px-3 py-1.5 rounded-full font-bold"><i data-lucide="clock" class="w-3.5 h-3.5 text-amber-600"></i> بانتظار مراجعة إدارة السوق</span>';
+            } else if (item.approval_status === 'rejected') {
+                statusBadge = `<span class="inline-flex items-center gap-1.5 bg-rose-50 text-rose-800 border border-rose-300 text-xs px-3 py-1.5 rounded-full font-bold"><i data-lucide="x-circle" class="w-3.5 h-3.5 text-rose-600"></i> مرفوض: ${item.rejection_reason || 'مخالفة اشتراطات السوق'}</span>`;
+            } else {
+                statusBadge = `<span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs px-3 py-1.5 rounded-full font-bold"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> معتمد رسمياً (${item.approved_qty || item.requested_qty} ${item.unit})</span>`;
+            }
+
+            // شرط صورة المنتج: تظهر فقط في تفاصيل الطلب في حال توفرها
+            let imageSectionHtml = '';
+            if (item.image_url && item.image_url.trim() !== '') {
+                imageSectionHtml = `
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-800">
+                            <span class="flex items-center gap-1.5 text-mewa-800">
+                                <i data-lucide="image" class="w-4 h-4 text-mewa-600"></i>
+                                صورة الصنف المرفقة مع الطلب
+                            </span>
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">صورة الصنف متوفرة</span>
+                        </div>
+                        <div class="relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xs flex items-center justify-center p-2">
+                            <img src="${item.image_url}" alt="${item.name}" class="w-full max-h-72 object-contain rounded-lg" onerror="this.parentElement.style.display='none'">
+                        </div>
+                    </div>
+                `;
+            }
+
+            const isDirect = item.fulfillment_mode === 'direct';
+            const brokerName = item.broker_name || 'شركة إمداد النفع اللوجستية (وسيط أ)';
+
+            content.innerHTML = `
+                <!-- ملخص الحالة والتاريخ -->
+                <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+                    <div>
+                        <span class="text-[10px] text-slate-400 block font-medium">تاريخ تقديم الطلب</span>
+                        <span class="text-xs font-bold text-slate-800">${req.created_at || '2026-10-27'}</span>
+                    </div>
+                    <div>
+                        ${statusBadge}
+                    </div>
+                </div>
+
+                <!-- صورة المنتج (تظهر هنا فقط في حال توفرها) -->
+                ${imageSectionHtml}
+
+                <!-- بيانات المنتج والكمية والسعر -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1">
+                        <span class="text-[10px] text-slate-400 block font-bold">المنتج والتصنيف</span>
+                        <div class="text-sm font-black text-slate-900">${item.name}</div>
+                        <div class="text-xs text-slate-600 font-medium">التصنيف: <b class="text-mewa-700">${item.category}</b></div>
+                    </div>
+                    <div class="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1">
+                        <span class="text-[10px] text-slate-400 block font-bold">الكمية والسعر المقترح</span>
+                        <div class="text-sm font-black text-slate-900">${item.requested_qty} ${item.unit}</div>
+                        <div class="text-xs text-slate-600 font-medium">السعر: <b class="text-emerald-700">${item.unit_price} ر.س</b> / ${item.unit}</div>
+                    </div>
+                </div>
+
+                <!-- بيانات المنشأة وسوق النفع العام -->
+                <div class="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-2">
+                    <span class="text-[10px] text-slate-400 block font-bold">بيانات المنشأة وسوق النفع العام</span>
+                    <div class="text-xs font-bold text-slate-800 leading-relaxed">${req.merchant_name || 'المنشأة'}</div>
+                    <div class="flex flex-wrap gap-2 pt-1 text-[11px]">
+                        ${req.business_record ? `<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-lg border border-slate-200 font-semibold">${req.business_record}</span>` : ''}
+                        ${req.market ? `<span class="bg-mewa-50 text-mewa-800 px-2 py-0.5 rounded-lg border border-mewa-200 font-bold">${req.market}</span>` : ''}
+                    </div>
+                </div>
+
+                <!-- آلية البيع والخدمات اللوجستية -->
+                <div class="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-2">
+                    <span class="text-[10px] text-slate-400 block font-bold">آلية البيع والخدمات اللوجستية</span>
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg ${isDirect ? 'bg-mewa-100 text-mewa-700' : 'bg-amber-100 text-amber-800'} flex items-center justify-center shrink-0">
+                            <i data-lucide="${isDirect ? 'truck' : 'boxes'}" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">${isDirect ? 'البيع والتسليم المباشر من المزرعة' : 'البيع عبر مركز خدمة معتمد (وسيط لوجستي)'}</div>
+                            <div class="text-[11px] text-slate-500">${isDirect ? 'تسليم ذاتي بدون استقطاع خدمات تشغيلية' : `المركز المعتمد: ${brokerName}`}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeRequestDetailsModal() {
+            const modal = document.getElementById('request-details-modal');
+            modal.classList.add('hidden');
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeRequestDetailsModal();
+        });
+
+        
+        // ================= كود استلام وتجهيز طلبات المستهلكين (التبويب الثاني) =================
+        // 8 طلبات شاملة تغطي جميع التصنيفات والمناطق وقنوات البيع والحالات
+        const SEED_SERVICE_ORDERS = [
+            {
+                orderId: "ORD-2026-6120",
+                date: "2026-10-27T10:35:00Z",
+                formattedDate: "اليوم، 27 أكتوبر 2026 في 10:35 ص",
+                customer_name: "محمد صالح القحطاني",
+                customer_phone: "0554123987",
+                customer_address: "الرياض - حي النخيل - شارع الملك عبدالعزيز",
+                paymentMethod: "mada",
+                status: "new",
+                statusText: "جديد - بانتظار الاستلام والفرز",
+                fulfillment_mode: "broker",
+                broker_name: "شركة إمداد النفع اللوجستية (الرياض والخرج)",
+                driver_name: null,
+                driver_phone: null,
+                truck_plate: null,
+                temperature: null,
+                items: [
+                    {
+                        name: "كوسة بلدية نجدية طازجة",
+                        merchant_name: "مزارع السهول الذهبية",
+                        market_name: "سوق عتيقة المركزي",
+                        unit: "كرتون (4 كجم)",
+                        qty: 1,
+                        price: 18.0,
+                        image_url: "static/images/products/zucchini.jpg"
+                    },
+                    {
+                        name: "طماطم محمية فاخرة (صنف سكارليت)",
+                        merchant_name: "مزرعة واحة الخير (الخرج)",
+                        market_name: "سوق النفع العام المركزي بالخرج",
+                        unit: "صندوق (6 كجم)",
+                        qty: 1,
+                        price: 28.5,
+                        image_url: "static/images/products/tomatoes.jpg"
+                    }
+                ],
+                total: 46.50,
+                platform_fee: 1.16,
+                broker_fee: 4.65,
+                merchant_net: 40.69
+            },
+            {
+                orderId: "ORD-2026-5656",
+                date: "2026-10-27T08:15:00Z",
+                formattedDate: "اليوم، 27 أكتوبر 2026 في 08:15 ص",
+                customer_name: "سعود بن فهد الدوسري",
+                customer_phone: "0501234567",
+                customer_address: "الخرج - حي الاندلس - بالقرب من المستشفى العام",
+                paymentMethod: "applepay",
+                status: "packaging",
+                statusText: "قيد الفرز والتجهيز المبرد",
+                fulfillment_mode: "broker",
+                broker_name: "شركة إمداد النفع اللوجستية (الرياض والخرج)",
+                driver_name: null,
+                driver_phone: null,
+                truck_plate: null,
+                temperature: "4°C مئوية (خضار وفواكه)",
+                items: [
+                    {
+                        name: "بطيخ وادي الدواسر أحمر فاخر",
+                        merchant_name: "مزارع وادي الدواسر النموذجية",
+                        market_name: "سوق الخضار والتمور المركزي بوادي الدواسر",
+                        unit: "حبة (8-10 كجم)",
+                        qty: 1,
+                        price: 24.0,
+                        image_url: "static/images/products/watermelon.jpg"
+                    },
+                    {
+                        name: "خيار بلدي بيوت محمية نخب أول",
+                        merchant_name: "مزارع نجد الخضراء (القصيم)",
+                        market_name: "سوق النفع العام النموذجي ببريدة",
+                        unit: "كرتون (5 كجم)",
+                        qty: 2,
+                        price: 22.0,
+                        image_url: "static/images/products/cucumbers.jpg"
+                    }
+                ],
+                total: 68.00,
+                platform_fee: 1.70,
+                broker_fee: 6.80,
+                merchant_net: 59.50
+            },
+            {
+                orderId: "ORD-2026-4821",
+                date: "2026-10-26T16:20:00Z",
+                formattedDate: "أمس، 26 أكتوبر 2026 في 04:20 م",
+                customer_name: "عبدالعزيز بن إبراهيم المنصور",
+                customer_phone: "0559988776",
+                customer_address: "القصيم - بريدة - حي الصفراء",
+                paymentMethod: "sadad",
+                status: "out_for_delivery",
+                statusText: "خرج للتوصيل مع أسطول النقل المبرد",
+                fulfillment_mode: "direct",
+                broker_name: null,
+                driver_name: "خالد الشمري (أسطول القصيم 3)",
+                driver_phone: "0557788990",
+                truck_plate: "س ص ع 9988",
+                temperature: "18°C (تمور وعسل)",
+                items: [
+                    {
+                        name: "تمر سكري القصيم مفتل ملكي",
+                        merchant_name: "مزارع نخيل بريدة (القصيم)",
+                        market_name: "سوق الخضار والتمور المركزي ببريدة (مدينة التمور)",
+                        unit: "كرتون (3 كجم)",
+                        qty: 2,
+                        price: 85.0,
+                        image_url: "static/images/products/dates_sukari.jpg"
+                    },
+                    {
+                        name: "عسل سدر بلدي حر أصلي",
+                        merchant_name: "مناحل جبال السروات (عسير)",
+                        market_name: "سوق العسل والفواكه بأبها",
+                        unit: "عبوة (1 كجم)",
+                        qty: 1,
+                        price: 195.0,
+                        image_url: "static/images/products/honey_sidr.jpg"
+                    }
+                ],
+                total: 365.00,
+                platform_fee: 9.13,
+                broker_fee: 0.00,
+                merchant_net: 355.87
+            },
+            {
+                orderId: "ORD-2026-3914",
+                date: "2026-10-25T11:40:00Z",
+                formattedDate: "25 أكتوبر 2026 في 11:40 ص",
+                customer_name: "فاطمة بنت ناصر الشهري",
+                customer_phone: "0543219876",
+                customer_address: "مكة المكرمة - الطائف - حي الهدا",
+                paymentMethod: "applepay",
+                status: "delivered",
+                statusText: "تم التسليم بنجاح للمستلم",
+                fulfillment_mode: "broker",
+                broker_name: "مؤسسة الحصاد الأخضر للتوزيع (الغربية والشرقية)",
+                driver_name: "أحمد الغامدي",
+                driver_phone: "0551122334",
+                truck_plate: "د هـ و 5566",
+                temperature: "4°C",
+                rating: {
+                    score: 5,
+                    comment: "طعم الرمان والمانجو فائق النضارة والتوصيل كان سريعاً ومبرداً، شكراً للمزارعين"
+                },
+                items: [
+                    {
+                        name: "رمان الطائف سكري نخب أول",
+                        merchant_name: "بساتين الهدا الطائفية",
+                        market_name: "سوق الفواكه الموسمية بالهدا",
+                        unit: "كرتون (5 كجم)",
+                        qty: 1,
+                        price: 45.0,
+                        image_url: "static/images/products/pomegranates.jpg"
+                    },
+                    {
+                        name: "مانجو تومي جازان موسمي",
+                        merchant_name: "مزارع جازان الاستوائية",
+                        market_name: "سوق الفواكه الاستوائية والخضار المركزي بجازان",
+                        unit: "كرتون (4 كجم)",
+                        qty: 2,
+                        price: 48.0,
+                        image_url: "static/images/products/mango.jpg"
+                    }
+                ],
+                total: 141.00,
+                platform_fee: 3.53,
+                broker_fee: 14.10,
+                merchant_net: 123.37
+            },
+            {
+                orderId: "ORD-2026-7241",
+                date: "2026-10-27T09:10:00Z",
+                formattedDate: "اليوم، 27 أكتوبر 2026 في 09:10 ص",
+                customer_name: "تركي بن سلطان الحربي",
+                customer_phone: "0567891234",
+                customer_address: "المدينة المنورة - حي العالية - شارع قباء",
+                paymentMethod: "mada",
+                status: "delayed",
+                statusText: "تعثر في التوصيل - بانتظار إعادة الجدولة",
+                fulfillment_mode: "broker",
+                broker_name: "شركة طازج للخدمات الزراعية (المدينة وتبوك)",
+                driver_name: "سامي الجهني (أسطول المدينة)",
+                driver_phone: "0556677881",
+                truck_plate: "ق ر س 4410",
+                temperature: "18°C",
+                delay_reason: "تعذر الاتصال بالعميل وقت الوصول عند البوابة - تم طلب إعادة الجدولة للفترة المسائية",
+                reschedule_time: "اليوم خلال الفترة المسائية (5:00 - 8:00 م)",
+                items: [
+                    {
+                        name: "عجوة المدينة المنورة درجة أولى",
+                        merchant_name: "مزارع طيبة المباركة (العالية)",
+                        market_name: "سوق التمور المركزي (العالية)",
+                        unit: "كرتون (1 كجم)",
+                        qty: 2,
+                        price: 65.0,
+                        image_url: "static/images/products/dates_ajwa.jpg"
+                    },
+                    {
+                        name: "برتقال سكري وادي العلا",
+                        merchant_name: "مزارع وادي العلا النموذجية",
+                        market_name: "سوق المحاصيل والتمور بالعلا",
+                        unit: "صندوق (8 كجم)",
+                        qty: 1,
+                        price: 42.0,
+                        image_url: "static/images/products/oranges.jpg"
+                    }
+                ],
+                total: 172.00,
+                platform_fee: 4.30,
+                broker_fee: 17.20,
+                merchant_net: 150.50
+            },
+            {
+                orderId: "ORD-2026-8830",
+                date: "2026-10-27T07:30:00Z",
+                formattedDate: "اليوم، 27 أكتوبر 2026 في 07:30 ص",
+                customer_name: "خالد بن عبدالله المطيري",
+                customer_phone: "0503344556",
+                customer_address: "مكة المكرمة - جدة - حي الصفا - بالقرب من السوق المركزي",
+                paymentMethod: "mada",
+                status: "out_for_delivery",
+                statusText: "خرج للتوصيل مع أسطول النقل المبرد (لحوم ومواشي)",
+                fulfillment_mode: "broker",
+                broker_name: "مؤسسة الحصاد الأخضر للتوزيع (الغربية والشرقية)",
+                driver_name: "عمر الرويلي (شاحنة مبردة مواشي ولحوم)",
+                driver_phone: "0558899001",
+                truck_plate: "د هـ و 5566",
+                temperature: "2°C مئوية (تبريد فائق)",
+                items: [
+                    {
+                        name: "خروف حري بلدي مذبوح ومبرد (مختوم)",
+                        merchant_name: "شركة مراعي الحجاز للمواشي",
+                        market_name: "سوق النفع العام المركزي بجدة (الصفا)",
+                        unit: "رأس (12-14 كجم)",
+                        qty: 1,
+                        price: 980.0,
+                        image_url: "static/images/products/sheep_harri.jpg"
+                    },
+                    {
+                        name: "برسيم حائلي صافي مجفف مشدود",
+                        merchant_name: "مزارع حائل للأعلاف",
+                        market_name: "سوق الأعلاف والتمور المركزي بحائل",
+                        unit: "بالة (15 كجم)",
+                        qty: 3,
+                        price: 25.0,
+                        image_url: "static/images/products/alfalfa_hay.jpg"
+                    }
+                ],
+                total: 1055.00,
+                platform_fee: 26.38,
+                broker_fee: 105.50,
+                merchant_net: 923.12
+            },
+            {
+                orderId: "ORD-2026-9155",
+                date: "2026-10-26T12:00:00Z",
+                formattedDate: "أمس، 26 أكتوبر 2026 في 12:00 م",
+                customer_name: "ماجد بن فيصل القحطاني",
+                customer_phone: "0552233445",
+                customer_address: "الرياض - حي الياسمين - شارع أنس بن مالك",
+                paymentMethod: "mada",
+                status: "disputed",
+                statusText: "اعتراض نشط - قيد الفحص والمطابقة مع الرقابة",
+                fulfillment_mode: "broker",
+                broker_name: "شركة إمداد النفع اللوجستية (الرياض والخرج)",
+                driver_name: "فهد الدوسري",
+                driver_phone: "0559812345",
+                truck_plate: "أ ب ج 1420",
+                temperature: "4°C",
+                dispute: {
+                    ticketId: "TKT-2026-4412",
+                    reason: "نقص في الوزن أو كمية العبوات المعتمدة",
+                    details: "وجدنا وزناً مقداره 8.5 كجم بدلاً من 10 كجم المعلنة في الخيشة الثانية، ونرغب بالتعويض أو إرسال النقص."
+                },
+                items: [
+                    {
+                        name: "بطاطس سبونتا وادي الدواسر",
+                        merchant_name: "مزارع وادي الدواسر النموذجية",
+                        market_name: "سوق الخضار والتمور المركزي بوادي الدواسر",
+                        unit: "خيشة (10 كجم)",
+                        qty: 2,
+                        price: 32.0,
+                        image_url: "static/images/products/potatoes.jpg"
+                    }
+                ],
+                total: 64.00,
+                platform_fee: 1.60,
+                broker_fee: 6.40,
+                merchant_net: 56.00
+            },
+            {
+                orderId: "ORD-2026-2104",
+                date: "2026-10-25T18:00:00Z",
+                formattedDate: "25 أكتوبر 2026 في 06:00 م",
+                customer_name: "نورة بنت سعد الشمري",
+                customer_phone: "0541122998",
+                customer_address: "حائل - حي صديان - شارع بيروت",
+                paymentMethod: "mada",
+                status: "cancelled",
+                statusText: "ملغي ومسترد بالكامل للبطاقة",
+                fulfillment_mode: "broker",
+                broker_name: "شركة إمداد النفع اللوجستية (الرياض والخرج)",
+                cancel_reason: "طلب العميل الإلغاء قبل بدء الفرز والتجهيز - تم استرداد المبلغ بالكامل إلى حسابه البنكي فوراً",
+                items: [
+                    {
+                        name: "عسل سدر بلدي حر أصلي",
+                        merchant_name: "مناحل جبال السروات (عسير)",
+                        market_name: "سوق العسل والفواكه بأبها",
+                        unit: "عبوة (1 كجم)",
+                        qty: 1,
+                        price: 195.0,
+                        image_url: "static/images/products/honey_sidr.jpg"
+                    }
+                ],
+                total: 195.00,
+                platform_fee: 0.00,
+                broker_fee: 0.00,
+                merchant_net: 0.00
+            }
+        ];
+
+        let serviceOrders = [];
+        let currentStatusFilter = 'all';
+        let currentRoleFilter = 'all';
+        let searchQuery = '';
+        let activeDispatchOrderId = null;
+        let activeActionOrderId = null;
+
+        // تحميل ومزامنة البيانات
+        async function loadOrdersData() {
+            let combined = [];
+
+            // 1. استيراد من LocalStorage
+            try {
+                const localSaved = JSON.parse(localStorage.getItem('my_store_orders') || '[]');
+                if (Array.isArray(localSaved) && localSaved.length > 0) {
+                    localSaved.forEach(lo => {
+                        const existing = SEED_SERVICE_ORDERS.find(s => s.orderId === lo.orderId);
+                        if (existing) {
+                            combined.push({
+                                ...existing,
+                                status: lo.status || existing.status,
+                                statusText: lo.statusText || existing.statusText,
+                                driver_name: lo.driver_name || existing.driver_name,
+                                driver_phone: lo.driver_phone || existing.driver_phone,
+                                truck_plate: lo.truck_plate || existing.truck_plate,
+                                temperature: lo.temperature || existing.temperature,
+                                delay_reason: lo.delay_reason || existing.delay_reason,
+                                dispute: lo.dispute || existing.dispute,
+                                rating: lo.rating || existing.rating
+                            });
+                        } else {
+                            combined.push({
+                                orderId: lo.orderId,
+                                date: lo.date,
+                                formattedDate: lo.formattedDate,
+                                customer_name: lo.customer_name,
+                                customer_phone: lo.customer_phone,
+                                customer_address: lo.customer_address,
+                                paymentMethod: lo.paymentMethod || 'mada',
+                                status: lo.status || 'new',
+                                statusText: lo.statusText || getStatusLabel(lo.status || 'new'),
+                                fulfillment_mode: 'broker',
+                                broker_name: 'شركة إمداد النفع اللوجستية (الرياض والخرج)',
+                                driver_name: lo.driver_name || null,
+                                driver_phone: lo.driver_phone || null,
+                                truck_plate: lo.truck_plate || null,
+                                temperature: lo.temperature || '4°C',
+                                items: lo.items || [],
+                                total: lo.total || 0,
+                                platform_fee: (lo.total || 0) * 0.025,
+                                broker_fee: (lo.total || 0) * 0.10,
+                                merchant_net: (lo.total || 0) * 0.875,
+                                dispute: lo.dispute || null,
+                                rating: lo.rating || null
+                            });
+                        }
+                    });
+                }
+            } catch (e) {
+                console.warn("Storage reading error", e);
+            }
+
+            // 2. دمج الطلبات المرجعية
+            SEED_SERVICE_ORDERS.forEach(so => {
+                if (!combined.some(o => o.orderId === so.orderId)) {
+                    combined.push({ ...so });
+                }
+            });
+
+            // 3. محاولة الجلب من API خادم FastAPI
+            try {
+                const res = await fetch('/api/orders');
+                if (res.ok) {
+                    const apiOrders = await res.json();
+                    if (Array.isArray(apiOrders)) {
+                        apiOrders.forEach(ao => {
+                            const formattedId = `ORD-2026-${ao.id}`;
+                            const exIdx = combined.findIndex(c => c.orderId === formattedId);
+                            const apiObj = {
+                                orderId: formattedId,
+                                dbId: ao.id,
+                                date: ao.created_at,
+                                formattedDate: new Date(ao.created_at || Date.now()).toLocaleString('ar-SA', { dateStyle: 'full', timeStyle: 'short' }),
+                                customer_name: ao.customer_name,
+                                customer_phone: ao.customer_phone,
+                                customer_address: ao.customer_address,
+                                paymentMethod: 'mada',
+                                status: ao.status || 'new',
+                                statusText: getStatusLabel(ao.status || 'new'),
+                                fulfillment_mode: 'broker',
+                                broker_name: 'شركة إمداد النفع اللوجستية (الرياض والخرج)',
+                                driver_name: ao.driver_name || null,
+                                driver_phone: ao.driver_phone || null,
+                                truck_plate: ao.truck_plate || null,
+                                temperature: ao.temperature || null,
+                                items: (ao.items || []).map(it => ({
+                                    name: it.product_name,
+                                    qty: it.quantity,
+                                    price: it.unit_price,
+                                    unit: 'وحدة',
+                                    merchant_name: 'مزرعة وطنية معتمدة',
+                                    market_name: 'سوق النفع العام المركزي',
+                                    image_url: 'static/images/products/tomatoes.jpg'
+                                })),
+                                total: ao.total_amount || 0,
+                                platform_fee: ao.platform_fee || 0,
+                                broker_fee: ao.broker_fee || 0,
+                                merchant_net: ao.merchant_net || 0
+                            };
+                            if (exIdx >= 0) {
+                                combined[exIdx] = { ...combined[exIdx], ...apiObj };
+                            } else {
+                                combined.unshift(apiObj);
+                            }
+                        });
+                    }
+                }
+            } catch (e) {
+                console.log("Offline mode: using synchronized local catalog");
+            }
+
+            serviceOrders = combined;
+            updateKPIs();
+            renderOrdersList();
+            showToast("تم تحديث وتنسيق بيانات الطلبات بنجاح");
+        }
+
+        function getStatusLabel(status) {
+            const map = {
+                'new': 'جديد - بانتظار الاستلام والفرز',
+                'packaging': 'قيد الفرز والتجهيز المبرد',
+                'out_for_delivery': 'خرج للتوصيل مع أسطول النقل المبرد',
+                'shipping': 'خرج للتوصيل مع أسطول النقل المبرد',
+                'delivered': 'تم التسليم بنجاح للمستلم',
+                'delayed': 'تعثر وتأجيل - بانتظار إعادة الجدولة',
+                'disputed': 'اعتراض نشط - قيد الفحص والمطابقة',
+                'cancelled': 'ملغي ومسترد بالكامل'
+            };
+            return map[status] || 'جديد';
+        }
+
+        function updateKPIs() {
+            const cntNew = serviceOrders.filter(o => o.status === 'new').length;
+            const cntPkg = serviceOrders.filter(o => o.status === 'packaging').length;
+            const cntShip = serviceOrders.filter(o => o.status === 'out_for_delivery' || o.status === 'shipping').length;
+            const cntDel = serviceOrders.filter(o => o.status === 'delivered').length;
+            const cntDelay = serviceOrders.filter(o => o.status === 'delayed').length;
+            const cntDispute = serviceOrders.filter(o => o.status === 'disputed' || !!o.dispute).length;
+            const cntCancel = serviceOrders.filter(o => o.status === 'cancelled').length;
+
+            document.getElementById('kpi-new').innerText = cntNew;
+            document.getElementById('kpi-packaging').innerText = cntPkg;
+            document.getElementById('kpi-shipping').innerText = cntShip;
+            document.getElementById('kpi-delivered').innerText = cntDel;
+            document.getElementById('kpi-delayed').innerText = cntDelay;
+            document.getElementById('kpi-disputed').innerText = cntDispute;
+
+            document.getElementById('tab-cnt-all').innerText = serviceOrders.length;
+            document.getElementById('tab-cnt-new').innerText = cntNew;
+            document.getElementById('tab-cnt-packaging').innerText = cntPkg;
+            document.getElementById('tab-cnt-shipping').innerText = cntShip;
+            document.getElementById('tab-cnt-delivered').innerText = cntDel;
+            document.getElementById('tab-cnt-delayed').innerText = cntDelay;
+            document.getElementById('tab-cnt-disputed').innerText = cntDispute;
+            document.getElementById('tab-cnt-cancelled').innerText = cntCancel;
+        }
+
+        function setStatusTab(tab) {
+            currentStatusFilter = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tab) {
+                    btn.classList.add('active', 'bg-mewa-600', 'text-white', 'shadow-sm');
+                    btn.classList.remove('bg-slate-100', 'text-slate-700');
+                } else {
+                    btn.classList.remove('active', 'bg-mewa-600', 'text-white', 'shadow-sm');
+                    btn.classList.add('bg-slate-100', 'text-slate-700');
+                }
+            });
+            renderOrdersList();
+        }
+
+        function onRoleFilterChange(val) {
+            currentRoleFilter = val;
+            renderOrdersList();
+        }
+
+        function handleSearch(val) {
+            searchQuery = val.trim().toLowerCase();
+            renderOrdersList();
+        }
+
+        // بناء قائمة الطلبات مع الإجراء المناسب المخصص لكل حالة
+        function renderOrdersList() {
+            const container = document.getElementById('orders-list-container');
+            let filtered = [...serviceOrders];
+
+            // فلترة حسب التبويب
+            if (currentStatusFilter === 'new') {
+                filtered = filtered.filter(o => o.status === 'new');
+            } else if (currentStatusFilter === 'packaging') {
+                filtered = filtered.filter(o => o.status === 'packaging');
+            } else if (currentStatusFilter === 'shipping') {
+                filtered = filtered.filter(o => o.status === 'out_for_delivery' || o.status === 'shipping');
+            } else if (currentStatusFilter === 'delivered') {
+                filtered = filtered.filter(o => o.status === 'delivered');
+            } else if (currentStatusFilter === 'delayed') {
+                filtered = filtered.filter(o => o.status === 'delayed');
+            } else if (currentStatusFilter === 'disputed') {
+                filtered = filtered.filter(o => o.status === 'disputed' || !!o.dispute);
+            } else if (currentStatusFilter === 'cancelled') {
+                filtered = filtered.filter(o => o.status === 'cancelled');
+            }
+
+            // فلترة حسب صفة المشغل
+            if (currentRoleFilter !== 'all') {
+                const [roleType, roleName] = currentRoleFilter.split(':');
+                if (roleType === 'broker') {
+                    filtered = filtered.filter(o => (o.broker_name || '').includes(roleName));
+                } else if (roleType === 'merchant') {
+                    filtered = filtered.filter(o => (o.items || []).some(it => (it.merchant_name || '').includes(roleName)));
+                }
+            }
+
+            // فلترة البحث
+            if (searchQuery) {
+                filtered = filtered.filter(o => {
+                    const matchId = (o.orderId || '').toLowerCase().includes(searchQuery);
+                    const matchName = (o.customer_name || '').toLowerCase().includes(searchQuery);
+                    const matchPhone = (o.customer_phone || '').includes(searchQuery);
+                    const matchItems = (o.items || []).some(it => (it.name || '').toLowerCase().includes(searchQuery));
+                    return matchId || matchName || matchPhone || matchItems;
+                });
+            }
+
+            const counterEl = document.getElementById('filtered-orders-counter');
+            if (counterEl) counterEl.innerText = `${filtered.length} طلب`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="naama-card p-12 text-center rounded-2xl">
+                        <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="inbox" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-700">لا توجد طلبات مطابقة للفلترة المحددة</h4>
+                        <p class="text-xs text-slate-400 mt-1">يمكنك اختيار تبويب آخر أو استعراض كافة المشغلين للاطلاع على كافة الشحنات.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = filtered.map(order => {
+                const isNew = order.status === 'new';
+                const isPkg = order.status === 'packaging';
+                const isShip = order.status === 'out_for_delivery' || order.status === 'shipping';
+                const isDel = order.status === 'delivered';
+                const isDelay = order.status === 'delayed';
+                const isDispute = order.status === 'disputed' || !!order.dispute;
+                const isCancel = order.status === 'cancelled';
+
+                const statusColor = isNew ? 'bg-amber-100 text-amber-800 border-amber-300' :
+                                    isPkg ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                                    isShip ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                                    isDel ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                                    isDelay ? 'bg-orange-100 text-orange-900 border-orange-300' :
+                                    isDispute ? 'bg-rose-100 text-rose-900 border-rose-300' :
+                                    'bg-slate-200 text-slate-700 border-slate-300';
+
+                const paymentName = {
+                    'mada': 'مدى (Mada)',
+                    'applepay': 'Apple Pay',
+                    'sadad': 'سداد (SADAD)',
+                    'cod': 'الدفع عند الاستلام'
+                }[order.paymentMethod] || 'إلكتروني';
+
+                return `
+                    <div class="naama-card p-5 sm:p-6 rounded-2xl transition hover:shadow-md space-y-4 border ${isDispute ? 'border-rose-300 bg-rose-50/15' : isDelay ? 'border-orange-300 bg-orange-50/15' : ''}">
+                        
+                        <!-- رأس الطلب ومعلومات الدفع -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl ${isNew ? 'bg-amber-50 text-amber-600' : isPkg ? 'bg-blue-50 text-blue-600' : isShip ? 'bg-purple-50 text-purple-600' : isDel ? 'bg-emerald-50 text-emerald-600' : isDelay ? 'bg-orange-50 text-orange-600' : isDispute ? 'bg-rose-50 text-rose-600' : 'bg-slate-100 text-slate-600'} flex items-center justify-center shrink-0 border border-slate-200">
+                                    <i data-lucide="${isNew ? 'bell-ring' : isPkg ? 'box' : isShip ? 'truck' : isDel ? 'check-check' : isDelay ? 'clock-alert' : isDispute ? 'alert-triangle' : 'slash'}" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="text-sm font-black text-slate-900 font-mono">${order.orderId}</h3>
+                                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${statusColor}">
+                                            ${order.statusText || getStatusLabel(order.status)}
+                                        </span>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1 font-mono">
+                                            <i data-lucide="credit-card" class="w-3 h-3 text-emerald-600"></i> ${paymentName}
+                                        </span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">${order.formattedDate || order.date}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2 self-end sm:self-auto">
+                                <button onclick="openWaybillModal('${order.orderId}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-200">
+                                    <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-600"></i>
+                                    <span>بوليصة التجهيز</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- شبكة بيانات العميل وبيانات الشحن -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-xs">
+                            <div class="space-y-1">
+                                <span class="text-slate-400 text-[10px] block font-bold">العميل المستلم:</span>
+                                <p class="font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i data-lucide="user" class="w-3.5 h-3.5 text-mewa-600"></i>
+                                    <span>${order.customer_name}</span>
+                                </p>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="font-mono text-slate-600 text-[11px]" dir="ltr">${order.customer_phone}</span>
+                                    <a href="https://wa.me/966${order.customer_phone.replace(/^0/,'')}" target="_blank" class="text-emerald-700 hover:text-emerald-800 text-[10px] font-bold flex items-center gap-0.5 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                                        <i data-lucide="message-circle" class="w-2.5 h-2.5"></i> واتساب
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <span class="text-slate-400 text-[10px] block font-bold">عنوان وموقع التوصيل:</span>
+                                <p class="text-slate-700 text-[11px] font-semibold flex items-start gap-1.5 leading-relaxed">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5"></i>
+                                    <span>${order.customer_address}</span>
+                                </p>
+                            </div>
+
+                            <div class="space-y-1">
+                                <span class="text-slate-400 text-[10px] block font-bold">قناة التنفيذ واللوجستيات:</span>
+                                <p class="text-[11px] font-bold text-emerald-900 flex items-center gap-1.5">
+                                    <i data-lucide="warehouse" class="w-3.5 h-3.5 text-emerald-700"></i>
+                                    <span>${order.broker_name || 'توصيل مباشر معتمد من المزرعة'}</span>
+                                </p>
+                                ${order.driver_name ? `
+                                    <div class="text-[10px] text-purple-900 font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200 inline-flex items-center gap-1.5 mt-0.5">
+                                        <span>السائق: ${order.driver_name}</span>
+                                        <span>(${order.truck_plate || 'لوحة تبريد'})</span>
+                                        <span class="text-purple-700">• ${order.temperature || 'مبرد'}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+
+                        <!-- جدول المحاصيل داخل الطلب -->
+                        <div class="space-y-2">
+                            ${(order.items || []).map(it => `
+                                <div class="flex items-center justify-between p-2.5 bg-white rounded-xl border border-slate-100 text-xs">
+                                    <div class="flex items-center gap-3">
+                                        <img src="${it.image_url || 'static/images/products/tomatoes.jpg'}" alt="${it.name}" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0">
+                                        <div>
+                                            <h4 class="font-bold text-slate-800">${it.name}</h4>
+                                            <span class="text-[10px] text-slate-400">${it.merchant_name || 'مزرعة معتمدة'} • ${it.market_name || 'سوق مركزي'}</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-left font-mono">
+                                        <span class="font-bold text-slate-700">${it.qty} ${it.unit}</span>
+                                        <span class="text-slate-400 text-[11px] block">${(it.price * it.qty).toFixed(2)} ر.س</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- إشعار حالة التعثر والتأجيل إن وجد -->
+                        ${isDelay ? `
+                            <div class="p-3 bg-orange-50/80 rounded-xl border border-orange-200 text-xs space-y-1">
+                                <div class="flex items-center gap-1.5 text-orange-900 font-bold">
+                                    <i data-lucide="clock" class="w-4 h-4 text-orange-600"></i>
+                                    <span>سبب التعثر: ${order.delay_reason || 'تعذر التواصل مع العميل'}</span>
+                                </div>
+                                <p class="text-[11px] text-orange-800">الموعد المقترح: <strong>${order.reschedule_time || 'الفترة المسائية'}</strong></p>
+                            </div>
+                        ` : ''}
+
+                        <!-- إشعار اعتراض أو شكوى نشطة إن وجد -->
+                        ${isDispute ? `
+                            <div class="p-3 bg-rose-50/90 rounded-xl border border-rose-300 text-xs space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-rose-900 flex items-center gap-1.5">
+                                        <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600"></i>
+                                        <span>تذكرة بلاغ رسمية: ${order.dispute ? order.dispute.ticketId : 'TKT-2026-4412'}</span>
+                                    </span>
+                                    <span class="text-[10px] font-bold text-rose-700 bg-white px-2 py-0.5 rounded border border-rose-200">مفتش الوزارة بانتظار الإفادة</span>
+                                </div>
+                                <p class="text-[11px] text-slate-700"><strong>السبب:</strong> ${order.dispute ? order.dispute.reason : 'نقص في الوزن'}</p>
+                                <p class="text-[11px] text-slate-600 italic">"${order.dispute ? order.dispute.details : 'وجدنا نقصاً في الوزن'}"</p>
+                            </div>
+                        ` : ''}
+
+                        <!-- كرت تقييم العميل الموثق إن وجد -->
+                        ${isDel && order.rating ? `
+                            <div class="p-2.5 bg-emerald-50/60 rounded-xl border border-emerald-200 text-xs flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-emerald-900">تقييم العميل المستلم:</span>
+                                    <span class="text-amber-500 font-bold flex items-center gap-0.5">
+                                        ${Array.from({length: order.rating.score || 5}).map(() => '<i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>').join('')}
+                                    </span>
+                                    ${order.rating.comment ? `<span class="text-slate-600 text-[11px] italic">"${order.rating.comment}"</span>` : ''}
+                                </div>
+                                <span class="text-[10px] font-bold text-emerald-700">شراء موثق ومطابق ✔</span>
+                            </div>
+                        ` : ''}
+
+                        <!-- إشعار الإلغاء إن وجد -->
+                        ${isCancel ? `
+                            <div class="p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-xs text-slate-600 flex items-center gap-2">
+                                <i data-lucide="info" class="w-4 h-4 text-slate-400"></i>
+                                <span>${order.cancel_reason || 'تم إلغاء الطلب واسترجاع المبلغ لحساب العميل البنكي'}</span>
+                            </div>
+                        ` : ''}
+
+                        <!-- الحسبة المالية وتوزيع الرسوم المعتمدة مع الإجراء المناسب المخصص لكل حالة -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-emerald-50/50 rounded-xl border border-emerald-100 text-[11px]">
+                            <div class="flex items-center gap-4 text-slate-600">
+                                <span>إجمالي المدفوع: <strong class="text-slate-900 font-mono">${(order.total || 0).toFixed(2)} ر.س</strong></span>
+                                <span>رسوم المركز التشغيلية (10%): <strong class="text-emerald-800 font-mono">${(order.broker_fee || 0).toFixed(2)} ر.س</strong></span>
+                                <span>صافي المزارع (87.5%): <strong class="text-mewa-700 font-mono">${(order.merchant_net || 0).toFixed(2)} ر.س</strong></span>
+                            </div>
+
+                            <!-- الإجراء المناسب المخصص لكل حالة -->
+                            <div class="flex items-center gap-2 flex-wrap">
+                                
+                                <!-- 1. إجراء حالة: جديد مدفوع (New) -->
+                                ${isNew ? `
+                                    <button onclick="updateStatusDirectly('${order.orderId}', 'packaging')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                                        <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
+                                        <span>استلام وبدء التجهيز والفرز</span>
+                                    </button>
+                                    <button onclick="printInternalSortingSlip('${order.orderId}')" class="bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1 border border-slate-200">
+                                        <i data-lucide="tag" class="w-3.5 h-3.5 text-slate-500"></i>
+                                        <span>بطاقة الفرز</span>
+                                    </button>
+                                    <button onclick="promptCancelOrder('${order.orderId}')" class="text-rose-600 hover:bg-rose-50 font-bold text-xs px-2.5 py-2 rounded-xl transition">
+                                        <span>تعذر الاستلام</span>
+                                    </button>
+                                ` : ''}
+
+                                <!-- 2. إجراء حالة: قيد الفرز والتجهيز المبرد (Packaging) -->
+                                ${isPkg ? `
+                                    <button onclick="openDispatchModal('${order.orderId}')" class="bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                                        <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+                                        <span>تعيين السائق وإطلاق الشحنة</span>
+                                    </button>
+                                    <button onclick="openWaybillModal('${order.orderId}')" class="bg-white hover:bg-purple-50 text-purple-800 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1 border border-purple-200">
+                                        <i data-lucide="printer" class="w-3.5 h-3.5 text-purple-600"></i>
+                                        <span>بوليصة الشحن</span>
+                                    </button>
+                                    <span class="bg-emerald-50 text-emerald-800 text-[10px] font-bold px-2 py-1 rounded-lg border border-emerald-200 flex items-center gap-1">
+                                        <i data-lucide="thermometer-snowflake" class="w-3 h-3 text-emerald-600"></i> تبريد 4°C
+                                    </span>
+                                ` : ''}
+
+                                <!-- 3. إجراء حالة: خرج للتوصيل مع أسطول النقل المبرد (Out for delivery) -->
+                                ${isShip ? `
+                                    <button onclick="openConfirmDeliveryModal('${order.orderId}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                                        <span>تأكيد التسليم للمستلم بنجاح</span>
+                                    </button>
+                                    <button onclick="openDelayModal('${order.orderId}')" class="bg-orange-50 hover:bg-orange-100 text-orange-900 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1 border border-orange-200">
+                                        <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-orange-600"></i>
+                                        <span>تسجيل تعثر / تأجيل</span>
+                                    </button>
+                                    ${order.driver_phone ? `
+                                        <a href="tel:${order.driver_phone}" class="bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs px-2.5 py-2 rounded-xl transition flex items-center gap-1 border border-slate-200">
+                                            <i data-lucide="phone-call" class="w-3.5 h-3.5 text-purple-600"></i>
+                                            <span>اتصال بالسائق</span>
+                                        </a>
+                                    ` : ''}
+                                ` : ''}
+
+                                <!-- 4. إجراء حالة: تم التسليم بنجاح (Delivered) -->
+                                ${isDel ? `
+                                    <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1.5 rounded-xl border border-emerald-300 flex items-center gap-1.5">
+                                        <i data-lucide="badge-check" class="w-4 h-4 text-emerald-700"></i>
+                                        <span>تم التسليم والمطابقة بنجاح</span>
+                                    </span>
+                                    <button onclick="openWaybillModal('${order.orderId}')" class="bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1 border border-slate-200">
+                                        <i data-lucide="file-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                        <span>سند المطابقة</span>
+                                    </button>
+                                ` : ''}
+
+                                <!-- 5. إجراء حالة: تعثر وتأجيل التسليم (Delayed) -->
+                                ${isDelay ? `
+                                    <button onclick="rescheduleOrder('${order.orderId}')" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                                        <i data-lucide="calendar-sync" class="w-3.5 h-3.5"></i>
+                                        <span>إعادة جدولة وإرسال الشحنة</span>
+                                    </button>
+                                    <a href="https://wa.me/966${order.customer_phone.replace(/^0/,'')}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1 shadow-sm">
+                                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                                        <span>مراسلة العميل</span>
+                                    </a>
+                                ` : ''}
+
+                                <!-- 6. إجراء حالة: اعتراض أو شكوى نشطة (Disputed) -->
+                                ${isDispute ? `
+                                    <button onclick="openDisputeResolutionModal('${order.orderId}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                                        <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+                                        <span>معالجة الاعتراض والرد على الرقابة</span>
+                                    </button>
+                                    <button onclick="quickApproveCompensation('${order.orderId}')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center gap-1 border border-emerald-300">
+                                        <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                        <span>اعتماد تعويض فوري</span>
+                                    </button>
+                                ` : ''}
+
+                                <!-- 7. إجراء حالة: ملغي ومسترد (Cancelled) -->
+                                ${isCancel ? `
+                                    <span class="bg-slate-100 text-slate-700 font-bold text-xs px-3 py-1.5 rounded-xl border border-slate-300 flex items-center gap-1">
+                                        <i data-lucide="slash" class="w-3.5 h-3.5 text-slate-400"></i>
+                                        <span>ملغي ومسترد بالكامل</span>
+                                    </span>
+                                ` : ''}
+
+                                <!-- قائمة التعديل اليدوي السريع لجميع الحالات -->
+                                <select onchange="updateStatusDirectly('${order.orderId}', this.value)" class="text-xs bg-white border border-slate-200 rounded-xl px-2 py-1.5 font-bold text-slate-700 focus:outline-none focus:border-mewa-600">
+                                    <option value="" disabled selected>تغيير يدوي...</option>
+                                    <option value="new" ${isNew ? 'selected' : ''}>جديد مدفوع</option>
+                                    <option value="packaging" ${isPkg ? 'selected' : ''}>قيد التجهيز المبرد</option>
+                                    <option value="out_for_delivery" ${isShip ? 'selected' : ''}>خرج للتوصيل</option>
+                                    <option value="delivered" ${isDel ? 'selected' : ''}>تم التسليم</option>
+                                    <option value="delayed" ${isDelay ? 'selected' : ''}>تعثر / تأجيل</option>
+                                    <option value="disputed" ${isDispute ? 'selected' : ''}>اعتراض نشط</option>
+                                    <option value="cancelled" ${isCancel ? 'selected' : ''}>ملغي</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // تحديث الحالة المباشر والمزامنة الثنائية
+        async function updateStatusDirectly(orderId, newStatus) {
+            const order = serviceOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            order.status = newStatus;
+            order.statusText = getStatusLabel(newStatus);
+
+            // 1. مزامنة مع قاعدة بيانات الخادم
+            const rawId = order.dbId || parseInt(order.orderId.replace(/[^0-9]/g, ''));
+            if (rawId) {
+                try {
+                    await fetch(`/api/orders/${rawId}/status?status=${newStatus}`, { method: 'POST' });
+                } catch (e) {
+                    console.log("Offline mode: status updated locally");
+                }
+            }
+
+            // 2. مزامنة مع سجل المشتريات المحلي لصفحة المستهلك
+            try {
+                const localSaved = JSON.parse(localStorage.getItem('my_store_orders') || '[]');
+                const idx = localSaved.findIndex(o => o.orderId === orderId);
+                if (idx >= 0) {
+                    localSaved[idx].status = newStatus;
+                    localSaved[idx].statusText = getStatusLabel(newStatus);
+                    localStorage.setItem('my_store_orders', JSON.stringify(localSaved));
+                }
+            } catch (e) {
+                console.warn("Storage sync error", e);
+            }
+
+            updateKPIs();
+            renderOrdersList();
+            showToast(`تم تحديث حالة الطلب (${orderId}) إلى: ${getStatusLabel(newStatus)} بنجاح`);
+        }
+
+        // نافذة تأكيد التسليم
+        function openConfirmDeliveryModal(orderId) {
+            activeActionOrderId = orderId;
+            const order = serviceOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            document.getElementById('confirm-del-order-id').innerText = order.orderId;
+            document.getElementById('confirm-del-cust-name').innerText = order.customer_name;
+            document.getElementById('confirm-del-cust-addr').innerText = order.customer_address;
+
+            const modal = document.getElementById('confirm-delivery-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeConfirmDeliveryModal() {
+            const modal = document.getElementById('confirm-delivery-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeActionOrderId = null;
+        }
+
+        async function executeDeliveryConfirmation() {
+            if (!activeActionOrderId) return;
+            const note = document.getElementById('confirm-del-note').value.trim();
+            await updateStatusDirectly(activeActionOrderId, 'delivered');
+            closeConfirmDeliveryModal();
+            showToast(`تم تأكيد تسليم الشحنة للعميل وتوثيق الاستلام بنجاح`);
+        }
+
+        // نافذة تسجيل تعثر وتأجيل
+        function openDelayModal(orderId) {
+            activeActionOrderId = orderId;
+            document.getElementById('delay-order-id').innerText = orderId;
+            const modal = document.getElementById('delay-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeDelayModal() {
+            const modal = document.getElementById('delay-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeActionOrderId = null;
+        }
+
+        function executeDelaySubmission() {
+            if (!activeActionOrderId) return;
+            const order = serviceOrders.find(o => o.orderId === activeActionOrderId);
+            if (!order) return;
+
+            const reason = document.getElementById('delay-reason-select').value;
+            const reschedTime = document.getElementById('delay-reschedule-time').value;
+
+            order.status = 'delayed';
+            order.statusText = 'تعثر في التوصيل - بانتظار إعادة الجدولة';
+            order.delay_reason = reason;
+            order.reschedule_time = reschedTime;
+
+            // تحديث محلي ومزامنة
+            syncOrderToStorage(order);
+            closeDelayModal();
+            updateKPIs();
+            renderOrdersList();
+            showToast(`تم تسجيل التعثر وإعادة جدولة الشحنة إلى (${reschedTime}) بنجاح`);
+        }
+
+        function rescheduleOrder(orderId) {
+            updateStatusDirectly(orderId, 'out_for_delivery');
+            showToast(`تمت إعادة جدولة الشحنة (${orderId}) وإطلاقها للتوصيل المبرد مجدداً`);
+        }
+
+        // نافذة معالجة الشكاوى والاعتراضات
+        function openDisputeResolutionModal(orderId) {
+            activeActionOrderId = orderId;
+            const order = serviceOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            document.getElementById('disp-res-order-id').innerText = order.orderId;
+            document.getElementById('disp-res-ticket').innerText = order.dispute ? order.dispute.ticketId : 'TKT-2026-4412';
+            document.getElementById('disp-res-reason').innerText = order.dispute ? order.dispute.reason : 'نقص في الوزن أو المواصفات';
+            document.getElementById('disp-res-details').innerText = order.dispute ? `"${order.dispute.details}"` : '"نقص بالوزن"';
+
+            const modal = document.getElementById('dispute-resolution-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeDisputeResolutionModal() {
+            const modal = document.getElementById('dispute-resolution-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeActionOrderId = null;
+        }
+
+        function executeDisputeResolution() {
+            if (!activeActionOrderId) return;
+            const order = serviceOrders.find(o => o.orderId === activeActionOrderId);
+            if (!order) return;
+
+            const action = document.getElementById('disp-res-action').value;
+            const reply = document.getElementById('disp-res-reply').value.trim();
+
+            order.status = 'delivered';
+            order.statusText = 'تم التسليم وحل الاعتراض الميداني';
+            order.dispute = {
+                ...(order.dispute || {}),
+                resolved: true,
+                resolution_action: action,
+                resolution_reply: reply,
+                resolved_at: new Date().toISOString()
+            };
+
+            syncOrderToStorage(order);
+            closeDisputeResolutionModal();
+            updateKPIs();
+            renderOrdersList();
+            showToast(`تم إرسال الرد الفني على تذكرة الرقابة واعتماد التسوية (${action}) بنجاح!`);
+        }
+
+        function quickApproveCompensation(orderId) {
+            const order = serviceOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            order.status = 'delivered';
+            order.statusText = 'تم التسليم واعتماد تعويض فوري';
+            if (order.dispute) {
+                order.dispute.resolved = true;
+                order.dispute.resolution_action = "تم اعتماد تعويض فوري بقيمة المحصول لحساب العميل";
+            }
+            syncOrderToStorage(order);
+            updateKPIs();
+            renderOrdersList();
+            showToast(`تم اعتماد التعويض الفوري للطلب (${orderId}) وإغلاق البلاغ بنجاح`);
+        }
+
+        // إجراءات سريعة مساعدة
+        function printInternalSortingSlip(orderId) {
+            showToast(`جاري طباعة بطاقة الفرز والتوزين المبرد للطلب (${orderId})...`);
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+
+        function promptCancelOrder(orderId) {
+            const reason = prompt("يرجى كتابة سبب تعذر الاستلام أو إلغاء الطلب:", "عدم اجتياز فحص الجودة الميداني");
+            if (reason) {
+                const order = serviceOrders.find(o => o.orderId === orderId);
+                if (order) {
+                    order.status = 'cancelled';
+                    order.statusText = 'ملغي ومسترد بالكامل';
+                    order.cancel_reason = reason;
+                    syncOrderToStorage(order);
+                    updateKPIs();
+                    renderOrdersList();
+                    showToast(`تم إلغاء الطلب (${orderId}) وإشعار العميل باسترداد المبلغ`);
+                }
+            }
+        }
+
+        function syncOrderToStorage(order) {
+            try {
+                const localSaved = JSON.parse(localStorage.getItem('my_store_orders') || '[]');
+                const idx = localSaved.findIndex(o => o.orderId === order.orderId);
+                if (idx >= 0) {
+                    localSaved[idx] = { ...localSaved[idx], ...order };
+                    localStorage.setItem('my_store_orders', JSON.stringify(localSaved));
+                }
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+
+        // نافذة تعيين السائق
+        function openDispatchModal(orderId) {
+            activeDispatchOrderId = orderId;
+            document.getElementById('disp-order-id').innerText = orderId;
+            const modal = document.getElementById('dispatch-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeDispatchModal() {
+            const modal = document.getElementById('dispatch-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            activeDispatchOrderId = null;
+        }
+
+        function selectQuickDriver(name, phone, plate) {
+            document.getElementById('disp-driver-name').value = name;
+            document.getElementById('disp-driver-phone').value = phone;
+            document.getElementById('disp-truck-plate').value = plate;
+        }
+
+        async function confirmDispatch() {
+            if (!activeDispatchOrderId) return;
+            const order = serviceOrders.find(o => o.orderId === activeDispatchOrderId);
+            if (!order) return;
+
+            const driverName = document.getElementById('disp-driver-name').value.trim() || 'مندوب النقل المعتمد';
+            const driverPhone = document.getElementById('disp-driver-phone').value.trim() || '0550000000';
+            const truckPlate = document.getElementById('disp-truck-plate').value.trim() || 'أ ب ج 1420';
+            const temp = document.getElementById('disp-temperature').value;
+            const notes = document.getElementById('disp-notes').value.trim();
+
+            order.status = 'out_for_delivery';
+            order.statusText = 'خرج للتوصيل مع أسطول النقل المبرد';
+            order.driver_name = driverName;
+            order.driver_phone = driverPhone;
+            order.truck_plate = truckPlate;
+            order.temperature = temp;
+
+            // تحديث بالخادم
+            const rawId = order.dbId || parseInt(order.orderId.replace(/[^0-9]/g, ''));
+            if (rawId) {
+                try {
+                    await fetch(`/api/orders/${rawId}/status`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            status: 'out_for_delivery',
+                            driver_name: driverName,
+                            driver_phone: driverPhone,
+                            truck_plate: truckPlate,
+                            temperature: temp,
+                            delivery_notes: notes
+                        })
+                    });
+                } catch (e) {
+                    console.log("Saved dispatch locally");
+                }
+            }
+
+            syncOrderToStorage(order);
+            closeDispatchModal();
+            updateKPIs();
+            renderOrdersList();
+            showToast(`تم تعيين السائق (${driverName}) وإرسال الشحنة للتوصيل المبرد بنجاح!`);
+        }
+
+        // نافذة بوليصة التجهيز والشحن
+        function openWaybillModal(orderId) {
+            const order = serviceOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+
+            document.getElementById('wb-order-id').innerText = order.orderId;
+            document.getElementById('wb-date').innerText = order.formattedDate || order.date;
+            document.getElementById('wb-cust-name').innerText = order.customer_name;
+            document.getElementById('wb-cust-phone').innerText = order.customer_phone;
+            document.getElementById('wb-cust-addr').innerText = order.customer_address;
+            document.getElementById('wb-driver-name').innerText = order.driver_name || 'بانتظار تعيين مندوب الأسطول المبرد';
+            document.getElementById('wb-truck-info').innerText = `${order.truck_plate || 'مركبة تبريد معتمدة'} • درجة التبريد: ${order.temperature || '4°C'}`;
+
+            const tbody = document.getElementById('wb-items-table');
+            tbody.innerHTML = (order.items || []).map(it => `
+                <tr>
+                    <td class="p-2.5 font-bold text-slate-800">${it.name}</td>
+                    <td class="p-2.5 text-slate-600">${it.merchant_name || 'مزرعة وطنية'}</td>
+                    <td class="p-2.5 text-center font-mono font-bold">${it.qty} ${it.unit}</td>
+                    <td class="p-2.5 text-center text-emerald-700 font-bold">مفحوص ومطابق ✔</td>
+                </tr>
+            `).join('');
+
+            // توليد رمز QR للبوليصة
+            const qrContainer = document.getElementById('wb-qrcode-container');
+            const qrCodeText = document.getElementById('wb-qr-code-text');
+            if (qrCodeText) qrCodeText.innerText = order.orderId;
+
+            if (qrContainer) {
+                qrContainer.innerHTML = '';
+                try {
+                    const qrUrl = new URL(`my_orders.html?order_id=${encodeURIComponent(order.orderId)}`, window.location.href).href;
+                    new QRCode(qrContainer, {
+                        text: qrUrl,
+                        width: 76,
+                        height: 76,
+                        colorDark: "#006837",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.M
+                    });
+                } catch (e) {
+                    console.error("QR Code error:", e);
+                }
+            }
+
+            const modal = document.getElementById('waybill-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeWaybillModal() {
+            const modal = document.getElementById('waybill-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const inner = document.getElementById('toast-inner');
+            const msgEl = document.getElementById('toast-msg');
+
+            msgEl.innerText = msg;
+            if (isError) {
+                inner.className = "bg-rose-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-rose-500";
+            } else {
+                inner.className = "bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500";
+            }
+
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+            }, 4000);
+        }
+
+        
+
+        // ================= كود التبديل بين التبويبات =================
+        
+        let currentActiveMainTab = 'supply';
+
+        function switchMainTab(tab) {
+            currentActiveMainTab = tab;
+            const supplyTabBtn = document.getElementById('tab-btn-supply');
+            const fulfillmentTabBtn = document.getElementById('tab-btn-fulfillment');
+            const supplyContent = document.getElementById('tab-content-supply');
+            const fulfillmentContent = document.getElementById('tab-content-fulfillment');
+
+            if (tab === 'fulfillment') {
+                supplyContent.classList.add('hidden');
+                fulfillmentContent.classList.remove('hidden');
+
+                supplyTabBtn.className = "main-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15";
+                fulfillmentTabBtn.className = "main-tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-white text-purple-950 shadow-sm border border-white";
+
+                loadOrdersData();
+                try {
+                    history.replaceState(null, '', '?tab=fulfillment');
+                } catch(e){}
+            } else {
+                fulfillmentContent.classList.add('hidden');
+                supplyContent.classList.remove('hidden');
+
+                supplyTabBtn.className = "main-tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-white text-mewa-900 shadow-sm border border-white";
+                fulfillmentTabBtn.className = "main-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15";
+
+                loadMyRequests();
+                try {
+                    history.replaceState(null, '', '?tab=supply');
+                } catch(e){}
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function refreshActiveTab() {
+            if (currentActiveMainTab === 'fulfillment') {
+                loadOrdersData();
+                showToast("تم تحديث قائمة استلام وتجهيز الطلبات");
+            } else {
+                loadMyRequests();
+                showToast("تم تحديث سجل طلبات التوريد والاعتمادات");
+            }
+        }
+
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await fetchBrokers();
+            loadMyRequests();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('tab') === 'fulfillment') {
+                switchMainTab('fulfillment');
+            } else {
+                switchMainTab('supply');
+            }
+
+        });
+    </script>
+    <script src="static/js/nafath.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
