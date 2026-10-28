@@ -123,7 +123,8 @@ def init_db():
     existing_ri_cols = [c["name"] for c in cursor.fetchall()]
     for col, col_type in [
         ("is_restricted", "INTEGER DEFAULT 0"), # 0 = غير مقيد، 1 = مقيد بسقف للمستهلك
-        ("max_consumer_qty", "REAL DEFAULT 5.0") # الحد الأقصى للمستهلك (مثلاً 5 كجم أو 3 كراتين)
+        ("max_consumer_qty", "REAL DEFAULT 5.0"), # الحد الأقصى للمستهلك (مثلاً 5 كجم أو 3 كراتين)
+        ("description", "TEXT DEFAULT ''") # وصف تفصيلي للمنتج ومميزاته يظهر في المتجر
     ]:
         if col.split()[0] not in existing_ri_cols:
             cursor.execute(f"ALTER TABLE request_items ADD COLUMN {col}")

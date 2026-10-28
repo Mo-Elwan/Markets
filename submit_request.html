@@ -576,6 +576,50 @@
             }
         };
 
+        // قائمة الأصناف المعتمدة في لوحة التحكم والكتالوج الوطني لأسواق النفع العام
+        const MASTER_CATALOG_ITEMS = [
+            // خضروات طازجة
+            { name: "طماطم محمية فاخرة (صنف سكارليت)", category: "خضروات طازجة", unit: "صندوق (6 كجم)", price: 28.5, desc: "طماطم بيوت محمية هيدروبونيك ممتازة، مفرزة ومغلفة بمعايير سعودي جاب ونسبة نضج مثالية.", img: "static/images/products/tomatoes.jpg", forApplicant: ["farm"] },
+            { name: "خيار بلدي بيوت محمية نخب أول", category: "خضروات طازجة", unit: "كرتون (5 كجم)", price: 22.0, desc: "خيار محمي طازج مقطوف فجر اليوم، مقرمش وخالٍ تماماً من متبقيات المبيدات، عالي الجودة.", img: "static/images/products/cucumbers.jpg", forApplicant: ["farm"] },
+            { name: "بطاطس سبونتا وادي الدواسر", category: "خضروات طازجة", unit: "خيشة (10 كجم)", price: 32.0, desc: "بطاطس طازجة من مزارع وادي الدواسر غنية بالنشا، أحجام متناسقة ونظيفة ومثالية للطهي والقلي.", img: "static/images/products/potatoes.jpg", forApplicant: ["farm"] },
+            { name: "بصل أحمر حائلي فاخر", category: "خضروات طازجة", unit: "كيس (8 كجم)", price: 24.0, desc: "بصل حائلي أحمر معروف بنكهته القوية وقدرته العالية على التخزين، إنتاج مزارع حائل المعتمدة.", img: "static/images/products/fresh_saudi_potatoes.jpg", forApplicant: ["farm"] },
+            { name: "كوسة بلدية نجدية طازجة", category: "خضروات طازجة", unit: "كرتون (4 كجم)", price: 18.0, desc: "كوسة خضراء بلدية صغيرة الحجم طازجة وغضة، قطاف يومي مباشر من مزارع الرياض.", img: "static/images/products/zucchini.jpg", forApplicant: ["farm"] },
+            { name: "قرع عسلي نجد طازج", category: "خضروات طازجة", unit: "حبة (5-7 كجم)", price: 21.0, desc: "قرع عسلي بلدي ثقيل ومكتمل الحلاوة، ذو لب برتقالي غني بالفيتامينات من أراضي نجد.", img: "static/images/products/zucchini.jpg", forApplicant: ["farm"] },
+            { name: "باذنجان رومي بلدي محمي", category: "خضروات طازجة", unit: "صندوق (5 كجم)", price: 19.5, desc: "باذنجان أسود لامع طازج، ملمس متماسك وخالٍ من المرارة، توريد مباشر من البيوت المحمية.", img: "static/images/products/fresh_greenhouse_tomatoes.jpg", forApplicant: ["farm"] },
+
+            // فواكه موسمية
+            { name: "بطيخ وادي الدواسر أحمر سكري فاخر", category: "فواكه موسمية", unit: "حبة كبيرة (8-10 كجم)", price: 18.0, desc: "حبحب وادي الدواسر المشهور، أحمر قاني وحلاوة طبيعية مضمونة على الشرط والسكين.", img: "static/images/products/watermelon_real.jpg", forApplicant: ["farm"] },
+            { name: "رمان الطائف سكري نخب أول", category: "فواكه موسمية", unit: "صندوق خشبي (7 كجم)", price: 110.0, desc: "رمان بساتين الهدا والشفا ذو الحبات الياقوتية الشفافة والطعم السكري المميز.", img: "static/images/products/pomegranates.jpg", forApplicant: ["farm"] },
+            { name: "برتقال سكري وادي العلا", category: "فواكه موسمية", unit: "صندوق (8 كجم)", price: 45.0, desc: "حمضيات وادي القرى والعلا المباركة، برتقال سكري بلدي عصيري غني بفيتامين ج.", img: "static/images/products/oranges.jpg", forApplicant: ["farm"] },
+            { name: "مانجو تومي جازان موسمي", category: "فواكه موسمية", unit: "كرتون (5 كجم)", price: 65.0, desc: "مانجو تومي فاخر من مزارع جازان الاستوائية، لب أصفر متماسك بدون ألياف ورائحة عطرية زكية.", img: "static/images/products/tropical_mango_tommy.jpg", forApplicant: ["farm"] },
+            { name: "عنب الطائف الأسود العضوي", category: "فواكه موسمية", unit: "صندوق (4 كجم)", price: 42.0, desc: "عنب طائفي أسود عضوي معتمد غني بمضادات الأكسدة، مفرز بعناية فائقة ودرجة حلاوة عالية.", img: "static/images/products/fresh_pomegranates.jpg", forApplicant: ["farm"] },
+            { name: "تين جازان الأسود البلدي", category: "فواكه موسمية", unit: "كرتون (2 كجم)", price: 35.0, desc: "تين بلدي طري شديد العذوبة، قطاف الصباح الباكر مبرد ومغلف للمحافظة على نضارته.", img: "static/images/products/tropical_mango_tommy.jpg", forApplicant: ["farm"] },
+            { name: "ليمون حساوي معطر بلدي", category: "فواكه موسمية", unit: "كرتون (3 كجم)", price: 28.0, desc: "ليمون حساوي أخضر فواح بنكهته الفريدة وعصارته الوفيرة، قطاف بساتين الأحساء التاريخية.", img: "static/images/products/fresh_sweet_oranges.jpg", forApplicant: ["farm"] },
+
+            // تمور فاخرة وعسل
+            { name: "تمر سكري القصيم مفتل ملكي", category: "تمور فاخرة", unit: "كرتون (3 كجم)", price: 85.0, desc: "سكري مفتل ذهبي حبة كبيرة فاخرة، مكنوز بعناية تحت درجات حرارة مثالية من نخيل القصيم.", img: "static/images/products/dates_sukari.jpg", forApplicant: ["farm"] },
+            { name: "عجوة المدينة المنورة درجة أولى", category: "تمور فاخرة", unit: "علبة فاخرة (1 كجم)", price: 70.0, desc: "عجوة مباركة من نخيل العالية بالمدينة المنورة، حبات سوداء منتقاة وفق أعلى اشتراطات الجودة.", img: "static/images/products/dates_ajwa.jpg", forApplicant: ["farm"] },
+            { name: "تمر خلاص الأحساء فاخر ملكي", category: "تمور فاخرة", unit: "كرتون (3 كجم)", price: 75.0, desc: "خلاص واحة الأحساء شقراء اللون معسلة حبة كبس مصنعي نظيف خالٍ من الشوائب.", img: "static/images/products/sukari_dates.jpg", forApplicant: ["farm"] },
+            { name: "عسل سدر بلدي حر أصلي", category: "تمور فاخرة", unit: "عبوة زجاجية (1 كجم)", price: 260.0, desc: "عسل سدر جبلي صافي ومفحوص مخبرياً من مناحل السروات، قوام كثيف ومذاق أصيل لا يقاوم.", img: "static/images/products/honey_sidr.jpg", forApplicant: ["farm"] },
+
+            // أعلاف ونباتات عطرية
+            { name: "برسيم حائلي صافي مجفف مشدود", category: "أعلاف زراعية", unit: "بالة", price: 26.0, desc: "برسيم أخضر حائلي نقي مجفف بنسبة بروتين تتجاوز 18% وخالٍ من الأعشاب الضارة والغبار.", img: "static/images/products/alfalfa_hay.jpg", forApplicant: ["farm"] },
+            { name: "نعناع المدينة المنورة العضوي المغلف", category: "نباتات عطرية", unit: "صندوق (10 باقات)", price: 25.0, desc: "نعناع مديني مغربي فواح بنكهته التاريخية، مغسول ومغلف بطريقة صحية تحفظ زيوته العطرية.", img: "static/images/products/alfalfa_hay_bale.jpg", forApplicant: ["farm"] },
+
+            // مواشي ولحوم (breeder)
+            { name: "خروف نعيمي بلدي (جذع طيب)", category: "مواشي حية (أغنام)", unit: "رأس", price: 1650.0, desc: "خروف نعيمي بلدي سليم معافى مفحوص بيطرياً، علف طبيعي ومربى حلال تحت إشراف الوزارة.", img: "static/images/products/sheep_harri.jpg", forApplicant: ["breeder"] },
+            { name: "ضأن حري بلدي فاخر", category: "مواشي حية (أغنام)", unit: "رأس", price: 1550.0, desc: "خروف حري حجازي بلدي جذع ناهي، لحم طيب وخالٍ من الأمراض، بطاقة صحية بيطرية سارية.", img: "static/images/products/saudi_harri_sheep.jpg", forApplicant: ["breeder"] },
+            { name: "خروف حري بلدي مذبوح ومبرد (مختوم)", category: "لحوم مبردة بالعظم", unit: "ذبيحة كاملة (14-16 كجم)", price: 1450.0, desc: "ذبيحة حري طازجة مذبوحة بمسالخ الوزارة المعتمدة ومبردة بشهادة فحص بيطري رسمي وختم صحي.", img: "static/images/products/sheep_harri.jpg", forApplicant: ["breeder"] },
+            { name: "قعود حاشي بلدي (وضح)", category: "مواشي حية (إبل)", unit: "رأس", price: 4200.0, desc: "حاشي مفرود بلدي مفحوص، لحم طري وصحي مطابق للضوابط والاشتراطات البيطرية.", img: "static/images/products/sheep_harri.jpg", forApplicant: ["breeder"] },
+            { name: "لحم حاشي بلدي طازج بالعظم", category: "لحوم مبردة بالعظم", unit: "كجم", price: 58.0, desc: "لحم حاشي بلدي صغير سن (لباني) مقطع طازج يومياً تحت رقابة بيطرية صحية مستمرة.", img: "static/images/products/sheep_harri.jpg", forApplicant: ["breeder"] },
+            { name: "تيس بلدي حنيذ (عارضي)", category: "مواشي حية (ماعز)", unit: "رأس", price: 1100.0, desc: "تيس عارضي بلدي لباني صغير السن خفيف الشحم، مفحوص ومطعم وفق اشتراطات الثروة الحيوانية.", img: "static/images/products/sheep_harri.jpg", forApplicant: ["breeder"] },
+
+            // مستورد (importer)
+            { name: "تفاح أحمر سكري (وارد إذن الاستيراد)", category: "فواكه مستوردة", unit: "كرتون (10 كجم)", price: 48.0, desc: "تفاح أحمر سكري درجة أولى وارد عبر الميناء بموجب إذن استيراد سارٍ وفحص محجري معتمد.", img: "static/images/products/fresh_sweet_oranges.jpg", forApplicant: ["importer"] },
+            { name: "بصل هندي أحمر (وارد ميناء جدة)", category: "خضروات مستوردة", unit: "كيس 10 كجم", price: 26.0, desc: "بصل أحمر هندي جاف ممتاز مجاز من الحجر الزراعي والرقابة الغذائية.", img: "static/images/products/fresh_saudi_potatoes.jpg", forApplicant: ["importer"] },
+            { name: "برتقال أبو صرة فالنسيا (مستورد)", category: "فواكه مستوردة", unit: "كرتون (10 كجم)", price: 42.0, desc: "برتقال فالنسيا عصيري مبرد ممتاز مطابق للمواصفات القياسية السعودية.", img: "static/images/products/oranges.jpg", forApplicant: ["importer"] }
+        ];
+
         // أنواع الأصناف وقوائم المنتجات والتصنيفات حسب صفة المتقدم
         const APPLICANT_CONFIGS = {
             farm: {
@@ -585,9 +629,8 @@
                 defaultDoc: "AGRI-2026-98124",
                 entityName: "مزرعة واحة الخرج النموذجية (سليمان الصالح)",
                 entityDetails: "النشاط: خضروات محمية وتمور عضوية • السجل الزراعي / شهادة سعودي جاب سارية وموثقة بنظام نما",
-                isFreeText: true,
                 categories: ["خضروات طازجة", "فواكه موسمية", "تمور فاخرة", "محاصيل وحبوب", "أعلاف زراعية", "نباتات عطرية"],
-                defaultItem: { name: "طماطم بلدي محمي ممتاز", cat: "خضروات طازجة", unit: "كجم", price: 4.5, qty: 1000 }
+                defaultItem: { name: "طماطم محمية فاخرة (صنف سكارليت)", cat: "خضروات طازجة", unit: "صندوق (6 كجم)", price: 28.5, qty: 500, desc: "طماطم بيوت محمية هيدروبونيك ممتازة، مفرزة ومغلفة بمعايير سعودي جاب ونسبة نضج مثالية.", img: "static/images/products/tomatoes.jpg" }
             },
             breeder: {
                 docTitle: "2. التحقق من البطاقة الصحية البيطرية",
@@ -596,20 +639,8 @@
                 defaultDoc: "VET-CARD-77412",
                 entityName: "حوش ومربى أنعام نجد (فهد بن راشد)",
                 entityDetails: "النشاط: تربية وتسمين أغنام نعيمي وحري • القطيع المعتمد: 450 رأس مفحوص بيطرياً",
-                isFreeText: false,
-                categories: ["مواشي حية (أغنام)", "مواشي حية (ماعز)", "مواشي حية (إبل)", "مواشي حية (أبقار)", "دواجن وطيور"],
-                availableProducts: [
-                    "خروف نعيمي بلدي (جذع طيب)",
-                    "خروف نعيمي بلدي (ثني)",
-                    "ضأن حري بلدي فاخر",
-                    "خروف نجدي أصيل",
-                    "ماعز عارضي طيب",
-                    "تيس بلدي حنيذ",
-                    "قعود حاشي بلدي (مجاهيم)",
-                    "قعود حاشي بلدي (وضح)",
-                    "عجل بقر بلدي مسمّن"
-                ],
-                defaultItem: { name: "خروف نعيمي بلدي (جذع طيب)", cat: "مواشي حية (أغنام)", unit: "رأس", price: 1650, qty: 50 }
+                categories: ["مواشي حية (أغنام)", "مواشي حية (ماعز)", "مواشي حية (إبل)", "مواشي حية (أبقار)", "لحوم مبردة بالعظم", "دواجن وطيور"],
+                defaultItem: { name: "خروف نعيمي بلدي (جذع طيب)", cat: "مواشي حية (أغنام)", unit: "رأس", price: 1650, qty: 50, desc: "خروف نعيمي بلدي سليم معافى مفحوص بيطرياً، علف طبيعي ومربى حلال تحت إشراف الوزارة.", img: "static/images/products/sheep_harri.jpg" }
             },
             importer: {
                 docTitle: "2. التحقق من إذن الاستيراد المعتمد",
@@ -618,18 +649,8 @@
                 defaultDoc: "IMPORT-PERMIT-2026-0043",
                 entityName: "شركة الحصاد الدولي للاستيراد والتجارة",
                 entityDetails: "المنتجات المصرحة بالإذن: فواكه موسمية مبردة وحيوانات حية من بلد المنشأ المعتمد",
-                isFreeText: false,
                 categories: ["فواكه مستوردة", "خضروات مستوردة", "مواشي حية مستوردة", "لحوم مبردة بالعظم", "حبوب وبقوليات مستوردة"],
-                availableProducts: [
-                    "تفاح أحمر سكري (وارد إذن الاستيراد)",
-                    "برتقال أبو صرة فالنسيا (مستورد)",
-                    "بصل هندي أحمر (وارد ميناء جدة)",
-                    "أغنام جورجية حية (إذن بيطري)",
-                    "أغنام رومانية حية (فحص محجري)",
-                    "لحوم ضأن مبردة طازجة (وارد إذن)",
-                    "موز إكوادوري كرتون نخب أول"
-                ],
-                defaultItem: { name: "تفاح أحمر سكري (وارد إذن الاستيراد)", cat: "فواكه مستوردة", unit: "كرتون (10 كجم)", price: 48, qty: 300 }
+                defaultItem: { name: "تفاح أحمر سكري (وارد إذن الاستيراد)", cat: "فواكه مستوردة", unit: "كرتون (10 كجم)", price: 48, qty: 300, desc: "تفاح أحمر سكري درجة أولى وارد عبر الميناء بموجب إذن استيراد سارٍ وفحص محجري معتمد.", img: "static/images/products/fresh_sweet_oranges.jpg" }
             }
         };
 
@@ -766,6 +787,78 @@
             unitSelect.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
         }
 
+        function onProductCatalogSelect(selectElement) {
+            const row = selectElement.closest('.item-row');
+            const customInput = row.querySelector('.item-custom-name');
+            const catSelect = row.querySelector('.item-cat');
+            const unitSelect = row.querySelector('.item-unit');
+            const priceInput = row.querySelector('.item-price');
+            const descInput = row.querySelector('.item-description');
+            const imgData = row.querySelector('.item-image-data');
+            const previewContainer = row.querySelector('.item-image-preview');
+            const previewImg = row.querySelector('.preview-img');
+            const uploadStatus = row.querySelector('.upload-status-text');
+
+            const val = selectElement.value;
+            if (val === '__custom__') {
+                if (customInput) {
+                    customInput.classList.remove('hidden');
+                    customInput.focus();
+                }
+                return;
+            } else {
+                if (customInput) customInput.classList.add('hidden');
+            }
+
+            const itemMatch = MASTER_CATALOG_ITEMS.find(m => m.name === val);
+            if (!itemMatch) return;
+
+            // تحديث التصنيف
+            if (itemMatch.category) {
+                catSelect.value = itemMatch.category;
+                onCategoryChange(catSelect);
+            }
+
+            // تحديث الوحدة
+            if (itemMatch.unit) {
+                let optionFound = false;
+                for (let i = 0; i < unitSelect.options.length; i++) {
+                    if (unitSelect.options[i].value === itemMatch.unit) {
+                        unitSelect.selectedIndex = i;
+                        optionFound = true;
+                        break;
+                    }
+                }
+                if (!optionFound) {
+                    const opt = document.createElement('option');
+                    opt.value = itemMatch.unit;
+                    opt.innerText = itemMatch.unit;
+                    opt.selected = true;
+                    unitSelect.appendChild(opt);
+                }
+            }
+
+            // تحديث السعر
+            if (itemMatch.price) {
+                priceInput.value = itemMatch.price;
+            }
+
+            // تحديث الوصف التلقائي
+            if (descInput) {
+                descInput.value = itemMatch.desc || '';
+            }
+
+            // تحديث الصورة الافتراضية
+            if (itemMatch.img && (!imgData.value || imgData.value.startsWith('http') || imgData.value.startsWith('static/'))) {
+                imgData.value = itemMatch.img;
+                if (previewImg && previewContainer) {
+                    previewImg.src = itemMatch.img;
+                    previewContainer.classList.remove('hidden');
+                    if (uploadStatus) uploadStatus.innerText = "صورة الصنف الرسمية المعتمدة بنما";
+                }
+            }
+        }
+
         function resetItemsList(defaultItem) {
             const container = document.getElementById('items-list-container');
             container.innerHTML = '';
@@ -777,24 +870,36 @@
             const cfg = APPLICANT_CONFIGS[currentType];
             const item = customItem || cfg.defaultItem;
             const div = document.createElement('div');
-            div.className = "item-row bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 relative";
+            div.className = "item-row bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3.5 relative shadow-2xs";
 
-            // حقل المنتج: خانة نصية للمزرعة، أو قائمة منسدلة لمربي الماشية والمستورد
-            let productFieldHtml = '';
-            if (cfg.isFreeText) {
-                productFieldHtml = `
-                    <input type="text" placeholder="اكتب اسم المنتج أو المحصول الزراعي بحرية..." value="${item.name || ''}" class="item-name text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
-                `;
-            } else {
-                const options = (cfg.availableProducts || []).map(p => 
-                    `<option value="${p}" ${p === item.name ? 'selected' : ''}>${p}</option>`
-                ).join('');
-                productFieldHtml = `
-                    <select class="item-name text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
-                        ${options}
-                    </select>
-                `;
+            // بناء خيارات قائمة المنتجات المنسدلة وفق الأصناف المعرفة في لوحة التحكم
+            const currentCatList = cfg.categories || [];
+            const relevantCatalogItems = MASTER_CATALOG_ITEMS.filter(it => 
+                (it.forApplicant && it.forApplicant.includes(currentType)) || currentCatList.includes(it.category)
+            );
+            const otherCatalogItems = MASTER_CATALOG_ITEMS.filter(it => !relevantCatalogItems.includes(it));
+
+            let productOptionsHtml = `<option value="">-- اختر الصنف المصرح به من لوحة الأصناف --</option>`;
+            
+            if (relevantCatalogItems.length > 0) {
+                productOptionsHtml += `<optgroup label="الأصناف المصرحة لسجلك / رخصتك المعتمدة">`;
+                relevantCatalogItems.forEach(p => {
+                    const isSel = (p.name === (item.name || '')) ? 'selected' : '';
+                    productOptionsHtml += `<option value="${p.name}" ${isSel}>${p.name} • (${p.category})</option>`;
+                });
+                productOptionsHtml += `</optgroup>`;
             }
+
+            if (otherCatalogItems.length > 0) {
+                productOptionsHtml += `<optgroup label="باقي أصناف الكتالوج الوطني المعتمد">`;
+                otherCatalogItems.forEach(p => {
+                    const isSel = (p.name === (item.name || '')) ? 'selected' : '';
+                    productOptionsHtml += `<option value="${p.name}" ${isSel}>${p.name} • (${p.category})</option>`;
+                });
+                productOptionsHtml += `</optgroup>`;
+            }
+
+            productOptionsHtml += `<option value="__custom__">➕ صنف مخصص آخر (إدخال يدوي مخصص)...</option>`;
 
             // قائمة التصنيف المصرح به
             const categoryOptions = (cfg.categories || []).map(c => 
@@ -807,68 +912,94 @@
                 `<option value="${u}" ${u === item.unit ? 'selected' : ''}>${u}</option>`
             ).join('');
 
+            const initialDesc = item.desc || item.description || (MASTER_CATALOG_ITEMS.find(m => m.name === item.name)?.desc || '');
+            const initialImg = item.img || item.image_url || (MASTER_CATALOG_ITEMS.find(m => m.name === item.name)?.img || '');
+
             div.innerHTML = `
-                <button type="button" onclick="this.parentElement.remove()" class="absolute top-3 left-3 text-rose-500 hover:text-rose-700 text-xs font-bold flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-rose-200">
-                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> حذف
+                <button type="button" onclick="this.parentElement.remove()" class="absolute top-3 left-3 text-rose-500 hover:text-rose-700 text-xs font-bold flex items-center gap-1 bg-white px-2.5 py-1 rounded-xl border border-rose-200 transition shadow-2xs">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span>حذف</span>
                 </button>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-600 mb-1">المنتج *</label>
-                        ${productFieldHtml}
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 text-mewa-600"></i>
+                            <span>اسم الصنف المصرح به (من لوحة الأصناف) *</span>
+                        </label>
+                        <select onchange="onProductCatalogSelect(this)" class="item-name text-xs px-3 py-2.5 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-800" required>
+                            ${productOptionsHtml}
+                        </select>
+                        <input type="text" placeholder="اكتب اسم الصنف المخصص بالتفصيل..." class="item-custom-name text-xs px-3 py-2 rounded-xl border border-amber-400 w-full bg-amber-50/70 font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none mt-2 hidden" value="">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-600 mb-1">التصنيف المصرح به *</label>
-                        <select onchange="onCategoryChange(this)" class="item-cat text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                            <i data-lucide="tag" class="w-3.5 h-3.5 text-mewa-600"></i>
+                            <span>التصنيف المصرح به *</span>
+                        </label>
+                        <select onchange="onCategoryChange(this)" class="item-cat text-xs px-3 py-2.5 rounded-xl border border-slate-300 w-full bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-800" required>
                             ${categoryOptions}
                         </select>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-600 mb-1">الكمية / العدد المعروض *</label>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">الكمية المعروضة للتوريد *</label>
                         <input type="number" step="any" min="0.01" value="${item.qty}" class="item-qty text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-600 mb-1">وحدة القياس *</label>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">وحدة القياس *</label>
                         <select class="item-unit text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
                             ${unitOptions}
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-600 mb-1">السعر المقترح (ر.س) *</label>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">السعر المقترح للمستهلك (ر.س) *</label>
                         <input type="number" step="any" min="0" value="${item.price}" class="item-price text-xs px-3 py-2 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none" required>
                     </div>
                 </div>
 
+                <!-- حقل وصف المنتج ومميزاته (يظهر في شاشة المتجر) -->
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5 text-mewa-600"></i>
+                            <span>وصف المنتج ومميزات المحصول (يظهر في شاشة المتجر للمشترين)</span>
+                        </label>
+                        <span class="text-[10px] text-slate-400">مثال: قطاف اليوم، بيوت محمية، شهادة سعودي جاب، تعبئة مفرزة</span>
+                    </div>
+                    <textarea class="item-description text-xs p-3 rounded-xl border border-slate-300 w-full bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none resize-none leading-relaxed text-slate-800" rows="2" placeholder="اكتب وصفاً تفصيلياً لمنتجك يوضح الجودة والمصدر والتغليف ومزايا الدفعة...">${initialDesc}</textarea>
+                </div>
+
                 <!-- حقل صورة الصنف (اختياري) -->
-                <div class="pt-3 border-t border-slate-200/80">
+                <div class="pt-2 border-t border-slate-200/80">
                     <div class="flex items-center justify-between mb-1.5">
                         <label class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
                             <i data-lucide="camera" class="w-3.5 h-3.5 text-mewa-600"></i>
                             <span>صورة الصنف</span>
                             <span class="text-[10px] font-bold text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded-full">اختياري</span>
                         </label>
-                        <span class="text-[10px] text-slate-400">يمكنك رفع صورة حقيقية للمنتج أو تركها لاستخدام الصورة الرسمية المعتمدة</span>
+                        <span class="text-[10px] text-slate-400">يمكنك رفع صورة حقيقية لدفعتك أو الاعتماد على صورة الصنف المعتمدة تلقائياً</span>
                     </div>
 
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <label class="flex-1 cursor-pointer group">
                             <input type="file" accept="image/*" class="item-image-file hidden" onchange="handleItemImageUpload(this)">
-                            <input type="hidden" class="item-image-data" value="${item.image_url || ''}">
+                            <input type="hidden" class="item-image-data" value="${initialImg}">
                             <div class="border-2 border-dashed border-slate-300 group-hover:border-mewa-600 group-hover:bg-mewa-50/40 transition rounded-xl p-2.5 flex items-center gap-3 bg-white shadow-2xs">
                                 <div class="w-9 h-9 rounded-lg bg-mewa-50 border border-mewa-200 text-mewa-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
                                     <i data-lucide="image-plus" class="w-4.5 h-4.5"></i>
                                 </div>
                                 <div class="text-right">
-                                    <div class="font-bold text-xs text-slate-800 upload-status-text">انقر لرفع صورة من جهازك (اختياري)</div>
+                                    <div class="font-bold text-xs text-slate-800 upload-status-text">${initialImg ? 'تم تخصيص صورة الصنف المعتمدة (يمكنك استبدالها برفع صورة)' : 'انقر لرفع صورة من جهازك (اختياري)'}</div>
                                     <div class="text-[10px] text-slate-400">يدعم صيغ JPG, PNG, WebP</div>
                                 </div>
                             </div>
                         </label>
 
                         <!-- صندوق المعاينة اللحظي للصورة -->
-                        <div class="item-image-preview hidden shrink-0 flex items-center gap-2.5 bg-white p-2 rounded-xl border border-slate-200 shadow-xs">
-                            <img src="" alt="صورة الصنف" class="w-11 h-11 object-cover rounded-lg border border-slate-200 preview-img">
+                        <div class="item-image-preview ${initialImg ? '' : 'hidden'} shrink-0 flex items-center gap-2.5 bg-white p-2 rounded-xl border border-slate-200 shadow-xs">
+                            <img src="${initialImg || ''}" alt="صورة الصنف" class="w-11 h-11 object-cover rounded-lg border border-slate-200 preview-img">
                             <div class="text-right">
                                 <span class="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
                                     <i data-lucide="check" class="w-3 h-3"></i> تم إرفاق الصورة
@@ -966,11 +1097,19 @@
             };
 
             rows.forEach((row, idx) => {
-                const name = row.querySelector('.item-name').value;
+                const nameSelect = row.querySelector('.item-name');
+                const customInput = row.querySelector('.item-custom-name');
+                let name = nameSelect ? nameSelect.value : '';
+                if (name === '__custom__' && customInput && customInput.value.trim()) {
+                    name = customInput.value.trim();
+                } else if (!name && customInput && customInput.value.trim()) {
+                    name = customInput.value.trim();
+                }
                 const category = row.querySelector('.item-cat').value;
                 const qty = parseFloat(row.querySelector('.item-qty').value);
                 const unit = row.querySelector('.item-unit').value;
                 const price = parseFloat(row.querySelector('.item-price').value);
+                const description = row.querySelector('.item-description')?.value?.trim() || '';
                 const customImage = row.querySelector('.item-image-data')?.value?.trim();
 
                 // إذا رفع المستخدم صورة خاصة يتم استخدامها فوراً، وإلا استخدام صورة نوعية مطابقة أو افتراضية
@@ -981,21 +1120,21 @@
                         finalImage = 'static/images/products/watermelon_real.jpg';
                     } else if (lowerName.includes('طماطم')) {
                         finalImage = 'static/images/products/fresh_greenhouse_tomatoes.jpg';
-                    } else if (lowerName.includes('بطاطس')) {
+                    } else if (lowerName.includes('بطاطس') || lowerName.includes('بصل')) {
                         finalImage = 'static/images/products/fresh_saudi_potatoes.jpg';
                     } else if (lowerName.includes('تمر') || lowerName.includes('سكري') || lowerName.includes('عجوة') || lowerName.includes('خلاص')) {
                         finalImage = 'static/images/products/sukari_dates.jpg';
-                    } else if (lowerName.includes('رمان')) {
+                    } else if (lowerName.includes('رمان') || lowerName.includes('عنب')) {
                         finalImage = 'static/images/products/fresh_pomegranates.jpg';
-                    } else if (lowerName.includes('مانجو')) {
+                    } else if (lowerName.includes('مانجو') || lowerName.includes('تين')) {
                         finalImage = 'static/images/products/tropical_mango_tommy.jpg';
-                    } else if (lowerName.includes('برتقال')) {
+                    } else if (lowerName.includes('برتقال') || lowerName.includes('ليمون')) {
                         finalImage = 'static/images/products/fresh_sweet_oranges.jpg';
                     } else if (lowerName.includes('عسل')) {
                         finalImage = 'static/images/products/saudi_sidr_honey.jpg';
-                    } else if (lowerName.includes('خروف') || lowerName.includes('نعيمي') || lowerName.includes('حري') || lowerName.includes('غنم') || lowerName.includes('تيس')) {
+                    } else if (lowerName.includes('خروف') || lowerName.includes('نعيمي') || lowerName.includes('حري') || lowerName.includes('غنم') || lowerName.includes('تيس') || lowerName.includes('حاشي')) {
                         finalImage = 'static/images/products/saudi_harri_sheep.jpg';
-                    } else if (lowerName.includes('برسيم') || lowerName.includes('علف') || lowerName.includes('أعلاف')) {
+                    } else if (lowerName.includes('برسيم') || lowerName.includes('علف') || lowerName.includes('أعلاف') || lowerName.includes('نعناع')) {
                         finalImage = 'static/images/products/alfalfa_hay_bale.jpg';
                     } else {
                         finalImage = sampleImages[applicantType] || sampleImages.farm;
@@ -1006,6 +1145,7 @@
                     items.push({
                         name: name,
                         category: category,
+                        description: description,
                         image_url: finalImage,
                         requested_qty: qty,
                         approved_qty: qty, // افتراضي
@@ -1018,14 +1158,17 @@
             });
 
             if (items.length === 0) {
-                showToast("يرجى إدخال صنف واحد على الأقل", true);
+                showToast("يرجى اختيار وتحديد صنف واحد على الأقل", true);
                 return;
             }
 
+            const merchantFullName = `${entityName} (${region} - ${governorate} - ${market})`;
+            const recordDocString = `${applicantType === 'farm' ? 'سجل زراعي / سعودي جاب' : (applicantType === 'breeder' ? 'بطاقة صحية' : 'إذن استيراد')}: ${docNumber}`;
+
             const newRecord = {
                 id: Date.now() % 100000,
-                merchant_name: `${entityName} (${region} - ${governorate} - ${market})`,
-                business_record: `${applicantType === 'farm' ? 'سجل زراعي / سعودي جاب' : (applicantType === 'breeder' ? 'بطاقة صحية' : 'إذن استيراد')}: ${docNumber}`,
+                merchant_name: merchantFullName,
+                business_record: recordDocString,
                 region: region,
                 governorate: governorate,
                 market: market,
@@ -1039,6 +1182,34 @@
                     approval_status: 'pending'
                 }))
             };
+
+            // إرسال الطلب لقاعدة البيانات الخلفية عبر الـ API
+            try {
+                await fetch('/api/submit-listing', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        merchant_name: merchantFullName,
+                        business_record: recordDocString,
+                        region: region,
+                        governorate: governorate,
+                        market_name: market,
+                        fulfillment_mode: fulfillmentMode,
+                        broker_name: assignedBroker,
+                        items: items.map(it => ({
+                            name: it.name,
+                            category: it.category,
+                            description: it.description || "",
+                            image_url: it.image_url,
+                            requested_qty: it.requested_qty,
+                            unit: it.unit,
+                            unit_price: it.unit_price
+                        }))
+                    })
+                });
+            } catch(apiErr) {
+                console.log("Offline mode or backend direct local sync:", apiErr);
+            }
 
             // حفظ الطلب في التخزين المحلي
             const stored = JSON.parse(localStorage.getItem('my_requests') || "[]");

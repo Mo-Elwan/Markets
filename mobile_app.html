@@ -1118,14 +1118,16 @@
                                 <div class="text-[9px] text-slate-400 truncate">${prod.market}</div>
                             </div>
 
-                            <!-- شارة سقف المستهلك -->
+                            <!-- شارة سقف المستهلك أو الرصيد المتاح -->
                             <div class="mt-1 flex items-center justify-between text-[9px]">
                                 ${prod.is_restricted == 1 ? `
                                     <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded font-bold flex items-center gap-0.5">
-                                        <i data-lucide="shield-check" class="w-2.5 h-2.5 text-emerald-600"></i> حد المستهلك: ${prod.max_consumer_qty || 5} ${prod.unit}
+                                        <i data-lucide="shield-check" class="w-2.5 h-2.5 text-emerald-600"></i> سقف المستهلك: ${prod.max_consumer_qty || 5} ${prod.unit}
                                     </span>
                                 ` : `
-                                    <span class="text-slate-400 font-medium text-[8.5px]">كمية مفتوحة (غير مقيد)</span>
+                                    <span class="bg-blue-50 text-blue-800 border border-blue-200 px-1.5 py-0.5 rounded font-bold flex items-center gap-0.5">
+                                        <i data-lucide="package-check" class="w-2.5 h-2.5 text-blue-600"></i> الرصيد المتاح: ${prod.stock} ${prod.unit}
+                                    </span>
                                 `}
                             </div>
                         </div>

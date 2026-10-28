@@ -31,6 +31,7 @@ app.add_middleware(
 class ProductItemInput(BaseModel):
     name: str
     category: str
+    description: Optional[str] = ""
     image_url: Optional[str] = "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&auto=format&fit=crop&q=60"
     requested_qty: float
     unit: str
@@ -96,9 +97,9 @@ def submit_listing(data: CreateListingRequest):
 
     for item in data.items:
         cursor.execute("""
-        INSERT INTO request_items (request_id, name, category, image_url, requested_qty, approved_qty, unit, unit_price, approval_status, stock_remaining)
-        VALUES (?, ?, ?, ?, ?, 0, ?, ?, 'pending', 0)
-        """, (req_id, item.name, item.category, item.image_url, item.requested_qty, item.unit, item.unit_price))
+        INSERT INTO request_items (request_id, name, category, description, image_url, requested_qty, approved_qty, unit, unit_price, approval_status, stock_remaining)
+        VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?, 'pending', 0)
+        """, (req_id, item.name, item.category, item.description or "", item.image_url, item.requested_qty, item.unit, item.unit_price))
 
     conn.commit()
     conn.close()

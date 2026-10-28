@@ -829,13 +829,14 @@
             }
         };
 
-        // المنتجات المعتمدة بصور فوتوغرافية حقيقية عالية الجودة وبيانات جغرافية وتقييمات
+        // المنتجات المعتمدة بصور فوتوغرافية حقيقية عالية الجودة وبيانات جغرافية وتقييمات وأوصاف تفصيلية
         const MASTER_PRODUCTS = [
             {
                 id: 101,
                 name: "طماطم محمية فاخرة (صنف سكارليت)",
                 merchant_name: "مزرعة واحة الخير (الخرج)",
                 category: "خضروات",
+                description: "طماطم بيوت محمية هيدروبونيك عالية النضارة متناسقة الأحجام، معتمدة وفق اشتراطات سعودي جاب ومغلفة بصناديق تهوية مخصصة.",
                 image_url: "static/images/products/tomatoes.jpg",
                 unit: "صندوق (6 كجم)",
                 unit_price: 28.5,
@@ -856,6 +857,7 @@
                 name: "خيار بلدي بيوت محمية نخب أول",
                 merchant_name: "مزارع نجد الخضراء (القصيم)",
                 category: "خضروات",
+                description: "خيار بلدي مقرمش قطاف الصباح الباكر، خالٍ تماماً من بقايا المبيدات الحشرية ومبرد بأحدث التقنيات للحفاظ على الطراوة.",
                 image_url: "static/images/products/cucumbers.jpg",
                 unit: "كرتون (5 كجم)",
                 unit_price: 22.0,
@@ -876,6 +878,7 @@
                 name: "بطاطس سبونتا وادي الدواسر",
                 merchant_name: "شركة التنمية الزراعية",
                 category: "خضروات",
+                description: "بطاطس سبونتا صحراوية ممتازة من أراضي وادي الدواسر، نسبة نشا متوازنة ونظافة فائقة، ممتازة للقلي والطبخ المنزلي.",
                 image_url: "static/images/products/potatoes.jpg",
                 unit: "خيشة (10 كجم)",
                 unit_price: 32.0,
@@ -896,6 +899,7 @@
                 name: "كوسة بلدية نجدية طازجة",
                 merchant_name: "مزارع السهول الذهبية",
                 category: "خضروات",
+                description: "كوسة نجدية خضراء غضة وصغيرة الحجم (بيبي زوكيني)، قطاف يومي مباشر وتعبئة مفرزة خالية من الخدوش والعيوب.",
                 image_url: "static/images/products/zucchini.jpg",
                 unit: "كرتون (4 كجم)",
                 unit_price: 18.0,
@@ -912,10 +916,95 @@
                 max_consumer_qty: 3.0
             },
             {
+                id: 114,
+                name: "بصل أحمر حائلي فاخر",
+                merchant_name: "مزارع أجا وسلمى الزراعية",
+                category: "خضروات",
+                description: "بصل أحمر حائلي مشهور بقوة النكهة وحلاوة المذاق وسماكة القشرة وقدرته العالية على التخزين لشهور دون تلف.",
+                image_url: "static/images/products/potatoes.jpg",
+                unit: "كيس (8 كجم)",
+                unit_price: 24.0,
+                stock_remaining: 850,
+                fulfillment_mode: "broker",
+                broker_name: "شركة الشرق اللوجستية",
+                gap_certified: true,
+                region: "حائل",
+                governorate: "حائل",
+                market_name: "سوق الأعلاف والتمور المركزي بحائل",
+                rating: 4.9,
+                reviews_count: 145,
+                is_restricted: 1,
+                max_consumer_qty: 3.0
+            },
+            {
+                id: 115,
+                name: "قرع عسلي نجد طازج",
+                merchant_name: "مزارع واحة شقراء التراثية",
+                category: "خضروات",
+                description: "قرع عسلي بلدي ثقيل الوزن مكتمل النضج الطبيعي، لب برتقالي زاهٍ وغني بالعناصر الغذائية والسكريات الطبيعية.",
+                image_url: "static/images/products/zucchini.jpg",
+                unit: "حبة (6 كجم)",
+                unit_price: 21.0,
+                stock_remaining: 400,
+                fulfillment_mode: "direct",
+                broker_name: null,
+                gap_certified: true,
+                region: "الرياض",
+                governorate: "شقراء",
+                market_name: "سوق الخضار والتمور بشقراء",
+                rating: 4.8,
+                reviews_count: 82,
+                is_restricted: 0,
+                max_consumer_qty: 4.0
+            },
+            {
+                id: 116,
+                name: "باذنجان رومي بلدي محمي",
+                merchant_name: "مزارع دلتا الخرج النموذجية",
+                category: "خضروات",
+                description: "باذنجان أسود لماع متماسك القوام من البيوت المحمية، منخفض البذور وخالٍ تماماً من الطعم المر، قطاف وتوريد فوري.",
+                image_url: "static/images/products/tomatoes.jpg",
+                unit: "صندوق (5 كجم)",
+                unit_price: 19.5,
+                stock_remaining: 450,
+                fulfillment_mode: "broker",
+                broker_name: "شركة إمداد النفع اللوجستية",
+                gap_certified: true,
+                region: "الرياض",
+                governorate: "الخرج",
+                market_name: "سوق الخرج المركزي للخضار والفواكه",
+                rating: 4.7,
+                reviews_count: 67,
+                is_restricted: 1,
+                max_consumer_qty: 4.0
+            },
+            {
+                id: 117,
+                name: "نعناع المدينة المنورة العضوي المغلف",
+                merchant_name: "بساتين العوالي العطرية بالمدينة",
+                category: "خضروات",
+                description: "نعناع مديني مغربي أصيل ذو رائحة عطرية نفاذة ونكهة تاريخية مميزة، مغسول ومجفف ومغلف للحفاظ على زيوته الطبيعية.",
+                image_url: "static/images/products/alfalfa_hay.jpg",
+                unit: "صندوق (10 باقات)",
+                unit_price: 25.0,
+                stock_remaining: 260,
+                fulfillment_mode: "direct",
+                broker_name: null,
+                gap_certified: true,
+                region: "المدينة المنورة",
+                governorate: "المدينة المنورة",
+                market_name: "سوق الكعكي للخضار والفواكه بالمدينة",
+                rating: 5.0,
+                reviews_count: 210,
+                is_restricted: 0,
+                max_consumer_qty: 15.0
+            },
+            {
                 id: 105,
                 name: "تمر سكري القصيم مفتل ملكي",
                 merchant_name: "مزارع نخيل بريدة الفاخرة",
                 category: "تمور",
+                description: "سكري مفتل ذهبي حبة ملكية كبيرة مقرمشة وممتلئة، مفرزة آلياً ومكنوزة وفق أرقى معايير الجودة بنظام تبريد مستمر.",
                 image_url: "static/images/products/dates_sukari.jpg",
                 unit: "كرتون (3 كجم)",
                 unit_price: 85.0,
@@ -936,6 +1025,7 @@
                 name: "عجوة المدينة المنورة درجة أولى",
                 merchant_name: "مزارع طيبة المباركة (العالية)",
                 category: "تمور",
+                description: "عجوة شريفة مباركة من نخيل العالية بالمدينة المنورة، حبات سوداء ناعمة غنية بالفوائد موثقة بشهادة المصدر والمنشأ.",
                 image_url: "static/images/products/dates_ajwa.jpg",
                 unit: "علبة فاخرة (1 كجم)",
                 unit_price: 70.0,
@@ -952,10 +1042,32 @@
                 max_consumer_qty: 10.0
             },
             {
+                id: 118,
+                name: "تمر خلاص الأحساء فاخر ملكي",
+                merchant_name: "نخيل واحة الأحساء التاريخية",
+                category: "تمور",
+                description: "خلاص حساوي أصيل أشقر اللون شفاف معسل حبة كبيرة، كبس يدوي ومصنعي نظيف خالٍ من السوس والشوائب مع ضمان النقاء.",
+                image_url: "static/images/products/dates_sukari.jpg",
+                unit: "كرتون (3 كجم)",
+                unit_price: 75.0,
+                stock_remaining: 420,
+                fulfillment_mode: "broker",
+                broker_name: "مركز واحة الأحساء الزراعي",
+                gap_certified: true,
+                region: "المنطقة الشرقية",
+                governorate: "الأحساء",
+                market_name: "سوق الأربعاء وسوق التمور المركزي بالأحساء",
+                rating: 4.9,
+                reviews_count: 195,
+                is_restricted: 0,
+                max_consumer_qty: 10.0
+            },
+            {
                 id: 107,
                 name: "عسل سدر بلدي حر أصلي",
                 merchant_name: "مناحل السروات الجنوبية",
                 category: "تمور",
+                description: "عسل سدر جبلي بلدي طبيعي 100% مستخلص من أزهار السدر البرية بجبال السروات، مفحوص مخبرياً بنسبة سكروز مطابقة للمواصفات.",
                 image_url: "static/images/products/honey_sidr.jpg",
                 unit: "عبوة زجاجية (1 كجم)",
                 unit_price: 260.0,
@@ -976,6 +1088,7 @@
                 name: "رمان الطائف سكري نخب أول",
                 merchant_name: "بساتين الهدا والشفا",
                 category: "فواكه",
+                description: "رمان طائفي أصيل ذو قشرة رقيقة وحبات حمراء ياقوتية ممتلئة بالعصير السكري، قطاف بساتين وادي وج والهدا.",
                 image_url: "static/images/products/pomegranates.jpg",
                 unit: "صندوق خشبي (7 كجم)",
                 unit_price: 110.0,
@@ -996,6 +1109,7 @@
                 name: "برتقال سكري وادي العلا",
                 merchant_name: "مزارع واحة العلا النموذجية",
                 category: "فواكه",
+                description: "حمضيات وادي القرى العريق بالعلا، برتقال سكري بلدي فائق الحلاوة وغزير العصير الطبيعي الغني بفيتامين C.",
                 image_url: "static/images/products/oranges.jpg",
                 unit: "صندوق (8 كجم)",
                 unit_price: 45.0,
@@ -1016,6 +1130,7 @@
                 name: "مانجو تومي جازان موسمي",
                 merchant_name: "مزارع وادي بيش الخصيب",
                 category: "فواكه",
+                description: "مانجو استوائي سعودي من أخصب سهول تهامة وجازان، لب أصفر متماسك بدون ألياف، نكهة عطرية غنية ورائحة منعشة.",
                 image_url: "static/images/products/mango.jpg",
                 unit: "كرتون (5 كجم)",
                 unit_price: 65.0,
@@ -1036,6 +1151,7 @@
                 name: "بطيخ وادي الدواسر أحمر سكري فاخر",
                 merchant_name: "مزارع واحة الخرج العضوية (سليمان العبدالله)",
                 category: "فواكه",
+                description: "حبحب وادي الدواسر الموسمي الشهير، لب أحمر قاني حلاوة طبيعية مضمونة على الشرط والسكين، منتقى بعناية فائقة.",
                 image_url: "static/images/products/watermelon.jpg",
                 unit: "كرتون (حبة كبيرة 8-10 كجم)",
                 unit_price: 18.0,
@@ -1052,10 +1168,74 @@
                 max_consumer_qty: 6.0
             },
             {
+                id: 119,
+                name: "ليمون حساوي معطر بلدي",
+                merchant_name: "بساتين الواحة الأحسائية",
+                category: "فواكه",
+                description: "ليمون حساوي أخضر فواح زكي الرائحة وغني بالعصارة المنعشة، محصول طبيعي غير معالج شمعياً من قلب نخيل الأحساء.",
+                image_url: "static/images/products/oranges.jpg",
+                unit: "كرتون (3 كجم)",
+                unit_price: 28.0,
+                stock_remaining: 320,
+                fulfillment_mode: "direct",
+                broker_name: null,
+                gap_certified: true,
+                region: "المنطقة الشرقية",
+                governorate: "الأحساء",
+                market_name: "سوق الخضار واللحوم بالهفوف",
+                rating: 4.8,
+                reviews_count: 94,
+                is_restricted: 0,
+                max_consumer_qty: 6.0
+            },
+            {
+                id: 120,
+                name: "تين جازان الأسود البلدي",
+                merchant_name: "مزارع جبال فيفاء الخضراء",
+                category: "فواكه",
+                description: "تين أسود بلدي شديد الحلاوة والنعومة، قطاف يدوي ناعم في صناديق واقية مبردة لضمان وصوله للمستهلك بأعلى معايير الطزاجة.",
+                image_url: "static/images/products/mango.jpg",
+                unit: "كرتون (2 كجم)",
+                unit_price: 35.0,
+                stock_remaining: 220,
+                fulfillment_mode: "broker",
+                broker_name: "شركة ميناء جدة للخدمات المبردة والتوزيع",
+                gap_certified: true,
+                region: "جازان",
+                governorate: "جازان",
+                market_name: "سوق الفواكه الاستوائية والخضار المركزي بجازان",
+                rating: 4.9,
+                reviews_count: 110,
+                is_restricted: 0,
+                max_consumer_qty: 5.0
+            },
+            {
+                id: 121,
+                name: "عنب الطائف الأسود العضوي",
+                merchant_name: "كروم الشفا الطائفية",
+                category: "فواكه",
+                description: "عنب أسود جبلي عضوي موثق غني بمضادات الأكسدة والسكريات الطبيعية، حبات مشدودة وعناقيد مكتملة متوجة بنكهة الطائف الأسطورية.",
+                image_url: "static/images/products/pomegranates.jpg",
+                unit: "صندوق (4 كجم)",
+                unit_price: 42.0,
+                stock_remaining: 310,
+                fulfillment_mode: "direct",
+                broker_name: null,
+                gap_certified: true,
+                region: "مكة المكرمة",
+                governorate: "الطائف",
+                market_name: "سوق الفواكه والخضار المركزي بالطائف",
+                rating: 4.9,
+                reviews_count: 135,
+                is_restricted: 0,
+                max_consumer_qty: 4.0
+            },
+            {
                 id: 111,
                 name: "خروف حري بلدي مذبوح ومبرد (مختوم)",
                 merchant_name: "مشاريع مراعي الحجاز الوطنية",
                 category: "مواشي",
+                description: "ذبيحة خروف حري حجازي بلدي طازج مذبوح ومختوم بيطرياً بمسالخ الوزارة المعتمدة ومبرد بحرارة 4 درجات مئوية لحفظ النكهة.",
                 image_url: "static/images/products/sheep_harri.jpg",
                 unit: "ذبيحة كاملة (14-16 كجم)",
                 unit_price: 1450.0,
@@ -1072,10 +1252,32 @@
                 max_consumer_qty: 2.0
             },
             {
+                id: 122,
+                name: "لحم حاشي بلدي طازج بالعظم",
+                merchant_name: "ملحمة مسالخ الخرج النموذجية",
+                category: "مواشي",
+                description: "لحم قعود حاشي بلدي صغير سن (لباني) مقطع طازج بالعظم يومياً تحت إشراف طبي بيطري كامل، لحم أحمر طري قليل الدهون.",
+                image_url: "static/images/products/sheep_harri.jpg",
+                unit: "كجم",
+                unit_price: 58.0,
+                stock_remaining: 180,
+                fulfillment_mode: "direct",
+                broker_name: null,
+                gap_certified: true,
+                region: "الرياض",
+                governorate: "الخرج",
+                market_name: "سوق الأعلاف والمواشي المركزي بالخرج",
+                rating: 4.9,
+                reviews_count: 162,
+                is_restricted: 1,
+                max_consumer_qty: 5.0
+            },
+            {
                 id: 112,
                 name: "برسيم حائلي صافي مجفف مشدود",
                 merchant_name: "مزارع الشمال للأعلاف الخضراء",
                 category: "مواشي",
+                description: "برسيم حائلي أخضر صافي عالي البروتين (فوق 18%) مشدود بحزم قياسية خالية من الأعشاب الضارة ومحمي من الرطوبة.",
                 image_url: "static/images/products/alfalfa_hay.jpg",
                 unit: "بالة شديدة النقاء",
                 unit_price: 26.0,
@@ -1090,12 +1292,6 @@
                 reviews_count: 85,
                 is_restricted: 0,
                 max_consumer_qty: 40.0
-            }
-        ];
-                governorate: "حائل",
-                market_name: "سوق الأعلاف والتمور المركزي بحائل",
-                rating: 4.7,
-                reviews_count: 88
             }
         ];
 
@@ -1166,7 +1362,7 @@
             const enriched = { ...p };
             enriched.image_url = getProductRealImage(p);
             
-            // مطابقة ذكية مع MASTER_PRODUCTS لربط المزرعة والمنطقة المعتمدة
+            // مطابقة ذكية مع MASTER_PRODUCTS لربط المزرعة والمنطقة المعتمدة والوصف والقيود
             const masterMatch = MASTER_PRODUCTS.find(mp => mp.id === p.id || mp.name === p.name);
             if (masterMatch) {
                 enriched.region = masterMatch.region;
@@ -1175,8 +1371,15 @@
                 enriched.merchant_name = masterMatch.merchant_name;
                 enriched.rating = masterMatch.rating;
                 enriched.reviews_count = masterMatch.reviews_count;
+                enriched.description = p.description || masterMatch.description || '';
+                enriched.is_restricted = (p.is_restricted !== undefined) ? p.is_restricted : masterMatch.is_restricted;
+                enriched.max_consumer_qty = p.max_consumer_qty || masterMatch.max_consumer_qty || 5.0;
                 return enriched;
             }
+
+            enriched.description = p.description || 'محصول وطني طازج معتمد وموثق بسجلات وزارة البيئة والمياه والزراعة.';
+            enriched.is_restricted = (p.is_restricted !== undefined) ? p.is_restricted : 0;
+            enriched.max_consumer_qty = p.max_consumer_qty || 5.0;
 
             const name = (p.name || '').toLowerCase();
             const merchant = (p.merchant_name || '').toLowerCase();
@@ -1457,6 +1660,7 @@
                         const itemObj = enrichProductWithMeta({
                             id: it.id || (2000 + Math.floor(Math.random()*900)),
                             name: it.name,
+                            description: it.description || '',
                             merchant_name: req.merchant_name || 'مزرعة واحة الخرج العضوية (سليمان العبدالله)',
                             category: it.category || 'خضروات',
                             unit: it.unit || 'كجم',
@@ -1464,7 +1668,9 @@
                             stock_remaining: parseFloat(it.approved_qty) || parseFloat(it.requested_qty) || 100,
                             fulfillment_mode: it.fulfillment_mode || 'broker',
                             broker_name: it.broker_name || 'شركة إمداد النفع اللوجستية',
-                            gap_certified: true
+                            gap_certified: true,
+                            is_restricted: (it.is_restricted !== undefined) ? it.is_restricted : 0,
+                            max_consumer_qty: it.max_consumer_qty || 5.0
                         });
                         if (existingIdx >= 0) {
                             merged[existingIdx] = itemObj;
@@ -1686,29 +1892,44 @@
                                     </div>
                                 </div>
 
+                                    <!-- وصف المنتج ومميزات المحصول -->
+                                    <p class="text-[11.5px] text-slate-600 line-clamp-2 leading-relaxed mt-2 bg-slate-50/90 p-2 rounded-xl border border-slate-100 text-right" title="${p.description || ''}">
+                                        ${p.description || 'محصول وطني طازج معتمد وموثق بسجلات وزارة البيئة والمياه والزراعة.'}
+                                    </p>
+                                </div>
+
                                 <div class="flex items-baseline justify-between pt-1 border-t border-slate-100">
                                     <div>
                                         <span class="text-xl font-black text-mewa-700">${p.unit_price}</span>
                                         <span class="text-xs text-slate-500 font-bold"> ر.س / ${p.unit}</span>
                                     </div>
-                                    <span class="text-[11px] ${isLowStock ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-mewa-50 text-mewa-700 border-mewa-200'} px-2 py-0.5 rounded-md font-bold border">
-                                        المتبقي: ${stock}
-                                    </span>
+                                    ${p.is_restricted == 1 ? `
+                                        <span class="text-[11px] bg-emerald-50 text-emerald-800 border-emerald-300 px-2.5 py-1 rounded-md font-bold border flex items-center gap-1 shadow-2xs" title="الحد الأقصى المسموح للمستهلك العادي في عملية الشراء">
+                                            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                            <span>سقف المستهلك: ${p.max_consumer_qty || 5} ${p.unit}</span>
+                                        </span>
+                                    ` : `
+                                        <span class="text-[11px] ${isLowStock ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-blue-50 text-blue-800 border-blue-200'} px-2.5 py-1 rounded-md font-bold border flex items-center gap-1 shadow-2xs" title="الرصيد المتاح حالياً من هذا الصنف الحر">
+                                            <i data-lucide="package-check" class="w-3.5 h-3.5 ${isLowStock ? 'text-amber-600' : 'text-blue-600'}"></i>
+                                            <span>الرصيد المتاح: ${stock} ${p.unit}</span>
+                                        </span>
+                                    `}
                                 </div>
 
                                 <!-- شارة قيد الصنف وسقف المستهلك -->
                                 <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
                                     ${p.is_restricted == 1 ? `
-                                        <span class="bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-md font-bold flex items-center gap-1">
-                                            <i data-lucide="shield-check" class="w-3 h-3 text-emerald-600"></i>
-                                            <span>سقف المستهلك: ${p.max_consumer_qty || 5} ${p.unit}</span>
+                                        <span class="text-emerald-800 font-bold flex items-center gap-1">
+                                            <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                            <span>صنف مقيد بسقف أفراد</span>
                                         </span>
-                                        <span class="text-slate-400 font-semibold text-[9px]">أكثر من ذلك: طلب مبسط</span>
+                                        <span class="text-slate-500 font-semibold text-[9.5px]">للكميات الأكبر: رخصة مبسط</span>
                                     ` : `
-                                        <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-medium flex items-center gap-1">
-                                            <i data-lucide="unlock" class="w-3 h-3 text-slate-400"></i>
-                                            <span>كمية مفتوحة (غير مقيد)</span>
+                                        <span class="text-slate-600 font-medium flex items-center gap-1">
+                                            <i data-lucide="unlock" class="w-3.5 h-3.5 text-slate-400"></i>
+                                            <span>صنف غير مقيد (شراء حر مفتوح)</span>
                                         </span>
+                                        <span class="text-emerald-700 font-semibold text-[9.5px]">أفراد ومباسط</span>
                                     `}
                                 </div>
                             </div>
