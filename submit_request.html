@@ -780,13 +780,12 @@
 
         function populateProductsForCategory(row, selectedCat, preselectedProductName = null) {
             const nameSelect = row.querySelector('.item-name');
-            const customInput = row.querySelector('.item-custom-name');
             if (!nameSelect) return;
 
             // تصفية الأصناف من الكتالوج الوطني المعتمد حصراً وفق التصنيف المختار
             const filteredItems = MASTER_CATALOG_ITEMS.filter(it => it.category === selectedCat);
 
-            let optsHtml = `<option value="">-- اختر الصنف من قائمة (${selectedCat}) --</option>`;
+            let optsHtml = `<option value="">-- اختر الصنف المصرح من قائمة (${selectedCat}) --</option>`;
             if (filteredItems.length > 0) {
                 filteredItems.forEach(p => {
                     const isSel = (p.name === preselectedProductName) ? 'selected' : '';
@@ -795,24 +794,16 @@
             } else {
                 optsHtml += `<option value="">لا توجد أصناف سابقة لهذا التصنيف</option>`;
             }
-            optsHtml += `<option value="__custom__" ${preselectedProductName === '__custom__' ? 'selected' : ''}>➕ صنف مخصص آخر (إدخال يدوي مخصص)...</option>`;
 
             nameSelect.innerHTML = optsHtml;
 
             // تحديد الصنف وتحديث بياناته التلقائية
-            if (preselectedProductName && preselectedProductName !== '__custom__') {
+            if (preselectedProductName) {
                 nameSelect.value = preselectedProductName;
-                if (customInput) customInput.classList.add('hidden');
                 onProductCatalogSelect(nameSelect);
-            } else if (!preselectedProductName && filteredItems.length > 0) {
+            } else if (filteredItems.length > 0) {
                 nameSelect.selectedIndex = 1; // اختيار أول صنف من هذا التصنيف تلقائياً
-                if (customInput) customInput.classList.add('hidden');
                 onProductCatalogSelect(nameSelect);
-            } else if (preselectedProductName === '__custom__') {
-                nameSelect.value = '__custom__';
-                if (customInput) customInput.classList.remove('hidden');
-            } else {
-                if (customInput) customInput.classList.add('hidden');
             }
         }
 
@@ -830,7 +821,6 @@
 
         function onProductCatalogSelect(selectElement) {
             const row = selectElement.closest('.item-row');
-            const customInput = row.querySelector('.item-custom-name');
             const unitSelect = row.querySelector('.item-unit');
             const priceInput = row.querySelector('.item-price');
             const descInput = row.querySelector('.item-description');
@@ -840,15 +830,7 @@
             const uploadStatus = row.querySelector('.upload-status-text');
 
             const val = selectElement.value;
-            if (val === '__custom__') {
-                if (customInput) {
-                    customInput.classList.remove('hidden');
-                    customInput.focus();
-                }
-                return;
-            } else {
-                if (customInput) customInput.classList.add('hidden');
-            }
+            if (!val) return;
 
             const itemMatch = MASTER_CATALOG_ITEMS.find(m => m.name === val);
             if (!itemMatch) return;
@@ -948,7 +930,6 @@
                         <select onchange="onProductCatalogSelect(this)" class="item-name text-xs px-3 py-2.5 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-900" required>
                             <!-- تعبأ ديناميكياً بناءً على التصنيف المختار -->
                         </select>
-                        <input type="text" placeholder="اكتب اسم الصنف المخصص بالتفصيل..." class="item-custom-name text-xs px-3 py-2 rounded-xl border border-amber-400 w-full bg-amber-50/70 font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none mt-2 hidden" value="">
                     </div>
                 </div>
 
@@ -1110,13 +1091,7 @@
 
             rows.forEach((row, idx) => {
                 const nameSelect = row.querySelector('.item-name');
-                const customInput = row.querySelector('.item-custom-name');
-                let name = nameSelect ? nameSelect.value : '';
-                if (name === '__custom__' && customInput && customInput.value.trim()) {
-                    name = customInput.value.trim();
-                } else if (!name && customInput && customInput.value.trim()) {
-                    name = customInput.value.trim();
-                }
+                const name = nameSelect ? nameSelect.value.trim() : '';
                 const category = row.querySelector('.item-cat').value;
                 const qty = parseFloat(row.querySelector('.item-qty').value);
                 const unit = row.querySelector('.item-unit').value;
