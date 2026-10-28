@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الرقابة والمؤشرات المركزية | منصة أسواق النفع العام</title>
+    <title>لوحة الرقابة والمؤشرات المركزية | المنصة الوطنية لأسواق النفع العام</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -59,14 +59,6 @@
         .naama-card:hover {
             border-color: #c59b27;
             box-shadow: 0 8px 25px -4px rgba(0, 104, 55, 0.08);
-        }
-        .pulse-live {
-            animation: pulse-ring 2s infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 104, 55, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 104, 55, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 104, 55, 0); }
         }
         #national-markets-map .leaflet-popup-content-wrapper {
             border-radius: 16px;
@@ -170,7 +162,7 @@
                 <div class="space-y-2.5 max-w-2xl">
                     <div class="flex items-center gap-2">
                         <span class="bg-naamaGold-500 text-mewa-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm">
-                            <i data-lucide="shield-check" class="w-4 h-4"></i> بوابة الرقابة والإشراف المركزي
+                            <i data-lucide="shield-check" class="w-4 h-4"></i> مركز القيادة والتحكم الرقابي الوطني
                         </span>
                         <span class="bg-white/20 text-emerald-200 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                             <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-ping"></span> مباشر (Live Sync)
@@ -178,7 +170,7 @@
                     </div>
                     <h2 class="text-2xl sm:text-3xl font-black leading-tight text-white">لوحة الرقابة والمؤشرات المركزية للأسواق وحجم التداول</h2>
                     <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
-                        متابعة حية لتدفق المحاصيل الزراعية والسلع الاستراتيجية، أرصدة ووفرة المخزون الوطني، استقرار الأسعار، وضبط امتثال مراكز الخدمة المعتمدة بكافة مناطق المملكة.
+                        منظومة الرصد الوطني لتدفق المحاصيل الزراعية والسلع الاستراتيجية، أرصدة ووفرة المخزون، استقرار مؤشرات الأسعار العادلة، وضبط امتثال مراكز الخدمة ومزارع سعودي جاب بكافة مناطق المملكة.
                     </p>
                 </div>
 
@@ -198,12 +190,12 @@
                         <i data-lucide="map-pin" class="w-4 h-4 text-emerald-300"></i>
                         <select id="filter-region" onchange="updateDashboardStats()" class="bg-transparent text-white focus:outline-none cursor-pointer font-bold text-xs">
                             <option value="all" class="text-slate-800">جميع المناطق (المملكة)</option>
-                            <option value="central" class="text-slate-800">المنطقة الوسطى (الرياض)</option>
-                            <option value="western" class="text-slate-800">المنطقة الغربية (مكة وجدة)</option>
-                            <option value="eastern" class="text-slate-800">المنطقة الشرقية</option>
+                            <option value="central" class="text-slate-800">المنطقة الوسطى (الرياض والخرج)</option>
+                            <option value="western" class="text-slate-800">المنطقة الغربية (مكة وجدة والطائف)</option>
+                            <option value="eastern" class="text-slate-800">المنطقة الشرقية (الدمام والأحساء)</option>
                             <option value="qassim" class="text-slate-800">منطقة القصيم</option>
-                            <option value="southern" class="text-slate-800">المنطقة الجنوبية</option>
-                            <option value="northern" class="text-slate-800">المنطقة الشمالية</option>
+                            <option value="southern" class="text-slate-800">المنطقة الجنوبية (عسير وجازان)</option>
+                            <option value="northern" class="text-slate-800">المنطقة الشمالية (تبوك وحائل والجوف)</option>
                         </select>
                     </div>
 
@@ -218,12 +210,29 @@
             <div class="absolute bottom-0 right-0 left-0 h-1 bg-gradient-to-r from-naamaGold-400 via-emerald-400 to-naamaGold-500"></div>
         </div>
 
-        <!-- ==================== كروت المؤشرات الرقمية الحيوية (KPIs) ==================== -->
+        <!-- ==================== شريط الرصد الإخباري والتنبيهات الرقابية الحية ==================== -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-2xs flex items-center gap-3 overflow-hidden">
+            <span class="bg-emerald-700 text-white text-[11px] font-black px-3 py-1.5 rounded-xl shrink-0 flex items-center gap-1.5 shadow-xs">
+                <i data-lucide="bell-ring" class="w-3.5 h-3.5 text-naamaGold-300 animate-bounce"></i>
+                <span>تنبيهات رقابية لحظية</span>
+            </span>
+            <div class="overflow-x-auto no-scrollbar whitespace-nowrap text-xs font-bold text-slate-700 flex items-center gap-6" id="alerts-ticker">
+                <span class="flex items-center gap-1.5 text-emerald-800"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> إجازة وتوثيق 42 إرسالية طماطم وخضار من مزارع الخرج وسعودي جاب اليوم بنسبة خلو تام من المبيدات.</span>
+                <span class="text-slate-300">•</span>
+                <span class="flex items-center gap-1.5 text-slate-800"><span class="w-2 h-2 rounded-full bg-blue-600"></span> تدفق 54 شاحنة نقل مبرد بحرارة 4.1°C متجهة من مزارع القصيم إلى سوق عتيقة بالرياض وسوق الكندرة بجدة.</span>
+                <span class="text-slate-300">•</span>
+                <span class="flex items-center gap-1.5 text-amber-900"><span class="w-2 h-2 rounded-full bg-naamaGold-500"></span> مؤشر استقرار أسعار البصل والبطاطس يسجل ثباتاً قياسياً عند 98.4% للأسبوع الرابع على التوالي.</span>
+                <span class="text-slate-300">•</span>
+                <span class="flex items-center gap-1.5 text-emerald-800"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> تجاوز الطاقة الاستيعابية للتوريد المحلي حاجز 15,400 طن بفضل جاهزية مراكز الفرز والتعبئة.</span>
+            </div>
+        </div>
+
+        <!-- ==================== الصف الأول: كروت المؤشرات الرقمية الحيوية (KPIs) ==================== -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             <!-- 1. إجمالي حجم التوريد اليومي -->
             <div class="naama-card p-5 rounded-2xl relative overflow-hidden border-t-4 border-t-mewa-600">
                 <div class="flex items-center justify-between">
-                    <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">الوارد الوطني</span>
+                    <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">الوارد الوطني اليومي</span>
                     <div class="w-10 h-10 rounded-xl bg-mewa-50 text-mewa-700 flex items-center justify-center border border-mewa-100">
                         <i data-lucide="scale" class="w-5 h-5"></i>
                     </div>
@@ -257,7 +266,7 @@
                     </div>
                     <div class="flex items-center gap-1.5 mt-2 text-[11px] font-black text-emerald-600">
                         <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-                        <span>من خلال 11 سوقاً مركزياً بالمملكة</span>
+                        <span>عبر 11 سوقاً مركزياً بالمملكة</span>
                     </div>
                 </div>
             </div>
@@ -265,7 +274,7 @@
             <!-- 3. المزارع ومراكز الخدمة المعتمدة -->
             <div class="naama-card p-5 rounded-2xl relative overflow-hidden border-t-4 border-t-mewa-600">
                 <div class="flex items-center justify-between">
-                    <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">منظومة الإمداد</span>
+                    <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">المنتجون والمراكز</span>
                     <div class="w-10 h-10 rounded-xl bg-mewa-50 text-mewa-700 flex items-center justify-center border border-mewa-100">
                         <i data-lucide="tractor" class="w-5 h-5"></i>
                     </div>
@@ -305,6 +314,69 @@
             </div>
         </div>
 
+        <!-- ==================== الصف الثاني: مؤشرات تشغيلية متقدمة (نقل مبرد، تجارة إلكترونية، مخزون) ==================== -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- 1. أسطول النقل المبرد -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100 shrink-0">
+                    <i data-lucide="truck" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 font-bold block">أسطول الشحن المبرد النشط</span>
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-lg font-black text-slate-900">438 شاحنة</span>
+                        <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded">حرارة 4.2°C</span>
+                    </div>
+                    <span class="text-[9.5px] text-slate-500 font-medium">99.4% التزام كامل بالتبريد المستمر</span>
+                </div>
+            </div>
+
+            <!-- 2. مبيعات المتجر الإلكتروني -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100 shrink-0">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 font-bold block">مبيعات المنصة الإلكترونية اليوم</span>
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-lg font-black text-slate-900">8,640 طلب</span>
+                        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded">+15% أفراد</span>
+                    </div>
+                    <span class="text-[9.5px] text-slate-500 font-medium">رضا المستهلكين: 4.88 / 5.0 ★</span>
+                </div>
+            </div>
+
+            <!-- 3. حوكمة الحصص ومنع الاحتكار -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100 shrink-0">
+                    <i data-lucide="lock" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 font-bold block">حوكمة الأصناف المقيدة</span>
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-lg font-black text-slate-900">98.9% امتثال</span>
+                        <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded">ضبط عادل</span>
+                    </div>
+                    <span class="text-[9.5px] text-slate-500 font-medium">منع احتكار وتحديد حصص عادلة</span>
+                </div>
+            </div>
+
+            <!-- 4. مؤشر استدامة المخزون الوطني -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-700 flex items-center justify-center border border-mewa-100 shrink-0">
+                    <i data-lucide="shield" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 font-bold block">كفاية المخزون الوطني الاستراتيجي</span>
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-lg font-black text-slate-900">26 يوماً</span>
+                        <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded">نطاق آمن</span>
+                    </div>
+                    <span class="text-[9.5px] text-slate-500 font-medium">جاهزية إمداد مستمر لكافة المدن</span>
+                </div>
+            </div>
+        </div>
+
         <!-- ==================== قسم الخريطة التفاعلية الوطنية للأسواق المركزية ==================== -->
         <div class="naama-card rounded-3xl p-5 sm:p-6 border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
@@ -313,16 +385,17 @@
                         <i data-lucide="map" class="w-5 h-5 text-naamaGold-300"></i>
                     </div>
                     <div>
-                        <h3 class="text-base sm:text-lg font-black text-slate-900">الخريطة التفاعلية الوطنية لتدفق الأسواق وسلاسل التوريد</h3>
-                        <p class="text-xs text-slate-500 font-medium">عرض توزيع 11 سوقاً مركزياً، مراكز الخدمة المشرفة، وحركة أساطيل التوريد المبرد بالمملكة</p>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900">الخريطة التفاعلية الوطنية لتدفق الأسواق وسلاسل التوريد المعتمدة</h3>
+                        <p class="text-xs text-slate-500 font-medium">توزيع 11 سوقاً مركزياً، مراكز الفرز والتدريج، وحركة أساطيل التوريد المبرد المباشرة بالمملكة</p>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                     <span class="text-xs font-bold text-slate-500 hidden md:inline">تركيز الخريطة على:</span>
                     <button onclick="zoomToMarket('الرياض')" class="text-xs font-bold bg-slate-100 hover:bg-mewa-50 hover:text-mewa-800 px-2.5 py-1.5 rounded-lg transition">الرياض</button>
                     <button onclick="zoomToMarket('جدة')" class="text-xs font-bold bg-slate-100 hover:bg-mewa-50 hover:text-mewa-800 px-2.5 py-1.5 rounded-lg transition">الغربية</button>
                     <button onclick="zoomToMarket('القصيم')" class="text-xs font-bold bg-slate-100 hover:bg-mewa-50 hover:text-mewa-800 px-2.5 py-1.5 rounded-lg transition">القصيم</button>
+                    <button onclick="zoomToMarket('الدمام')" class="text-xs font-bold bg-slate-100 hover:bg-mewa-50 hover:text-mewa-800 px-2.5 py-1.5 rounded-lg transition">الشرقية</button>
                     <button onclick="resetNationalMap()" class="text-xs font-black bg-mewa-700 text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs">
                         <i data-lucide="globe" class="w-3.5 h-3.5"></i>
                         <span>كامل المملكة</span>
@@ -333,27 +406,65 @@
             <!-- حاوية الخريطة والشريط الجانبي للأسواق -->
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
                 <!-- خريطة Leaflet (Google Maps Tiles) -->
-                <div class="lg:col-span-3 relative h-[440px] rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-100">
+                <div class="lg:col-span-3 relative h-[470px] rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-100">
                     <div id="national-markets-map" class="w-full h-full z-0"></div>
 
                     <!-- دليل الخريطة السفلي الأنيق -->
-                    <div class="absolute bottom-3 right-3 z-10 bg-white/95 backdrop-blur-sm p-2.5 rounded-xl border border-slate-200 shadow-md text-xs space-y-1.5">
+                    <div class="absolute bottom-3 right-3 z-10 bg-white/95 backdrop-blur-sm p-3 rounded-xl border border-slate-200 shadow-md text-xs space-y-1.5">
                         <div class="font-black text-slate-900 text-[11px] border-b border-slate-100 pb-1">وسيلة إيضاح الخريطة</div>
                         <div class="flex items-center gap-2 text-[10.5px] font-bold text-slate-700">
-                            <span class="w-3 h-3 rounded bg-mewa-700 border border-naamaGold-400 inline-block"></span>
-                            <span>سوق مركزي نشط (حجم تداول مرتفع)</span>
+                            <span class="w-3.5 h-3.5 rounded-lg bg-mewa-700 border border-naamaGold-400 inline-block"></span>
+                            <span>سوق مركزي معتمد (11 موقعاً)</span>
                         </div>
                         <div class="flex items-center gap-2 text-[10.5px] font-bold text-slate-700">
                             <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block animate-ping"></span>
-                            <span>مسار شحنات أسطول النقل المبرد المباشر</span>
+                            <span>مسار أسطول الشحن المبرد الحي</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- القائمة الجانبية التفاعلية للأسواق المركزية -->
-                <div class="h-[440px] overflow-y-auto no-scrollbar space-y-2.5 pr-0.5" id="markets-quick-list">
-                    <!-- يتم توليد كروت الأسواق برمجياً -->
+                <div class="h-[470px] overflow-y-auto no-scrollbar space-y-2.5 pr-0.5" id="markets-quick-list">
+                    <!-- يتم توليد كروت الأسواق الـ 11 برمجياً -->
                 </div>
+            </div>
+        </div>
+
+        <!-- ==================== مصفوفة أداء مراكز الخدمة والتدريج المعتمدة بالمملكة ==================== -->
+        <div class="naama-card rounded-3xl p-5 sm:p-6 border border-slate-200 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-mewa-50 text-mewa-700 flex items-center justify-center border border-mewa-200">
+                        <i data-lucide="building-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900">مصفوفة أداء مراكز الخدمة والفرز والتدريج المعتمدة</h3>
+                        <p class="text-xs text-slate-500 font-medium">متابعة الطاقة الاستيعابية، نسب الإشغال، المزارع المربوطة، ومعدلات الفرز الآلي</p>
+                    </div>
+                </div>
+                <span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1 self-start sm:self-auto">
+                    <i data-lucide="check-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                    <span>186 مركز خدمة مرخص في منظومة الوزارة</span>
+                </span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-right text-xs">
+                    <thead>
+                        <tr class="bg-slate-50/90 text-slate-600 border-b border-slate-200 font-bold">
+                            <th class="py-3 px-3">مركز الخدمة والتدريج</th>
+                            <th class="py-3 px-3">المنطقة والمدينة</th>
+                            <th class="py-3 px-3">الطاقة الاستيعابية اليومية</th>
+                            <th class="py-3 px-3">نسبة الإشغال الحالية</th>
+                            <th class="py-3 px-3">المزارع المربوطة</th>
+                            <th class="py-3 px-3">مطابقة الدرجة الأولى</th>
+                            <th class="py-3 px-3 text-center">الاعتماد الرقابي</th>
+                        </tr>
+                    </thead>
+                    <tbody id="service-centers-table-body" class="divide-y divide-slate-100 font-medium text-slate-800">
+                        <!-- يتم التوليد برمجياً -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -409,6 +520,25 @@
                 <div class="h-64 sm:h-72 flex items-center justify-center">
                     <canvas id="chart-regions-pie"></canvas>
                 </div>
+            </div>
+        </div>
+
+        <!-- ==================== رسم بياني إضافي: حركة الأسعار وثباتها خلال 30 يوماً ==================== -->
+        <div class="naama-card rounded-3xl p-5 sm:p-6 border border-slate-200 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="trending-down" class="w-5 h-5 text-emerald-700"></i>
+                    <div>
+                        <h4 class="text-base font-black text-slate-900">مؤشر استقرار أسعار السلع الاستراتيجية (آخر 30 يوماً)</h4>
+                        <p class="text-xs text-slate-500 font-medium">رصد النطاق السعري العادل وضبط التذبذب لسلع الطماطم، البطاطس، البصل، والخيار</p>
+                    </div>
+                </div>
+                <span class="text-xs font-black text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                    معدل ثبات الأسعار 98.4%
+                </span>
+            </div>
+            <div class="h-64 sm:h-72">
+                <canvas id="chart-price-stability"></canvas>
             </div>
         </div>
 
@@ -478,7 +608,7 @@
 
     <!-- سكريبت الخريطة التفاعلية، الرسوم البيانية، ومحاكاة البيانات اللحظية -->
     <script>
-        // ==================== بيانات الأسواق المركزية بالمملكة ====================
+        // ==================== بيانات الأسواق المركزية بالمملكة (11 سوقاً) ====================
         const NATIONAL_MARKETS = [
             {
                 id: 1,
@@ -647,6 +777,16 @@
             }
         ];
 
+        // ==================== مصفوفة مراكز الخدمة الكبرى ====================
+        const SERVICE_CENTERS_MATRIX = [
+            { name: "مركز خدمة عتيقة النموذجي للفرز والتدريج", city: "الرياض", cap: "4,500 طن/يوم", occupancy: 78, farms: 420, gradeA: "99.1%", status: "معتمد ونشط ✔" },
+            { name: "مركز القصيم الآلي لفرز وتعبئة التمور والخضار", city: "بريدة", cap: "3,800 طن/يوم", occupancy: 86, farms: 530, gradeA: "99.8%", status: "معتمد ونشط ✔" },
+            { name: "مركز خدمة وتبريد المنطقة الشرقية المركزي", city: "الدمام", cap: "2,900 طن/يوم", occupancy: 74, farms: 310, gradeA: "98.7%", status: "معتمد ونشط ✔" },
+            { name: "مركز خدمة تهامة والساحل الغربي", city: "جدة", cap: "4,100 طن/يوم", occupancy: 82, farms: 460, gradeA: "99.2%", status: "معتمد ونشط ✔" },
+            { name: "مركز الجوف وحائل لفرز الدرنات والحبوب", city: "حائل", cap: "3,200 طن/يوم", occupancy: 71, farms: 380, gradeA: "99.0%", status: "معتمد ونشط ✔" },
+            { name: "مركز خدمة عسير وجازان للمحاصيل الجبلية", city: "أبها", cap: "2,100 طن/يوم", occupancy: 65, farms: 240, gradeA: "98.5%", status: "معتمد ونشط ✔" }
+        ];
+
         // ==================== بيانات السلع الاستراتيجية ====================
         const STRATEGIC_COMMODITIES = [
             { name: "الطماطم (محمي)", icon: "🍅", price: "4.20 ر.س", unit: "كجم", status: "مستقر وآمن", days: 22, fillPercent: 88, border: "border-mewa-600" },
@@ -665,7 +805,9 @@
             { id: "TR-89238", entity: "شركة الجوف الزراعية المعتمدة", market: "سوق الدمام المركزي", item: "بصل جاف معبأ (32 طن)", cert: "سعودي جاب رقم SG-771", temp: "حرارة قياسية", status: "مجاز ومختوم" },
             { id: "TR-89237", entity: "مزارع الوادي والخرج الحديثة", market: "سوق عتيقة المركزي", item: "كوسا وفلفل رومي (12 طن)", cert: "سعودي جاب رقم SG-619", temp: "4.8°C (مبردة)", status: "مجاز ومختوم" },
             { id: "TR-89236", entity: "مركز خدمة التمور بالقصيم", market: "سوق بريدة المركزي", item: "تمور سكري مفتل (22 طن)", cert: "مطابقة هيئة الغذاء والدواء", temp: "مستودع مبرد", status: "مجاز ومختوم" },
-            { id: "TR-89235", entity: "مزارع الطائف للفواكه", market: "سوق الكندرة المركزي - جدة", item: "رمان موسمي درجة أولى (10 طن)", cert: "سعودي جاب رقم SG-532", temp: "6.1°C (مبردة)", status: "مجاز ومختوم" }
+            { id: "TR-89235", entity: "مزارع الطائف للفواكه", market: "سوق الكندرة المركزي - جدة", item: "رمان موسمي درجة أولى (10 طن)", cert: "سعودي جاب رقم SG-532", temp: "6.1°C (مبردة)", status: "مجاز ومختوم" },
+            { id: "TR-89234", entity: "مزارع تبوك للتنمية الزراعية", market: "سوق تبوك المركزي", item: "مشمش وخوخ درجة أولى (8 طن)", cert: "سعودي جاب رقم SG-488", temp: "3.8°C (مبردة)", status: "مجاز ومختوم" },
+            { id: "TR-89233", entity: "مزارع جازان للمحاصيل الاستوائية", market: "سوق عتيقة المركزي - الرياض", item: "مانجو تومي وجليد (16 طن)", cert: "فحص متبقيات المبيدات مجاز", temp: "9.2°C (مبردة)", status: "مجاز ومختوم" }
         ];
 
         let nationalMap = null;
@@ -731,11 +873,11 @@
                 mapMarkers.push({ id: m.id, city: m.city, marker });
             });
 
-            // رسم خطوط المسارات اللوجستية المبردة التعبيرية
+            // رسم مسارات النقل المبرد المباشرة
             drawSimulatedSupplyRoutes();
         }
 
-        // رسم مسارات لوجستية مبردة
+        // رسم مسارات لوجستية مبردة حية
         function drawSimulatedSupplyRoutes() {
             if (!nationalMap) return;
             const routes = [
@@ -743,6 +885,7 @@
                 [[26.35, 43.98], [24.5822, 46.7753]], // القصيم -> العزيزية
                 [[21.28, 40.42], [21.5033, 39.2155]], // الطائف -> جدة
                 [[29.88, 39.31], [26.4207, 50.0888]], // الجوف -> الدمام
+                [[16.88, 42.57], [24.6042, 46.7175]], // جازان -> الرياض
             ];
 
             routes.forEach(pts => {
@@ -790,6 +933,38 @@
                         <span class="text-emerald-700">امتثال ${m.complianceRate} ✔</span>
                     </div>
                 </div>
+            `).join('');
+        }
+
+        // بناء جدول مراكز الخدمة الكبرى
+        function renderServiceCentersMatrix() {
+            const tbody = document.getElementById('service-centers-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = SERVICE_CENTERS_MATRIX.map(sc => `
+                <tr class="hover:bg-slate-50/70 transition">
+                    <td class="py-3 px-3">
+                        <span class="font-black text-slate-900 block">${sc.name}</span>
+                        <span class="text-[9.5px] text-slate-400">محطة فرز وتدريج آلية متطورة</span>
+                    </td>
+                    <td class="py-3 px-3 font-bold text-slate-700">${sc.city}</td>
+                    <td class="py-3 px-3 font-black text-mewa-800">${sc.cap}</td>
+                    <td class="py-3 px-3">
+                        <div class="flex items-center gap-2">
+                            <span class="font-black text-xs">${sc.occupancy}%</span>
+                            <div class="w-16 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-emerald-600 h-1.5 rounded-full" style="width: ${sc.occupancy}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 font-bold text-slate-900">${sc.farms} مزرعة</td>
+                    <td class="py-3 px-3 font-black text-emerald-700">${sc.gradeA}</td>
+                    <td class="py-3 px-3 text-center">
+                        <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-black px-2 py-0.5 rounded-full">
+                            ${sc.status}
+                        </span>
+                    </td>
+                </tr>
             `).join('');
         }
 
@@ -875,7 +1050,7 @@
             renderOperationsTable(filtered);
         }
 
-        // تهيئة الرسوم البيانية Chart.js
+        // تهيئة الرسوم البيانية الثلاثة Chart.js
         function initCharts() {
             // 1. حجم التوريد اليومي
             const ctx1 = document.getElementById('chart-trade-flow');
@@ -945,6 +1120,58 @@
                     }
                 });
             }
+
+            // 3. مؤشر استقرار الأسعار خلال 30 يوماً
+            const ctx3 = document.getElementById('chart-price-stability');
+            if (ctx3) {
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: ['أسبوع 1', 'أسبوع 2', 'أسبوع 3', 'أسبوع 4 (الحالي)'],
+                        datasets: [
+                            {
+                                label: 'الطماطم المحمية (ر.س/كجم)',
+                                data: [4.4, 4.3, 4.2, 4.2],
+                                borderColor: '#e11d48',
+                                borderWidth: 2.5,
+                                tension: 0.3
+                            },
+                            {
+                                label: 'البطاطس سبونتا (ر.س/كجم)',
+                                data: [3.2, 3.15, 3.1, 3.1],
+                                borderColor: '#d97706',
+                                borderWidth: 2.5,
+                                tension: 0.3
+                            },
+                            {
+                                label: 'البصل البلدي (ر.س/كجم)',
+                                data: [2.8, 2.75, 2.8, 2.75],
+                                borderColor: '#0284c7',
+                                borderWidth: 2.5,
+                                tension: 0.3
+                            },
+                            {
+                                label: 'الخيار المحمي (ر.س/كجم)',
+                                data: [3.7, 3.65, 3.6, 3.6],
+                                borderColor: '#059669',
+                                borderWidth: 2.5,
+                                tension: 0.3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top', rtl: true, labels: { font: { family: 'Tajawal', weight: 'bold' } } }
+                        },
+                        scales: {
+                            y: { grid: { color: '#f1f5f9' }, ticks: { font: { family: 'Tajawal' } } },
+                            x: { grid: { display: false }, ticks: { font: { family: 'Tajawal', weight: 'bold' } } }
+                        }
+                    }
+                });
+            }
         }
 
         // تفاعل زر فحص الإرسالية
@@ -980,6 +1207,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initNationalMap();
             renderMarketsSidebar();
+            renderServiceCentersMatrix();
             renderCommodities();
             renderOperationsTable();
             initCharts();
