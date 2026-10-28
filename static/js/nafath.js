@@ -44,16 +44,16 @@ function renderNafathUI() {
 
         if (container) {
             container.innerHTML = `
-                <div class="flex items-center gap-2.5 bg-slate-50 hover:bg-slate-100/90 border border-slate-200/90 py-1.5 px-3 rounded-2xl shadow-xs transition shrink-0">
+                <div class="flex items-center gap-1.5 sm:gap-2.5 bg-slate-50 hover:bg-slate-100/90 border border-slate-200/90 py-1 sm:py-1.5 px-2 sm:px-3 rounded-xl sm:rounded-2xl shadow-xs transition shrink-0 max-w-[150px] sm:max-w-none">
                     <!-- أيقونة الهوية الوطنية الرسمية -->
                     <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#006837] to-[#004e29] text-white flex items-center justify-center shrink-0 shadow-xs border border-emerald-500/20">
                         <i data-lucide="shield-check" class="w-4 h-4 text-naamaGold-400"></i>
                     </div>
 
                     <!-- بيانات المستفيد: الاسم ورقم الهوية الوطنية -->
-                    <div class="text-right leading-tight">
-                        <div class="font-black text-slate-900 text-xs truncate max-w-[170px]" title="${user.name}">${user.name}</div>
-                        <div class="text-[10px] text-slate-500 font-bold mt-0.5">
+                    <div class="text-right leading-tight min-w-0">
+                        <div class="font-black text-slate-900 text-[11px] sm:text-xs truncate max-w-[80px] sm:max-w-[170px]" title="${user.name}">${user.name}</div>
+                        <div class="hidden sm:block text-[10px] text-slate-500 font-bold mt-0.5">
                             الهوية: <span class="text-slate-600 font-bold tracking-wider">${user.national_id}</span>
                         </div>
                     </div>

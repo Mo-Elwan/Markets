@@ -57,6 +57,8 @@
             box-shadow: 0 12px 25px -4px rgba(0, 104, 55, 0.1);
             border-color: #c59b27;
         }
+            .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col antialiased">
@@ -105,14 +107,14 @@
 
     <!-- ترويسة الصفحة الرسمية الموحدة مع لوجو الوزارة والنفاذ الوطني -->
     <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 sm:h-24 gap-4">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-24 gap-2 sm:gap-4">
             
             <!-- الشعار وعنوان المنصة -->
-            <a href="index.html" class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 sm:h-16 w-auto object-contain flex-shrink-0">
-                <div class="border-r-2 border-slate-200 pr-3.5 sm:pr-4 flex flex-col justify-center flex-shrink-0">
-                    <h1 class="text-xl sm:text-2xl font-black text-mewa-800 tracking-tight leading-tight whitespace-nowrap">أسواق النفع العام</h1>
-                    <p class="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap">البوابة الموحدة لإدارة وتداول المنتجات الزراعية والغذائية</p>
+            <a href="index.html" class="flex items-center gap-2 sm:gap-4 min-w-0">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-10 sm:h-16 w-auto object-contain flex-shrink-0">
+                <div class="border-r-2 border-slate-200 pr-2.5 sm:pr-4 flex flex-col justify-center min-w-0">
+                    <h1 class="text-sm sm:text-xl md:text-2xl font-black text-mewa-800 tracking-tight leading-tight truncate">أسواق النفع العام</h1>
+                    <p class="hidden md:block text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-0.5 truncate">البوابة الموحدة لإدارة وتداول المنتجات الزراعية والغذائية</p>
                 </div>
             </a>
 
@@ -124,13 +126,13 @@
     <!-- البنر الترحيبي الرئيسي -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full space-y-10">
         
-        <div class="relative bg-gradient-to-r from-mewa-900 via-mewa-800 to-mewa-700 rounded-3xl overflow-hidden shadow-xl p-8 sm:p-12 text-white border-b-4 border-naamaGold-500">
-            <div class="relative z-10 max-w-3xl space-y-4">
-                <span class="bg-naamaGold-500 text-mewa-950 text-xs font-black px-3.5 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
-                    <i data-lucide="shield-check" class="w-4 h-4"></i> تحت إشراف وزارة البيئة والمياه والزراعة
+        <div class="relative bg-gradient-to-r from-mewa-900 via-mewa-800 to-mewa-700 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl p-5 sm:p-12 text-white border-b-4 border-naamaGold-500">
+            <div class="relative z-10 max-w-3xl space-y-3 sm:space-y-4">
+                <span class="bg-naamaGold-500 text-mewa-950 text-[11px] sm:text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5 shadow-xs">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> تحت إشراف وزارة البيئة والمياه والزراعة
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-black leading-tight">المنصة الوطنية لربط أسواق النفع العام</h2>
-                <p class="text-sm sm:text-base text-emerald-100 leading-relaxed font-normal">
+                <h2 class="text-xl sm:text-3xl md:text-4xl font-black leading-snug sm:leading-tight">المنصة الوطنية لربط أسواق النفع العام</h2>
+                <p class="text-xs sm:text-base text-emerald-100 leading-relaxed font-normal">
                     منظومة رقمية تضمن حوكمة تدفق المنتجات الزراعية والحيوانية والغذائية، وتمكّن المزارع والتاجر من عرض منتجاته ومتابعة اعتمادها واختيار قنوات التوصيل، وصولاً للمستهلك النهائي.
                 </p>
             </div>
@@ -138,28 +140,28 @@
 
         <!-- ==================== تابات أدوار المنصة والشاشات التابعة لها ==================== -->
         <div class="space-y-6">
-            <!-- تابات اختيار الأدوار بشكل بارز وواضح وموحد -->
-            <div class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center gap-2" id="role-tabs-bar">
+            <!-- تابات اختيار الأدوار بشكل متجاوب وسلس على الجوال وشاشات سطح المكتب -->
+            <div class="bg-white p-1.5 sm:p-2.5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth" id="role-tabs-bar">
                 <!-- 1. بوابة البائع -->
-                <button onclick="switchRole('seller')" id="role-tab-seller" class="role-tab-btn active flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 whitespace-nowrap bg-mewa-700 text-white shadow-sm border border-mewa-800">
+                <button onclick="switchRole('seller')" id="role-tab-seller" class="role-tab-btn active shrink-0 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap bg-mewa-700 text-white shadow-sm border border-mewa-800">
                     <i data-lucide="tractor" class="w-4 h-4 text-naamaGold-300"></i>
-                    <span>بوابة البائع (المزارع / مركز الخدمة)</span>
-                    <span class="role-count bg-white/25 text-white text-[11px] px-2 py-0.5 rounded-full font-black">4</span>
+                    <span>بوابة البائع <span class="hidden md:inline font-bold text-xs opacity-90">(المزارع / مركز الخدمة)</span></span>
+                    <span class="role-count bg-white/25 text-white text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full font-black">4</span>
                 </button>
                 <!-- 2. بوابة المستهلك -->
-                <button onclick="switchRole('consumer')" id="role-tab-consumer" class="role-tab-btn flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-slate-100/70 border border-transparent">
+                <button onclick="switchRole('consumer')" id="role-tab-consumer" class="role-tab-btn shrink-0 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-slate-100/70 border border-transparent">
                     <i data-lucide="shopping-cart" class="w-4 h-4 text-emerald-600"></i>
-                    <span>بوابة المستهلك (المشتري والأفراد)</span>
-                    <span class="role-count bg-slate-100 text-slate-700 text-[11px] px-2 py-0.5 rounded-full font-black">3</span>
+                    <span>بوابة المستهلك <span class="hidden md:inline font-bold text-xs opacity-90">(المشتري والأفراد)</span></span>
+                    <span class="role-count bg-slate-100 text-slate-700 text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full font-black">3</span>
                 </button>
                 <!-- 3. بوابة مدير النظام -->
-                <button onclick="switchRole('admin')" id="role-tab-admin" class="role-tab-btn flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-slate-100/70 border border-transparent">
+                <button onclick="switchRole('admin')" id="role-tab-admin" class="role-tab-btn shrink-0 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-slate-100/70 border border-transparent">
                     <i data-lucide="shield-check" class="w-4 h-4 text-naamaGold-600"></i>
                     <span>بوابة مدير ومراقب النظام</span>
-                    <span class="role-count bg-slate-100 text-slate-700 text-[11px] px-2 py-0.5 rounded-full font-black">3</span>
+                    <span class="role-count bg-slate-100 text-slate-700 text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full font-black">3</span>
                 </button>
                 <!-- 4. عرض الكل -->
-                <button onclick="switchRole('all')" id="role-tab-all" class="role-tab-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 whitespace-nowrap text-slate-500 hover:text-slate-800 hover:bg-slate-100/70 border border-transparent">
+                <button onclick="switchRole('all')" id="role-tab-all" class="role-tab-btn shrink-0 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 whitespace-nowrap text-slate-500 hover:text-slate-800 hover:bg-slate-100/70 border border-transparent">
                     <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
                     <span>عرض الكل</span>
                 </button>
@@ -472,20 +474,23 @@
             // تحديث حالة الأزرار العلوية (Tabs)
             const tabs = document.querySelectorAll('.role-tab-btn');
             tabs.forEach(t => {
-                t.className = "role-tab-btn flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-slate-100/70 border border-transparent";
+                t.className = "role-tab-btn shrink-0 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-slate-100/70 border border-transparent";
                 const badge = t.querySelector('.role-count');
                 if (badge) {
-                    badge.className = "role-count bg-slate-100 text-slate-700 text-[11px] px-2 py-0.5 rounded-full font-black";
+                    badge.className = "role-count bg-slate-100 text-slate-700 text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full font-black";
                 }
             });
 
             const activeTab = document.getElementById('role-tab-' + role);
             if (activeTab) {
-                activeTab.className = "role-tab-btn active flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 whitespace-nowrap bg-mewa-700 text-white shadow-sm border border-mewa-800";
+                activeTab.className = "role-tab-btn active shrink-0 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap bg-mewa-700 text-white shadow-sm border border-mewa-800";
                 const badge = activeTab.querySelector('.role-count');
                 if (badge) {
-                    badge.className = "role-count bg-white/25 text-white text-[11px] px-2 py-0.5 rounded-full font-black";
+                    badge.className = "role-count bg-white/25 text-white text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full font-black";
                 }
+                try {
+                    activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } catch(e){}
             }
 
             // فلترة كروت الشاشات بناء على الدور المختار
