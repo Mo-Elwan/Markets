@@ -103,12 +103,42 @@ def init_db():
     );
     """)
 
-    # إضافة أعمدة تتبع الشحن والنقل المبرد لجدول orders
+    # إضافة أعمدة تتبع الشحن والنقل المبرد وتصنيف الطلب (مستهلك أم مبسط) لجدول orders
     cursor.execute("PRAGMA table_info(orders)")
     existing_cols = [c["name"] for c in cursor.fetchall()]
-    for col, col_type in [("driver_name", "TEXT"), ("driver_phone", "TEXT"), ("truck_plate", "TEXT"), ("temperature", "TEXT"), ("delivery_notes", "TEXT")]:
-        if col not in existing_cols:
-            cursor.execute(f"ALTER TABLE orders ADD COLUMN {col} {col_type}")
+    for col, col_type in [
+        ("driver_name", "TEXT"), 
+        ("driver_phone", "TEXT"), 
+        ("truck_plate", "TEXT"), 
+        ("temperature", "TEXT"), 
+        ("delivery_notes", "TEXT"),
+        ("order_type", "TEXT DEFAULT 'consumer'"), # consumer (مستهلك) or commercial_stall (مبسط / دلال)
+        ("distribution_location", "TEXT DEFAULT ''") # اسم ورقم المبسط أو منفذ التوزيع
+    ]:
+        if col.split()[0] not in existing_cols:
+            cursor.execute(f"ALTER TABLE orders ADD COLUMN {col}")
+
+    # إضافة أعمدة تقييد الأصناف وسقف كمية المستهلك لجدول request_items
+    cursor.execute("PRAGMA table_info(request_items)")
+    existing_ri_cols = [c["name"] for c in cursor.fetchall()]
+    for col, col_type in [
+        ("is_restricted", "INTEGER DEFAULT 0"), # 0 = غير مقيد، 1 = مقيد بسقف للمستهلك
+        ("max_consumer_qty", "REAL DEFAULT 5.0") # الحد الأقصى للمستهلك (مثلاً 5 كجم أو 3 كراتين)
+    ]:
+        if col.split()[0] not in existing_ri_cols:
+            cursor.execute(f"ALTER TABLE request_items ADD COLUMN {col}")
+
+    # ضبط إعدادات افتراضية لبعض الأصناف الاستراتيجية كأصناف مقيدة
+    cursor.execute("""
+    UPDATE request_items 
+    SET is_restricted = 1, max_consumer_qty = 10.0 
+    WHERE (name LIKE '%طماطم%' OR name LIKE '%بطاطس%' OR name LIKE '%خيار%') AND (is_restricted IS NULL OR is_restricted = 0)
+    """)
+    cursor.execute("""
+    UPDATE request_items 
+    SET is_restricted = 1, max_consumer_qty = 2.0 
+    WHERE (category = 'مواشي حية' OR name LIKE '%أغنام%' OR name LIKE '%خراف%') AND (is_restricted IS NULL OR is_restricted = 0)
+    """)
 
     # بذر بيانات أولية للاختبار السريع إذا كان الجدول فارغاً
     cursor.execute("SELECT COUNT(*) as cnt FROM brokers")

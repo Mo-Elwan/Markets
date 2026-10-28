@@ -404,6 +404,30 @@
                         <input type="text" id="cust-addr" placeholder="المدينة، الحي، والشارع" value="الرياض - حي النخيل - شارع الملك عبدالعزيز" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-mewa-600 focus:outline-none">
                     </div>
 
+                    <!-- تنبيه تحويل الطلب إلى طلب مبسط / تجاري عند تجاوز الحد الأقصى للمستهلك -->
+                    <div id="stall-warning-banner" class="hidden p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-950 text-xs space-y-1">
+                        <div class="flex items-center gap-1.5 font-black text-amber-900">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+                            <span>تنبيه: تجاوز سقف الاستهلاك الشخصي المباشر</span>
+                        </div>
+                        <p class="text-[10px] text-amber-800 leading-relaxed font-medium">
+                            الكمية المحددة لبعض الأصناف المقيدة تتجاوز سقف الاستهلاك الشخصي للأفراد. تم تصنيف الطلب كـ <b>(طلب مبسط / دلال بالسوق B2B)</b>، ويلزم تحديد موقع ومنفذ التوزيع للرقابة.
+                        </p>
+                    </div>
+
+                    <!-- حقل إلزامي لموقع ومنفذ التوزيع بالسوق -->
+                    <div id="stall-location-container" class="hidden space-y-1.5 p-3 rounded-2xl bg-blue-50/80 border border-blue-200">
+                        <label class="text-[11px] font-black text-blue-950 flex items-center justify-between">
+                            <span class="flex items-center gap-1">
+                                <i data-lucide="store" class="w-3.5 h-3.5 text-blue-700"></i>
+                                اسم ورقم المبسط / مكان منفذ التوزيع: <span class="text-rose-600">*</span>
+                            </span>
+                            <span class="text-[9px] bg-blue-200 text-blue-800 px-2 py-0.5 rounded font-black">إلزامي للمباسط</span>
+                        </label>
+                        <input type="text" id="cust-distribution-location" placeholder="مثال: مبسط رقم 44 - سوق الخضار المركزي بعتيقة" class="w-full text-xs px-3 py-2.5 rounded-xl border border-blue-300 bg-white font-bold text-slate-800 focus:ring-2 focus:ring-blue-600 focus:outline-none">
+                        <p class="text-[9px] text-blue-700 font-medium leading-tight">مطلوب من قبل إدارة أسواق النفع العام والرقابة لحوكمة سلاسل الإمداد ومكافحة الاحتكار.</p>
+                    </div>
+
                     <!-- خيارات الدفع المتاحة -->
                     <div class="pt-2 border-t border-slate-100 space-y-2">
                         <label class="text-[11px] font-bold text-slate-700 block">طريقة الدفع:</label>
@@ -429,7 +453,7 @@
 
                     <button onclick="submitOrder()" class="w-full bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 text-xs">
                         <i data-lucide="check-circle-2" class="w-4 h-4 text-naamaGold-400"></i>
-                        <span>تأكيد الطلب وحجز الكميات</span>
+                        <span id="btn-submit-order-text">تأكيد الطلب وحجز الكميات</span>
                     </button>
 
                     <div class="flex items-center justify-center gap-2 text-[10px] text-slate-400 pt-1">
@@ -494,6 +518,18 @@
                     <div>
                         <span class="text-slate-400 text-[10px] block font-bold">حالة الدفع:</span>
                         <span class="font-bold text-emerald-700">تم الدفع بنجاح ✔</span>
+                    </div>
+
+                    <!-- شارة تصنيف الطلب: مستهلك أم مبسط -->
+                    <div id="inv-order-type-container" class="col-span-2 pt-2 border-t border-slate-200">
+                        <div id="inv-stall-badge" class="hidden p-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs flex items-center justify-between">
+                            <span class="bg-blue-600 text-white text-[10px] font-black px-2 py-0.5 rounded-md">طلب مبسط / دلال بالسوق (B2B)</span>
+                            <span class="font-bold text-[11px]" id="inv-stall-loc-text">منفذ التوزيع: </span>
+                        </div>
+                        <div id="inv-consumer-badge" class="hidden p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between">
+                            <span class="bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded-md">طلب مستهلك نهائي (D2C)</span>
+                            <span class="font-bold text-[11px] text-emerald-800">سند استهلاك أفراد عادل</span>
+                        </div>
                     </div>
                 </div>
 
@@ -811,7 +847,9 @@
                 governorate: "الخرج",
                 market_name: "سوق النفع العام المركزي بالخرج",
                 rating: 4.9,
-                reviews_count: 184
+                reviews_count: 184,
+                is_restricted: 1,
+                max_consumer_qty: 3.0
             },
             {
                 id: 102,
@@ -829,7 +867,9 @@
                 governorate: "بريدة",
                 market_name: "سوق النفع العام النموذجي ببريدة",
                 rating: 4.8,
-                reviews_count: 142
+                reviews_count: 142,
+                is_restricted: 1,
+                max_consumer_qty: 4.0
             },
             {
                 id: 103,
@@ -847,7 +887,9 @@
                 governorate: "وادي الدواسر",
                 market_name: "سوق الخضار والتمور المركزي بوادي الدواسر",
                 rating: 4.9,
-                reviews_count: 215
+                reviews_count: 215,
+                is_restricted: 1,
+                max_consumer_qty: 3.0
             },
             {
                 id: 104,
@@ -865,7 +907,9 @@
                 governorate: "الرياض",
                 market_name: "سوق عتيقة المركزي",
                 rating: 4.7,
-                reviews_count: 98
+                reviews_count: 98,
+                is_restricted: 1,
+                max_consumer_qty: 3.0
             },
             {
                 id: 105,
@@ -883,7 +927,9 @@
                 governorate: "بريدة",
                 market_name: "سوق الخضار والتمور المركزي ببريدة (مدينة التمور)",
                 rating: 5.0,
-                reviews_count: 320
+                reviews_count: 320,
+                is_restricted: 0,
+                max_consumer_qty: 15.0
             },
             {
                 id: 106,
@@ -901,7 +947,9 @@
                 governorate: "المدينة المنورة",
                 market_name: "سوق التمور المركزي (العالية)",
                 rating: 4.9,
-                reviews_count: 280
+                reviews_count: 280,
+                is_restricted: 0,
+                max_consumer_qty: 10.0
             },
             {
                 id: 107,
@@ -919,7 +967,9 @@
                 governorate: "أبها",
                 market_name: "سوق العسل والفواكه الموسمية بأبها",
                 rating: 5.0,
-                reviews_count: 240
+                reviews_count: 240,
+                is_restricted: 0,
+                max_consumer_qty: 8.0
             },
             {
                 id: 108,
@@ -937,7 +987,9 @@
                 governorate: "الطائف",
                 market_name: "سوق الفواكه الموسمية بالهدا",
                 rating: 4.9,
-                reviews_count: 168
+                reviews_count: 168,
+                is_restricted: 0,
+                max_consumer_qty: 5.0
             },
             {
                 id: 109,
@@ -955,7 +1007,9 @@
                 governorate: "العلا",
                 market_name: "سوق المحاصيل والتمور بالعلا",
                 rating: 4.8,
-                reviews_count: 112
+                reviews_count: 112,
+                is_restricted: 0,
+                max_consumer_qty: 10.0
             },
             {
                 id: 110,
@@ -973,7 +1027,9 @@
                 governorate: "جازان",
                 market_name: "سوق الفواكه الاستوائية والخضار المركزي بجازان",
                 rating: 4.9,
-                reviews_count: 190
+                reviews_count: 190,
+                is_restricted: 0,
+                max_consumer_qty: 8.0
             },
             {
                 id: 113,
@@ -991,7 +1047,9 @@
                 governorate: "الخرج",
                 market_name: "سوق النفع العام المركزي بالخرج",
                 rating: 4.9,
-                reviews_count: 230
+                reviews_count: 230,
+                is_restricted: 0,
+                max_consumer_qty: 6.0
             },
             {
                 id: 111,
@@ -1009,7 +1067,9 @@
                 governorate: "جدة",
                 market_name: "سوق النفع العام المركزي بجدة (الصفا)",
                 rating: 4.8,
-                reviews_count: 155
+                reviews_count: 155,
+                is_restricted: 1,
+                max_consumer_qty: 2.0
             },
             {
                 id: 112,
@@ -1024,6 +1084,14 @@
                 broker_name: null,
                 gap_certified: true,
                 region: "حائل",
+                governorate: "حائل",
+                market_name: "سوق الأعلاف والتمور المركزي بحائل",
+                rating: 4.7,
+                reviews_count: 85,
+                is_restricted: 0,
+                max_consumer_qty: 40.0
+            }
+        ];
                 governorate: "حائل",
                 market_name: "سوق الأعلاف والتمور المركزي بحائل",
                 rating: 4.7,
@@ -1627,6 +1695,22 @@
                                         المتبقي: ${stock}
                                     </span>
                                 </div>
+
+                                <!-- شارة قيد الصنف وسقف المستهلك -->
+                                <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                                    ${p.is_restricted == 1 ? `
+                                        <span class="bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-md font-bold flex items-center gap-1">
+                                            <i data-lucide="shield-check" class="w-3 h-3 text-emerald-600"></i>
+                                            <span>سقف المستهلك: ${p.max_consumer_qty || 5} ${p.unit}</span>
+                                        </span>
+                                        <span class="text-slate-400 font-semibold text-[9px]">أكثر من ذلك: طلب مبسط</span>
+                                    ` : `
+                                        <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-medium flex items-center gap-1">
+                                            <i data-lucide="unlock" class="w-3 h-3 text-slate-400"></i>
+                                            <span>كمية مفتوحة (غير مقيد)</span>
+                                        </span>
+                                    `}
+                                </div>
                             </div>
                         </div>
 
@@ -1705,7 +1789,9 @@
                     unit: product.unit,
                     qty: 1,
                     maxStock: maxStock,
-                    image_url: product.image_url
+                    image_url: product.image_url,
+                    is_restricted: product.is_restricted || 0,
+                    max_consumer_qty: product.max_consumer_qty || 5.0
                 });
             }
 
@@ -1762,6 +1848,9 @@
             const subtotalEl = document.getElementById('cart-subtotal');
             const totalEl = document.getElementById('cart-total');
             const headerCountEl = document.getElementById('cart-header-count');
+            const stallBanner = document.getElementById('stall-warning-banner');
+            const stallLocationContainer = document.getElementById('stall-location-container');
+            const btnSubmitText = document.getElementById('btn-submit-order-text');
 
             const totalItemCount = cart.reduce((acc, it) => acc + it.qty, 0);
             headerCountEl.innerText = totalItemCount;
@@ -1776,22 +1865,52 @@
                 `;
                 subtotalEl.innerText = '0.00 ر.س';
                 totalEl.innerText = '0.00 ر.س';
+                if (stallBanner) stallBanner.classList.add('hidden');
+                if (stallLocationContainer) stallLocationContainer.classList.add('hidden');
+                if (btnSubmitText) btnSubmitText.innerText = "تأكيد الطلب وحجز الكميات";
                 lucide.createIcons();
                 return;
             }
 
+            // فحص هل يوجد أي صنف مقيد تجاوز الحد الأقصى للمستهلك
+            let hasExceededRestricted = false;
             let subtotal = 0;
+
             container.innerHTML = cart.map(item => {
                 const itemTotal = item.price * item.qty;
                 subtotal += itemTotal;
+
+                const isRestricted = (item.is_restricted == 1);
+                const limit = item.max_consumer_qty || 5.0;
+                const exceeded = isRestricted && (item.qty > limit);
+                if (exceeded) hasExceededRestricted = true;
+
                 return `
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex flex-col gap-2 text-xs">
+                    <div class="bg-slate-50 p-2.5 rounded-xl border ${exceeded ? 'border-amber-300 bg-amber-50/40' : 'border-slate-200'} flex flex-col gap-2 text-xs">
                         <div class="flex items-center justify-between">
                             <span class="font-black text-slate-800 line-clamp-1">${item.name}</span>
                             <button onclick="removeFromCart(${item.id})" class="text-slate-400 hover:text-rose-600 transition p-1">
                                 <i data-lucide="x" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
+
+                        <!-- شارة حالة الاستهلاك الشخصي أم التجاري -->
+                        <div class="flex items-center justify-between text-[10px]">
+                            ${isRestricted ? (exceeded ? `
+                                <span class="bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded font-black flex items-center gap-1">
+                                    <i data-lucide="alert-triangle" class="w-3 h-3 text-amber-600"></i>
+                                    كمية مبسط (تجاوزت الحد: ${limit} ${item.unit})
+                                </span>
+                            ` : `
+                                <span class="text-emerald-700 font-bold flex items-center gap-1">
+                                    <i data-lucide="check" class="w-3 h-3"></i>
+                                    ضمن سقف المستهلك (${limit} ${item.unit})
+                                </span>
+                            `) : `
+                                <span class="text-slate-400 font-medium">كمية حرة (غير مقيد)</span>
+                            `}
+                        </div>
+
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg p-0.5">
                                 <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center font-black text-slate-600 hover:bg-slate-100 rounded">
@@ -1813,6 +1932,18 @@
 
             subtotalEl.innerText = `${subtotal.toFixed(2)} ر.س`;
             totalEl.innerText = `${subtotal.toFixed(2)} ر.س`;
+
+            // إظهار أو إخفاء تنبيه المباسط وحقل موقع التوزيع الإلزامي
+            if (hasExceededRestricted) {
+                if (stallBanner) stallBanner.classList.remove('hidden');
+                if (stallLocationContainer) stallLocationContainer.classList.remove('hidden');
+                if (btnSubmitText) btnSubmitText.innerText = "تأكيد طلب التوريد للمبسط (B2B)";
+            } else {
+                if (stallBanner) stallBanner.classList.add('hidden');
+                if (stallLocationContainer) stallLocationContainer.classList.add('hidden');
+                if (btnSubmitText) btnSubmitText.innerText = "تأكيد الطلب وحجز الكميات";
+            }
+
             lucide.createIcons();
         }
 
@@ -1847,6 +1978,19 @@
                 return;
             }
 
+            // فحص هل يوجد أي صنف مقيد تجاوز الحد الأقصى للمستهلك
+            const hasExceededRestricted = cart.some(it => it.is_restricted == 1 && it.qty > (it.max_consumer_qty || 5.0));
+            const distLocInput = document.getElementById('cust-distribution-location');
+            const distLoc = distLocInput ? distLocInput.value.trim() : '';
+
+            if (hasExceededRestricted && !distLoc) {
+                showToast("الكمية المطلوبة تتجاوز سقف المستهلك للأصناف المقيدة. يرجى إدخال اسم ورقم المبسط / مكان منفذ التوزيع بالسوق.", true);
+                if (distLocInput) distLocInput.focus();
+                return;
+            }
+
+            const finalOrderType = hasExceededRestricted ? 'commercial_stall' : 'consumer';
+
             let orderId = `ORD-2026-${Math.floor(1000 + Math.random() * 9000)}`;
             let orderSuccess = false;
 
@@ -1859,6 +2003,8 @@
                         customer_name: name,
                         customer_phone: phone,
                         customer_address: addr,
+                        order_type: finalOrderType,
+                        distribution_location: distLoc,
                         items: cart.map(i => ({ product_item_id: i.id, quantity: i.qty }))
                     })
                 });
@@ -1902,6 +2048,8 @@
                 customer_name: name,
                 customer_phone: phone,
                 customer_address: addr,
+                order_type: finalOrderType,
+                distribution_location: distLoc,
                 paymentMethod: paymentMethod,
                 items: itemsSnapshot,
                 subtotal: subtotalCalc,
@@ -1917,6 +2065,11 @@
                 const existingOrders = JSON.parse(localStorage.getItem('my_store_orders') || '[]');
                 existingOrders.unshift(orderRecord);
                 localStorage.setItem('my_store_orders', JSON.stringify(existingOrders));
+
+                // مزامنة مع سجل orders العام لمركز الخدمة والرقابة
+                const allOrders = JSON.parse(localStorage.getItem('my_orders') || '[]');
+                allOrders.unshift(orderRecord);
+                localStorage.setItem('my_orders', JSON.stringify(allOrders));
             } catch (e) {
                 console.warn("Could not save order to localStorage", e);
             }
@@ -1927,6 +2080,8 @@
                 name: name,
                 phone: phone,
                 addr: addr,
+                order_type: finalOrderType,
+                distribution_location: distLoc,
                 paymentMethod: paymentMethod,
                 items: [...cart],
                 subtotal: subtotalCalc
@@ -1954,6 +2109,20 @@
             document.getElementById('inv-cust-name').innerText = orderData.name;
             document.getElementById('inv-cust-phone').innerText = orderData.phone;
             document.getElementById('inv-cust-addr').innerText = orderData.addr;
+
+            // تحديث شارة تصنيف الطلب: مبسط أم مستهلك
+            const stallBadge = document.getElementById('inv-stall-badge');
+            const consumerBadge = document.getElementById('inv-consumer-badge');
+            const stallLocText = document.getElementById('inv-stall-loc-text');
+
+            if (orderData.order_type === 'commercial_stall') {
+                if (stallBadge) stallBadge.classList.remove('hidden');
+                if (consumerBadge) consumerBadge.classList.add('hidden');
+                if (stallLocText) stallLocText.innerText = `منفذ التوزيع: ${orderData.distribution_location || 'مبسط بالسوق المركزي'}`;
+            } else {
+                if (stallBadge) stallBadge.classList.add('hidden');
+                if (consumerBadge) consumerBadge.classList.remove('hidden');
+            }
 
             const paymentMap = {
                 'mada': 'بطاقة مدى الإلكترونية (Mada)',

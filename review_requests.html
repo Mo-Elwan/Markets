@@ -158,77 +158,260 @@
             </div>
         </div>
 
-        <!-- تنبيه الاشتراطات والتعليمات الرقابية -->
-        <div class="bg-gradient-to-l from-mewa-900 to-mewa-800 text-white p-6 rounded-2xl shadow-md border-r-8 border-naamaGold-500 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div class="space-y-1">
-                <div class="flex items-center gap-2">
-                    <span class="bg-naamaGold-500 text-mewa-950 text-xs font-black px-2 py-0.5 rounded">صلاحيات المعالجة</span>
-                    <h3 class="text-base font-black">خيارات الإدارة في مراجعة كل طلب:</h3>
+        <!-- شريط التبويبات الرئيسي للوحة الرقابة والإدارة -->
+        <div class="flex flex-col sm:flex-row items-center gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
+            <button id="admin-tab-btn-requests" onclick="switchAdminTab('requests')" class="w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-white text-mewa-900 shadow-sm border border-slate-200">
+                <i data-lucide="clipboard-list" class="w-4 h-4 text-mewa-600"></i>
+                <span>سجل طلبات التوريد والاعتماد الرقابي</span>
+                <span id="tab-requests-badge" class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+            </button>
+            <button id="admin-tab-btn-quotas" onclick="switchAdminTab('quotas')" class="w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-white/60">
+                <i data-lucide="scale" class="w-4 h-4 text-emerald-600"></i>
+                <span>حوكمة قيود الأصناف وهوامش المستهلك (الأفراد والمباسط)</span>
+                <span id="tab-quotas-badge" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">إدارة القيود</span>
+            </button>
+        </div>
+
+        <!-- ==================== التبويب 1: سجل طلبات التوريد والاعتماد ==================== -->
+        <div id="admin-section-requests" class="space-y-8">
+            <!-- تنبيه الاشتراطات والتعليمات الرقابية -->
+            <div class="bg-gradient-to-l from-mewa-900 to-mewa-800 text-white p-6 rounded-2xl shadow-md border-r-8 border-naamaGold-500 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-naamaGold-500 text-mewa-950 text-xs font-black px-2 py-0.5 rounded">صلاحيات المعالجة</span>
+                        <h3 class="text-base font-black">خيارات الإدارة في مراجعة كل طلب:</h3>
+                    </div>
+                    <p class="text-xs text-emerald-100 leading-relaxed max-w-4xl">
+                        1. <b>الموافقة الكاملة</b> لكافة الأصناف والكميات. &nbsp;|&nbsp; 
+                        2. <b>الموافقة الجزئية</b> (اعتماد أصناف مطابقة ورفض أخرى مخالفة). &nbsp;|&nbsp; 
+                        3. <b>تعديل الكمية</b> للحد من الإغراق وموازنة العرض. &nbsp;|&nbsp; 
+                        4. <b>الرفض المسبب</b> مع تدوين السبب رسمياً للتاجر.
+                    </p>
                 </div>
-                <p class="text-xs text-emerald-100 leading-relaxed max-w-4xl">
-                    1. <b>الموافقة الكاملة</b> لكافة الأصناف والكميات. &nbsp;|&nbsp; 
-                    2. <b>الموافقة الجزئية</b> (اعتماد أصناف مطابقة ورفض أخرى مخالفة). &nbsp;|&nbsp; 
-                    3. <b>تعديل الكمية</b> للحد من الإغراق وموازنة العرض. &nbsp;|&nbsp; 
-                    4. <b>الرفض المسبب</b> مع تدوين السبب رسمياً للتاجر.
-                </p>
+            </div>
+
+            <!-- جدول وسجل طلبات التوريد الواردة مع شريط البحث والفلترة -->
+            <div class="naama-card p-6 rounded-3xl space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
+                    <div>
+                        <h3 class="text-base font-black text-slate-900 section-tag flex items-center gap-2">
+                            سجل طلبات التوريد الواردة بانتظار البت الرقابي
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">جدول البيانات الأساسية لكل طلب؛ انقر على زر "معاينة وبحث الطلب" لعرض أصنافه وتحديد القرار الرقابي</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="admin-requests-count-badge" class="text-xs bg-mewa-50 text-mewa-700 font-bold px-3 py-1 rounded-full border border-mewa-200">0 طلب</span>
+                    </div>
+                </div>
+
+                <!-- شريط البحث السريع والفلترة -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
+                    <div class="md:col-span-2 relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute top-3 right-3"></i>
+                        <input type="text" id="admin-search-input" oninput="filterAdminRequests()" placeholder="ابحث برقم الطلب، اسم المنشأة، السوق، المحافظة، المنتج، أو رقم السجل..." class="w-full pr-9 pl-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none">
+                    </div>
+                    <div>
+                        <select id="admin-status-filter" onchange="filterAdminRequests()" class="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-700">
+                            <option value="all">جميع الحالات الرقابية</option>
+                            <option value="pending">بانتظار المعالجة والاعتماد</option>
+                            <option value="approved">معتمد بالكامل</option>
+                            <option value="partially_approved">موافقة جزئية / تعديل كمية</option>
+                            <option value="rejected">مرفوض بالكامل</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- جدول الطلبات المتكامل -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm bg-white">
+                    <table class="w-full text-right text-xs border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200">
+                            <tr>
+                                <th class="p-3.5 whitespace-nowrap">رقم الطلب وتاريخه</th>
+                                <th class="p-3.5 whitespace-nowrap">مقدم الطلب ونوع الوثيقة</th>
+                                <th class="p-3.5 whitespace-nowrap">النطاق الجغرافي والسوق</th>
+                                <th class="p-3.5 whitespace-nowrap text-center">حالة الطلب</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-requests-table-body" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="4" class="p-10 text-center text-slate-400 font-medium">
+                                    جاري تحميل سجل طلبات التوريد...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- تنبيه عند عدم وجود نتائج للبحث -->
+                <div id="no-admin-results-msg" class="hidden p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed font-medium">
+                    لا توجد طلبات توريد واردة مطابقة لمعايير البحث الحالية
+                </div>
             </div>
         </div>
 
-        <!-- جدول وسجل طلبات التوريد الواردة مع شريط البحث والفلترة -->
-        <div class="naama-card p-6 rounded-3xl space-y-5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
-                <div>
-                    <h3 class="text-base font-black text-slate-900 section-tag flex items-center gap-2">
-                        سجل طلبات التوريد الواردة بانتظار البت الرقابي
-                    </h3>
-                    <p class="text-xs text-slate-500 mt-0.5">جدول البيانات الأساسية لكل طلب؛ انقر على زر "معاينة وبحث الطلب" لعرض أصنافه وتحديد القرار الرقابي</p>
+        <!-- ==================== التبويب 2: حوكمة قيود الأصناف وهوامش المستهلك والمباسط ==================== -->
+        <div id="admin-section-quotas" class="hidden space-y-8">
+            <!-- بنر الإرشاد والتوجيه الرقابي لحماية المستهلك وحوكمة المباسط -->
+            <div class="bg-gradient-to-l from-emerald-950 via-mewa-900 to-emerald-800 text-white p-6 rounded-3xl shadow-md border-r-8 border-emerald-400 flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div class="space-y-1.5 max-w-4xl">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-400 text-emerald-950 text-[11px] font-black px-2.5 py-0.5 rounded-full">سياسة حماية المستهلك وحوكمة المباسط</span>
+                        <span class="text-emerald-200 text-xs font-bold">منظومة نما - أسواق النفع العام</span>
+                    </div>
+                    <h3 class="text-base font-black text-white">آلية التمييز بين المستهلك الفردي وأصحاب المباسط / الدلالين:</h3>
+                    <p class="text-xs text-emerald-100 leading-relaxed">
+                        • <b>الأصناف المقيدة:</b> أصناف استراتيجية تخضع لسقف استهلاكي عادل للأفراد (الحد الأقصى للمستهلك).<br>
+                        • <b>الأصناف غير المقيدة:</b> أصناف وفيرة يسمح بشرائها بكميات حرة دون قيود.<br>
+                        • <b>حوكمة المباسط والدلالين:</b> إذا تجاوز المشتري سقف المستهلك لأي صنف مقيد، يُصنف الطلب آلياً كـ <b>(مبسط / دلال B2B)</b> ويلزم تسجيل <b>اسم ورقم المبسط ومنفذ التوزيع بالسوق</b> لضمان التتبع الرقابي ومنع الاحتكار غير المصرح.
+                    </p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span id="admin-requests-count-badge" class="text-xs bg-mewa-50 text-mewa-700 font-bold px-3 py-1 rounded-full border border-mewa-200">0 طلب</span>
-                </div>
-            </div>
-
-            <!-- شريط البحث السريع والفلترة -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
-                <div class="md:col-span-2 relative">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute top-3 right-3"></i>
-                    <input type="text" id="admin-search-input" oninput="filterAdminRequests()" placeholder="ابحث برقم الطلب، اسم المنشأة، السوق، المحافظة، المنتج، أو رقم السجل..." class="w-full pr-9 pl-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none">
-                </div>
-                <div>
-                    <select id="admin-status-filter" onchange="filterAdminRequests()" class="w-full py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-700">
-                        <option value="all">جميع الحالات الرقابية</option>
-                        <option value="pending">بانتظار المعالجة والاعتماد</option>
-                        <option value="approved">معتمد بالكامل</option>
-                        <option value="partially_approved">موافقة جزئية / تعديل كمية</option>
-                        <option value="rejected">مرفوض بالكامل</option>
-                    </select>
+                <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-emerald-300 flex-shrink-0 border border-white/15">
+                    <i data-lucide="shield-alert" class="w-8 h-8"></i>
                 </div>
             </div>
 
-            <!-- جدول الطلبات المتكامل -->
-            <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm bg-white">
-                <table class="w-full text-right text-xs border-collapse">
-                    <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200">
-                        <tr>
-                            <th class="p-3.5 whitespace-nowrap">رقم الطلب وتاريخه</th>
-                            <th class="p-3.5 whitespace-nowrap">مقدم الطلب ونوع الوثيقة</th>
-                            <th class="p-3.5 whitespace-nowrap">النطاق الجغرافي والسوق</th>
-                            <th class="p-3.5 whitespace-nowrap text-center">حالة الطلب</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-requests-table-body" class="divide-y divide-slate-100">
-                        <tr>
-                            <td colspan="4" class="p-10 text-center text-slate-400 font-medium">
-                                جاري تحميل سجل طلبات التوريد...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- بطاقات مؤشرات الحصص والتوزيعات -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="naama-card p-4 rounded-2xl border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] text-slate-500 font-bold block">الأصناف المقيدة بسقف</span>
+                            <span id="stat-restricted-count" class="text-xl font-black text-emerald-700 mt-1 block">0 صنف</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="naama-card p-4 rounded-2xl border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] text-slate-500 font-bold block">أصناف بكميات مفتوحة</span>
+                            <span id="stat-unrestricted-count" class="text-xl font-black text-slate-700 mt-1 block">0 صنف</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+                            <i data-lucide="unlock" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="naama-card p-4 rounded-2xl border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] text-slate-500 font-bold block">طلبات المستهلكين (D2C)</span>
+                            <span id="stat-consumer-orders-count" class="text-xl font-black text-mewa-700 mt-1 block">0 طلب</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-mewa-50 text-mewa-700 flex items-center justify-center">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="naama-card p-4 rounded-2xl border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] text-slate-500 font-bold block">طلبات المباسط الموثقة (B2B)</span>
+                            <span id="stat-stall-orders-count" class="text-xl font-black text-blue-700 mt-1 block">0 طلب</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                            <i data-lucide="store" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- تنبيه عند عدم وجود نتائج للبحث -->
-            <div id="no-admin-results-msg" class="hidden p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed font-medium">
-                لا توجد طلبات توريد واردة مطابقة لمعايير البحث الحالية
+            <!-- جدول التحكم في قيود الأصناف وسقف المستهلك -->
+            <div class="naama-card p-6 rounded-3xl space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-3">
+                    <div>
+                        <h3 class="text-base font-black text-slate-900 section-tag flex items-center gap-2">
+                            جدول ضبط الأصناف وتحديد سقف المستهلك (الأفراد)
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">يمكنك تفعيل أو إلغاء القيد لأي صنف وتعديل الحد الأقصى للمستهلك وحفظه فورياً</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="loadQuotasTab()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                            <span>تحديث القائمة</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- شريط البحث والفلترة للأصناف المقيدة -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs">
+                    <div class="sm:col-span-2 relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute top-2.5 right-3"></i>
+                        <input type="text" id="quota-search-input" oninput="filterQuotasTable()" placeholder="ابحث باسم الصنف أو المزارع أو التصنيف..." class="w-full pr-9 pl-3 py-2 rounded-xl border border-slate-300 bg-white font-medium focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                    </div>
+                    <div>
+                        <select id="quota-filter-status" onchange="filterQuotasTable()" class="w-full py-2 px-3 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-emerald-600 focus:outline-none text-slate-700">
+                            <option value="all">جميع الأصناف</option>
+                            <option value="restricted">الأصناف المقيدة بسقف فقط</option>
+                            <option value="unrestricted">الأصناف غير المقيدة (مفتوحة)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- جدول الأصناف والقيود -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm bg-white">
+                    <table class="w-full text-right text-xs border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200">
+                            <tr>
+                                <th class="p-3.5">المنتج الزراعي / المورد</th>
+                                <th class="p-3.5">التصنيف والوحدة</th>
+                                <th class="p-3.5 text-center">سعر الوحدة</th>
+                                <th class="p-3.5 text-center">حالة القيد الرقابي</th>
+                                <th class="p-3.5 text-center">سقف المستهلك (كوتة الأفراد)</th>
+                                <th class="p-3.5 text-center">الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quotas-table-body" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="6" class="p-8 text-center text-slate-400 font-medium">
+                                    جاري تحميل جدول الأصناف والقيود...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- جدول تتبع حركة توزيعات المباسط والدلالين في الأسواق (Audit Trail) -->
+            <div class="naama-card p-6 rounded-3xl space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold">
+                            <i data-lucide="store" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-black text-slate-900">سجل حوكمة توزيعات المباسط والدلالين المعتمدة</h4>
+                            <p class="text-[11px] text-slate-500">طلبات الشراء الكبيرة الموثقة بأسماء وأرقام المباسط ومنافذ التوزيع بالسوق</p>
+                        </div>
+                    </div>
+                    <span id="stall-dist-count-badge" class="text-xs bg-blue-50 text-blue-700 font-bold px-3 py-1 rounded-full border border-blue-200">0 حركة</span>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+                    <table class="w-full text-right text-xs border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">رقم الطلب والتاريخ</th>
+                                <th class="p-3">المشتري (الدلال / صاحب المبسط)</th>
+                                <th class="p-3">منفذ التوزيع ومسمى المبسط</th>
+                                <th class="p-3 text-center">قيمة الطلب</th>
+                                <th class="p-3 text-center">حالة التجهيز</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stall-distributions-tbody" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="5" class="p-6 text-center text-slate-400">
+                                    لا توجد حركات مباسط مسجلة حالياً
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -952,6 +1135,311 @@
             closeReviewModal();
             updateAnalyticsDisplay(loadedAdminRequests);
             renderAdminTable(loadedAdminRequests);
+        }
+
+        // ==================== وظائف تبويب حوكمة قيود الأصناف وهوامش المستهلك والمباسط ====================
+        let currentAdminTab = 'requests';
+        let loadedQuotasItems = [];
+        let loadedStallDistributions = [];
+
+        function switchAdminTab(tabName) {
+            currentAdminTab = tabName;
+            const btnRequests = document.getElementById('admin-tab-btn-requests');
+            const btnQuotas = document.getElementById('admin-tab-btn-quotas');
+            const secRequests = document.getElementById('admin-section-requests');
+            const secQuotas = document.getElementById('admin-section-quotas');
+
+            if (tabName === 'requests') {
+                btnRequests.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-white text-mewa-900 shadow-sm border border-slate-200";
+                btnQuotas.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-white/60";
+                secRequests.classList.remove('hidden');
+                secQuotas.classList.add('hidden');
+            } else {
+                btnQuotas.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-white text-emerald-900 shadow-sm border border-emerald-300";
+                btnRequests.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-white/60";
+                secRequests.classList.add('hidden');
+                secQuotas.classList.remove('hidden');
+                loadQuotasTab();
+            }
+            lucide.createIcons();
+        }
+
+        async function loadQuotasTab() {
+            try {
+                const res = await fetch('/api/admin/restricted-settings');
+                if (res.ok) {
+                    const data = await res.json();
+                    loadedQuotasItems = data.items || [];
+                    loadedStallDistributions = data.recent_stall_distributions || [];
+                    
+                    if (data.stats) {
+                        document.getElementById('stat-consumer-orders-count').innerText = `${data.stats.consumer_orders} طلب`;
+                        document.getElementById('stat-stall-orders-count').innerText = `${data.stats.stall_orders} طلب`;
+                    }
+                } else {
+                    throw new Error("API error");
+                }
+            } catch (e) {
+                // وضع محلي تجريبي متكامل
+                console.log("Using local quota data");
+                if (loadedQuotasItems.length === 0) {
+                    loadedQuotasItems = [
+                        { id: 101, name: "طماطم محمية قطاف اليوم", category: "خضروات", unit: "كجم", unit_price: 3.8, merchant_name: "مزرعة النخيل الذهبية بالخرج", is_restricted: 1, max_consumer_qty: 10.0, stock_remaining: 1200 },
+                        { id: 102, name: "أغنام نعيمي بلدي (جذعان)", category: "مواشي حية", unit: "رأس", unit_price: 1450.0, merchant_name: "مربي ماشية - سعود الشمري", is_restricted: 1, max_consumer_qty: 2.0, stock_remaining: 40 },
+                        { id: 103, name: "بطاطس محلي طازج", category: "خضروات", unit: "كجم", unit_price: 2.5, merchant_name: "مزارع وادي الدواسر", is_restricted: 1, max_consumer_qty: 15.0, stock_remaining: 2500 },
+                        { id: 104, name: "خيار صالات فاخر", category: "خضروات", unit: "كجم", unit_price: 3.0, merchant_name: "بيوت المحميات الزراعية", is_restricted: 1, max_consumer_qty: 10.0, stock_remaining: 900 },
+                        { id: 105, name: "تمر خلاص الخرج الفاخر", category: "تمور", unit: "كرتون (3 كجم)", unit_price: 45.0, merchant_name: "مزرعة النخيل الذهبية", is_restricted: 0, max_consumer_qty: 20.0, stock_remaining: 600 },
+                        { id: 106, name: "برتقال أبو صرة إفريقي", category: "فواكه", unit: "كجم", unit_price: 4.2, merchant_name: "مؤسسة الموانئ للاستيراد", is_restricted: 0, max_consumer_qty: 15.0, stock_remaining: 3000 },
+                        { id: 107, name: "عسل سدر بلدي فاخر", category: "عسل ومناحل", unit: "عبوة (1 كجم)", unit_price: 180.0, merchant_name: "مناحل السدر العسيرية", is_restricted: 0, max_consumer_qty: 5.0, stock_remaining: 150 },
+                        { id: 108, name: "حبحب (بطيخ) القصيم", category: "فواكه", unit: "حبة (8-10 كجم)", unit_price: 18.0, merchant_name: "مزارع بريدة النموذجية", is_restricted: 0, max_consumer_qty: 6.0, stock_remaining: 450 }
+                    ];
+                }
+
+                // فحص الطلبات المحلية لتحديث الإحصائيات
+                let localOrders = [];
+                try {
+                    localOrders = JSON.parse(localStorage.getItem('my_orders') || '[]');
+                } catch(err) {}
+                const stallOrders = localOrders.filter(o => o.order_type === 'commercial_stall');
+                const consumerOrders = localOrders.filter(o => o.order_type !== 'commercial_stall');
+                
+                document.getElementById('stat-consumer-orders-count').innerText = `${consumerOrders.length} طلب`;
+                document.getElementById('stat-stall-orders-count').innerText = `${stallOrders.length} طلب`;
+                loadedStallDistributions = stallOrders;
+            }
+
+            // تحديث بطاقات العدادات
+            const restrictedCount = loadedQuotasItems.filter(i => i.is_restricted == 1).length;
+            const unrestrictedCount = loadedQuotasItems.filter(i => !i.is_restricted || i.is_restricted == 0).length;
+            document.getElementById('stat-restricted-count').innerText = `${restrictedCount} صنف`;
+            document.getElementById('stat-unrestricted-count').innerText = `${unrestrictedCount} صنف`;
+
+            renderQuotasTable(loadedQuotasItems);
+            renderStallDistributions(loadedStallDistributions);
+            lucide.createIcons();
+        }
+
+        function filterQuotasTable() {
+            const query = (document.getElementById('quota-search-input').value || '').trim().toLowerCase();
+            const filter = document.getElementById('quota-filter-status').value;
+
+            let filtered = loadedQuotasItems.filter(item => {
+                const matchesSearch = !query || 
+                    (item.name && item.name.toLowerCase().includes(query)) ||
+                    (item.category && item.category.toLowerCase().includes(query)) ||
+                    (item.merchant_name && item.merchant_name.toLowerCase().includes(query));
+
+                let matchesFilter = true;
+                if (filter === 'restricted') matchesFilter = (item.is_restricted == 1);
+                if (filter === 'unrestricted') matchesFilter = (!item.is_restricted || item.is_restricted == 0);
+
+                return matchesSearch && matchesFilter;
+            });
+
+            renderQuotasTable(filtered);
+            lucide.createIcons();
+        }
+
+        function renderQuotasTable(items) {
+            const tbody = document.getElementById('quotas-table-body');
+            if (!tbody) return;
+
+            if (items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-slate-400 font-medium">
+                            لا توجد أصناف مطابقة لمعايير البحث المحددة
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = items.map(item => {
+                const isRestricted = (item.is_restricted == 1);
+                const limitVal = item.max_consumer_qty || 5.0;
+
+                return `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="p-3.5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-slate-100 overflow-hidden border border-slate-200 shrink-0">
+                                    <img src="${item.image_url || 'static/images/products/tomatoes.jpg'}" alt="${item.name}" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-900 text-xs">${item.name}</h4>
+                                    <span class="text-[10px] text-slate-500 font-bold block">${item.merchant_name || 'مزرعة معتمدة'}</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="p-3.5">
+                            <span class="inline-block px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-bold text-[10px]">${item.category}</span>
+                            <span class="text-[11px] text-slate-500 font-medium block mt-0.5">${item.unit}</span>
+                        </td>
+
+                        <td class="p-3.5 text-center">
+                            <span class="font-black text-slate-900 text-xs">${item.unit_price}</span>
+                            <span class="text-[10px] text-slate-500 block">ر.س / ${item.unit}</span>
+                        </td>
+
+                        <td class="p-3.5 text-center">
+                            ${isRestricted ? `
+                                <button onclick="toggleRestriction(${item.id}, 0)" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 transition" title="انقر للتحويل إلى صنف غير مقيد">
+                                    <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-700"></i>
+                                    <span>مقيد بسقف استهلاكي</span>
+                                </button>
+                            ` : `
+                                <button onclick="toggleRestriction(${item.id}, 1)" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-300 hover:bg-slate-200 transition" title="انقر لتقييد الصنف بسقف للمستهلك">
+                                    <i data-lucide="unlock" class="w-3.5 h-3.5 text-slate-500"></i>
+                                    <span>كمية مفتوحة (غير مقيد)</span>
+                                </button>
+                            `}
+                        </td>
+
+                        <td class="p-3.5 text-center">
+                            ${isRestricted ? `
+                                <div class="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-xl">
+                                    <input type="number" id="limit-input-${item.id}" value="${limitVal}" min="0.5" step="0.5" class="w-14 text-center py-1 rounded-lg border border-emerald-300 font-black text-xs text-emerald-950 focus:outline-none focus:ring-1 focus:ring-emerald-600">
+                                    <span class="text-[10px] font-bold text-emerald-800">${item.unit}</span>
+                                </div>
+                            ` : `
+                                <span class="text-[11px] text-slate-400 font-bold">لا يوجد سقف</span>
+                            `}
+                        </td>
+
+                        <td class="p-3.5 text-center">
+                            ${isRestricted ? `
+                                <button onclick="saveConsumerLimit(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-xl transition flex items-center justify-center gap-1 mx-auto shadow-2xs">
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                    <span>حفظ السقف</span>
+                                </button>
+                            ` : `
+                                <button onclick="toggleRestriction(${item.id}, 1)" class="bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-600 font-bold text-xs px-2.5 py-1.5 rounded-xl border border-slate-200 transition flex items-center justify-center gap-1 mx-auto">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                                    <span>تفعيل القيد</span>
+                                </button>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function toggleRestriction(itemId, newStatus) {
+            const target = loadedQuotasItems.find(i => i.id === itemId);
+            if (!target) return;
+
+            target.is_restricted = newStatus;
+            const currentQty = target.max_consumer_qty || 5.0;
+
+            try {
+                await fetch('/api/admin/update-restriction', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ item_id: itemId, is_restricted: newStatus, max_consumer_qty: currentQty })
+                });
+            } catch(e) {}
+
+            showToast(newStatus === 1 ? `تم تفعيل القيد الرقابي للصنف (${target.name})` : `تم فتح الكمية للصنف (${target.name})`);
+            
+            // تحديث البطاقات والجدول
+            const restrictedCount = loadedQuotasItems.filter(i => i.is_restricted == 1).length;
+            const unrestrictedCount = loadedQuotasItems.filter(i => !i.is_restricted || i.is_restricted == 0).length;
+            document.getElementById('stat-restricted-count').innerText = `${restrictedCount} صنف`;
+            document.getElementById('stat-unrestricted-count').innerText = `${unrestrictedCount} صنف`;
+
+            filterQuotasTable();
+            lucide.createIcons();
+        }
+
+        async function saveConsumerLimit(itemId) {
+            const target = loadedQuotasItems.find(i => i.id === itemId);
+            if (!target) return;
+
+            const input = document.getElementById(`limit-input-${itemId}`);
+            const newLimit = input ? parseFloat(input.value) : 5.0;
+
+            if (isNaN(newLimit) || newLimit <= 0) {
+                showToast("يرجى إدخال قيمة حد أقصى صحيحة أكبر من صفر", true);
+                return;
+            }
+
+            target.max_consumer_qty = newLimit;
+
+            try {
+                await fetch('/api/admin/update-restriction', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ item_id: itemId, is_restricted: 1, max_consumer_qty: newLimit })
+                });
+            } catch(e) {}
+
+            showToast(`تم حفظ الحد الأقصى للمستهلك: ${newLimit} ${target.unit} للصنف (${target.name})`);
+            filterQuotasTable();
+            lucide.createIcons();
+        }
+
+        function renderStallDistributions(distributions) {
+            const tbody = document.getElementById('stall-distributions-tbody');
+            const badge = document.getElementById('stall-dist-count-badge');
+            if (!tbody) return;
+
+            if (badge) badge.innerText = `${distributions.length} حركة`;
+
+            if (distributions.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="p-8 text-center text-slate-400">
+                            <i data-lucide="store" class="w-8 h-8 mx-auto text-slate-300 mb-2"></i>
+                            <p class="font-bold">لا توجد حركات شراء تجارية لمباسط مسجلة حالياً</p>
+                            <p class="text-[11px] text-slate-400 mt-1">عندما يتجاوز المشتري سقف المستهلك، سيظهر الطلب هنا موثقاً بمسمى ورقم المبسط بالسوق</p>
+                        </td>
+                    </tr>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            tbody.innerHTML = distributions.map(d => {
+                const orderId = d.id ? `ORD-2026-${d.id}` : (d.orderId || 'ORD-2026-STALL');
+                const loc = d.distribution_location || 'مبسط بالسوق المركزي';
+                const cust = d.customer_name || 'تاجر تجزئة';
+                const phone = d.customer_phone || '05xxxxxxxx';
+                const total = d.total_amount ? Number(d.total_amount).toFixed(2) : '0.00';
+                const date = d.created_at || '2026-10-28';
+
+                return `
+                    <tr class="hover:bg-blue-50/40 transition">
+                        <td class="p-3">
+                            <span class="font-mono font-bold text-blue-900">${orderId}</span>
+                            <span class="text-[10px] text-slate-400 block">${date}</span>
+                        </td>
+                        <td class="p-3">
+                            <span class="font-bold text-slate-800">${cust}</span>
+                            <span class="text-[10px] text-slate-500 font-mono block">${phone}</span>
+                        </td>
+                        <td class="p-3">
+                            <div class="flex items-center gap-1.5">
+                                <span class="bg-blue-100 text-blue-800 font-black text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1">
+                                    <i data-lucide="map-pin" class="w-3 h-3 text-blue-600"></i>
+                                    ${loc}
+                                </span>
+                            </div>
+                        </td>
+                        <td class="p-3 text-center">
+                            <span class="font-black text-slate-900 text-xs">${total}</span>
+                            <span class="text-[10px] text-slate-500 block">ر.س</span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                موثق بالرقابة
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            lucide.createIcons();
         }
 
         window.addEventListener('DOMContentLoaded', () => {

@@ -409,6 +409,28 @@
                     </div>
                 </div>
 
+                <!-- تنبيه تحويل الطلب لطلب مبسط وحقل منفذ التوزيع الإلزامي (Mobile) -->
+                <div id="mobile-stall-warning" class="hidden bg-amber-50 rounded-2xl p-3 border border-amber-300 text-amber-950 space-y-1 text-xs">
+                    <div class="flex items-center gap-1.5 font-black text-amber-900">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+                        <span>طلب تجاري / مبسط بالسوق (B2B)</span>
+                    </div>
+                    <p class="text-[10px] text-amber-800 leading-tight">
+                        الكمية المحددة لبعض الأصناف المقيدة تتجاوز سقف المستهلك المباشر. تم تحويل الطلب لطلب مبسط ويلزم تدوين اسم ورقم المبسط بالسوق.
+                    </p>
+                </div>
+
+                <div id="mobile-stall-input-box" class="hidden bg-blue-50/90 rounded-2xl p-3 border border-blue-200 space-y-1.5 text-xs">
+                    <label class="text-[11px] font-black text-blue-950 flex items-center justify-between">
+                        <span class="flex items-center gap-1">
+                            <i data-lucide="store" class="w-3.5 h-3.5 text-blue-700"></i>
+                            اسم ورقم المبسط / مكان التوزيع: <span class="text-rose-600">*</span>
+                        </span>
+                        <span class="text-[9px] bg-blue-200 text-blue-800 px-1.5 py-0.5 rounded font-black">إلزامي للمباسط</span>
+                    </label>
+                    <input type="text" id="mobile-dist-location" placeholder="مثال: مبسط رقم 18 - سوق الخضار المركزي" class="w-full text-xs px-3 py-2 rounded-xl border border-blue-300 bg-white font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-600">
+                </div>
+
                 <!-- بوابات الدفع الوطنية -->
                 <div class="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-sm space-y-3">
                     <div class="text-xs font-black text-slate-800 flex items-center justify-between">
@@ -764,7 +786,9 @@
                 image: "static/images/products/tomatoes.jpg",
                 badge: "سعودي جاب ✔",
                 rating: 4.9,
-                stock: 850
+                stock: 850,
+                is_restricted: 1,
+                max_consumer_qty: 8.0
             },
             {
                 id: 2,
@@ -779,7 +803,9 @@
                 image: "static/images/products/cucumbers.jpg",
                 badge: "طازج اليوم",
                 rating: 4.8,
-                stock: 620
+                stock: 620,
+                is_restricted: 1,
+                max_consumer_qty: 7.0
             },
             {
                 id: 3,
@@ -794,7 +820,9 @@
                 image: "static/images/products/potatoes.jpg",
                 badge: "جودة ممتازة",
                 rating: 4.7,
-                stock: 1200
+                stock: 1200,
+                is_restricted: 1,
+                max_consumer_qty: 10.0
             },
             {
                 id: 4,
@@ -809,7 +837,9 @@
                 image: "static/images/products/watermelon.jpg",
                 badge: "حلاوة مضمونة",
                 rating: 4.9,
-                stock: 450
+                stock: 450,
+                is_restricted: 0,
+                max_consumer_qty: 6.0
             },
             {
                 id: 5,
@@ -824,7 +854,9 @@
                 image: "static/images/products/dates_sukari.jpg",
                 badge: "نخب أول",
                 rating: 5.0,
-                stock: 310
+                stock: 310,
+                is_restricted: 0,
+                max_consumer_qty: 12.0
             },
             {
                 id: 6,
@@ -839,7 +871,9 @@
                 image: "static/images/products/dates_ajwa.jpg",
                 badge: "عجوة معتمدة",
                 rating: 5.0,
-                stock: 180
+                stock: 180,
+                is_restricted: 0,
+                max_consumer_qty: 10.0
             },
             {
                 id: 7,
@@ -854,7 +888,9 @@
                 image: "static/images/products/honey_sidr.jpg",
                 badge: "مفحوص مخبرياً",
                 rating: 4.9,
-                stock: 95
+                stock: 95,
+                is_restricted: 0,
+                max_consumer_qty: 5.0
             },
             {
                 id: 8,
@@ -869,7 +905,9 @@
                 image: "static/images/products/pomegranates.jpg",
                 badge: "موسم حالي",
                 rating: 4.8,
-                stock: 400
+                stock: 400,
+                is_restricted: 0,
+                max_consumer_qty: 8.0
             }
         ];
 
@@ -1079,6 +1117,17 @@
                                 </div>
                                 <div class="text-[9px] text-slate-400 truncate">${prod.market}</div>
                             </div>
+
+                            <!-- شارة سقف المستهلك -->
+                            <div class="mt-1 flex items-center justify-between text-[9px]">
+                                ${prod.is_restricted == 1 ? `
+                                    <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded font-bold flex items-center gap-0.5">
+                                        <i data-lucide="shield-check" class="w-2.5 h-2.5 text-emerald-600"></i> حد المستهلك: ${prod.max_consumer_qty || 5} ${prod.unit}
+                                    </span>
+                                ` : `
+                                    <span class="text-slate-400 font-medium text-[8.5px]">كمية مفتوحة (غير مقيد)</span>
+                                `}
+                            </div>
                         </div>
 
                         <!-- السعر وزر الإضافة للسلة -->
@@ -1191,20 +1240,35 @@
             }
 
             let subtotal = 0;
+            let hasExceededRestricted = false;
+
             container.innerHTML = appCart.map(ci => {
                 const prod = MOBILE_PRODUCTS.find(p => p.id === ci.productId);
                 if (!prod) return '';
                 const itemTotal = prod.price * ci.qty;
                 subtotal += itemTotal;
 
+                const isRestricted = (prod.is_restricted == 1);
+                const limit = prod.max_consumer_qty || 5.0;
+                const exceeded = isRestricted && (ci.qty > limit);
+                if (exceeded) hasExceededRestricted = true;
+
                 return `
-                    <div class="bg-white rounded-2xl p-3 border border-slate-200 shadow-xs flex items-center justify-between gap-2.5">
+                    <div class="bg-white rounded-2xl p-3 border ${exceeded ? 'border-amber-300 bg-amber-50/30' : 'border-slate-200'} shadow-xs flex items-center justify-between gap-2.5">
                         <img src="${prod.image}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0 bg-slate-100">
                         
                         <div class="flex-1 min-w-0">
                             <h4 class="text-xs font-black text-slate-900 truncate">${prod.name}</h4>
                             <div class="text-[10px] text-slate-400 truncate">${prod.farm}</div>
-                            <div class="text-xs font-bold text-emerald-800 mt-0.5">${itemTotal.toFixed(2)} ر.س</div>
+                            
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span class="text-xs font-bold text-emerald-800">${itemTotal.toFixed(2)} ر.س</span>
+                                ${isRestricted ? (exceeded ? `
+                                    <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[8.5px] px-1 rounded font-black">كمية مبسط (تجاوزت ${limit} ${prod.unit})</span>
+                                ` : `
+                                    <span class="text-emerald-700 text-[8.5px] font-bold">ضمن حد المستهلك</span>
+                                `) : ''}
+                            </div>
                         </div>
 
                         <!-- أزرار زيادة ونقصان الكمية -->
@@ -1216,6 +1280,19 @@
                     </div>
                 `;
             }).join('');
+
+            // إظهار أو إخفاء تنبيه المباسط وحقل مكان التوزيع
+            const stallWarn = document.getElementById('mobile-stall-warning');
+            const stallInput = document.getElementById('mobile-stall-input-box');
+            if (stallWarn && stallInput) {
+                if (hasExceededRestricted) {
+                    stallWarn.classList.remove('hidden');
+                    stallInput.classList.remove('hidden');
+                } else {
+                    stallWarn.classList.add('hidden');
+                    stallInput.classList.add('hidden');
+                }
+            }
 
             updateBillCalculations(subtotal);
             lucide.createIcons();
@@ -1296,6 +1373,21 @@
         function executeMobileCheckout() {
             if (appCart.length === 0) return;
 
+            // فحص هل يوجد أي صنف مقيد تجاوز الحد الأقصى للمستهلك
+            const hasExceeded = appCart.some(ci => {
+                const prod = MOBILE_PRODUCTS.find(p => p.id === ci.productId);
+                return prod && prod.is_restricted == 1 && ci.qty > (prod.max_consumer_qty || 5.0);
+            });
+            const distLoc = (document.getElementById('mobile-dist-location')?.value || '').trim();
+
+            if (hasExceeded && !distLoc) {
+                showMobileNotification("يرجى تدوين اسم ورقم المبسط بالسوق لإتمام الطلب التجاري");
+                document.getElementById('mobile-dist-location')?.focus();
+                return;
+            }
+
+            const finalOrderType = hasExceeded ? 'commercial_stall' : 'consumer';
+
             const btnText = document.getElementById('checkout-btn-text');
             if (btnText) btnText.innerText = "جاري تأكيد الدفع مع البنك...";
 
@@ -1328,6 +1420,8 @@
                     market: "سوق الخرج المركزي للخضار والفواكه",
                     status: "new",
                     statusText: "جديد - تم استلام الطلب وبانتظار التجهيز",
+                    order_type: finalOrderType,
+                    distribution_location: distLoc,
                     step: 1, // المرحلة 1
                     driver_name: "الكابتن: محمد الهوساوي",
                     driver_phone: "0559988771",
@@ -1339,6 +1433,32 @@
                     otp: newOtp,
                     items: orderItems,
                     subtotal: subtotal,
+                    shipping: shipping,
+                    platform_fee: platformFee,
+                    vat: vat,
+                    grand_total: grandTotal,
+                    paymentMethod: currentPaymentMethod,
+                    paymentStatus: "paid"
+                };
+
+                // حفظ الطلب في سجل الطلبات ومزامنته محلياً
+                userOrders.unshift(newOrderObj);
+                try {
+                    const globalOrders = JSON.parse(localStorage.getItem('my_orders') || '[]');
+                    globalOrders.unshift({
+                        id: newOrderId.replace('ORD-2026-', ''),
+                        orderId: newOrderId,
+                        customer_name: "محمد صالح القحطاني (مستفيد الجوال)",
+                        customer_phone: "0554123987",
+                        customer_address: newOrderObj.delivery_address,
+                        order_type: finalOrderType,
+                        distribution_location: distLoc,
+                        total_amount: grandTotal,
+                        status: "new",
+                        created_at: new Date().toISOString()
+                    });
+                    localStorage.setItem('my_orders', JSON.stringify(globalOrders));
+                } catch(e) {}
                     shipping: shipping,
                     platform_fee: platformFee,
                     vat: vat,
@@ -1438,11 +1558,21 @@
                         <!-- رأس الطلب -->
                         <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
                             <div>
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
                                     <h4 class="text-xs font-black text-slate-900">${order.orderId}</h4>
                                     <span class="text-[9px] font-black px-2 py-0.5 rounded-full ${order.status === 'delivered' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-purple-50 text-purple-900 border border-purple-200'}">
                                         ${order.statusText}
                                     </span>
+                                    ${order.order_type === 'commercial_stall' ? `
+                                        <span class="bg-blue-100 text-blue-900 border border-blue-300 text-[8.5px] font-black px-1.5 py-0.5 rounded-md flex items-center gap-1">
+                                            <i data-lucide="store" class="w-2.5 h-2.5 text-blue-700"></i>
+                                            مبسط: ${order.distribution_location || 'بالسوق'}
+                                        </span>
+                                    ` : `
+                                        <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[8.5px] font-bold px-1.5 py-0.5 rounded-md">
+                                            مستهلك فردي (D2C)
+                                        </span>
+                                    `}
                                 </div>
                                 <div class="text-[10px] text-slate-400 mt-0.5">${order.date} • ${order.market}</div>
                             </div>

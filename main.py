@@ -65,7 +65,14 @@ class CheckoutRequest(BaseModel):
     customer_name: str
     customer_phone: str
     customer_address: str
+    order_type: Optional[str] = "consumer" # consumer, commercial_stall
+    distribution_location: Optional[str] = "" # اسم ورقم المبسط أو منفذ التوزيع
     items: List[CartItem]
+
+class UpdateRestrictionRequest(BaseModel):
+    item_id: int
+    is_restricted: int
+    max_consumer_qty: float
 
 
 # === واجهات الـ API ===
@@ -255,14 +262,32 @@ def checkout(order_data: CheckoutRequest):
             "unit_price": row["unit_price"],
             "fulfillment_mode": row["fulfillment_mode"],
             "broker_name": row["broker_name"],
+            "is_restricted": row["is_restricted"] if "is_restricted" in row.keys() else 0,
+            "max_consumer_qty": row["max_consumer_qty"] if "max_consumer_qty" in row.keys() else 5.0,
             "new_stock": row["stock_remaining"] - cart_item.quantity
         })
 
+    # التحقق من سقف المستهلك للأصناف المقيدة
+    has_exceeded_restricted = any(
+        it.get("is_restricted", 0) == 1 and it["qty"] > it.get("max_consumer_qty", 5.0)
+        for it in items_to_process
+    )
+
+    final_order_type = "commercial_stall" if (has_exceeded_restricted or order_data.order_type == "commercial_stall") else "consumer"
+    final_dist_loc = (order_data.distribution_location or "").strip()
+
+    if final_order_type == "commercial_stall" and not final_dist_loc:
+        conn.close()
+        raise HTTPException(
+            status_code=400, 
+            detail="الكمية المطلوبة تتجاوز الحد الأقصى للمستهلك للأصناف المقيدة. يلزم تحديد اسم ورقم المبسط أو منفذ التوزيع بالسوق."
+        )
+
     # تسجيل الطلب
     cursor.execute("""
-    INSERT INTO orders (customer_name, customer_phone, customer_address, total_amount, platform_fee, broker_fee, merchant_net, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 'new')
-    """, (order_data.customer_name, order_data.customer_phone, order_data.customer_address, total_amount, platform_fee, broker_fee, merchant_net))
+    INSERT INTO orders (customer_name, customer_phone, customer_address, order_type, distribution_location, total_amount, platform_fee, broker_fee, merchant_net, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
+    """, (order_data.customer_name, order_data.customer_phone, order_data.customer_address, final_order_type, final_dist_loc, total_amount, platform_fee, broker_fee, merchant_net))
     order_id = cursor.lastrowid
 
     # تسجيل بنود الطلب وتحديث المخزون
@@ -280,6 +305,8 @@ def checkout(order_data: CheckoutRequest):
     return {
         "status": "success",
         "order_id": order_id,
+        "order_type": final_order_type,
+        "distribution_location": final_dist_loc,
         "total_amount": round(total_amount, 2),
         "platform_fee": round(platform_fee, 2),
         "broker_fee": round(broker_fee, 2),
@@ -298,6 +325,56 @@ def get_orders():
         o_dict["items"] = [dict(i) for i in items]
         res.append(o_dict)
     conn.close()
+    return res
+
+@app.get("/api/admin/restricted-settings")
+def get_restricted_settings():
+    conn = get_connection()
+    query = """
+    SELECT ri.id, ri.name, ri.category, ri.image_url, ri.requested_qty, ri.approved_qty, 
+           ri.unit, ri.unit_price, ri.approval_status, ri.fulfillment_mode, ri.stock_remaining,
+           COALESCE(ri.is_restricted, 0) as is_restricted, 
+           COALESCE(ri.max_consumer_qty, 5.0) as max_consumer_qty, 
+           pr.merchant_name
+    FROM request_items ri
+    JOIN product_requests pr ON ri.request_id = pr.id
+    ORDER BY ri.is_restricted DESC, ri.id DESC
+    """
+    items = conn.execute(query).fetchall()
+    
+    # إحصائيات التوزيع بين الأفراد والمباسط
+    consumer_orders = conn.execute("SELECT COUNT(*) as c FROM orders WHERE order_type = 'consumer'").fetchone()["c"]
+    stall_orders = conn.execute("SELECT COUNT(*) as c FROM orders WHERE order_type = 'commercial_stall'").fetchone()["c"]
+    recent_stall_distributions = conn.execute("""
+        SELECT id, customer_name, customer_phone, distribution_location, total_amount, created_at, status
+        FROM orders 
+        WHERE order_type = 'commercial_stall' 
+        ORDER BY id DESC LIMIT 10
+    """).fetchall()
+    conn.close()
+    
+    return {
+        "items": [dict(i) for i in items],
+        "stats": {
+            "consumer_orders": consumer_orders,
+            "stall_orders": stall_orders,
+            "total_orders": consumer_orders + stall_orders
+        },
+        "recent_stall_distributions": [dict(d) for d in recent_stall_distributions]
+    }
+
+@app.post("/api/admin/update-restriction")
+def update_product_restriction(data: UpdateRestrictionRequest):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+    UPDATE request_items 
+    SET is_restricted = ?, max_consumer_qty = ?
+    WHERE id = ?
+    """, (data.is_restricted, data.max_consumer_qty, data.item_id))
+    conn.commit()
+    conn.close()
+    return {"status": "success", "message": "تم تحديث قيود الصنف وسقف المستهلك بنجاح"}
     return res
 
 class OrderStatusUpdate(BaseModel):
