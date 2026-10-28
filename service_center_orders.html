@@ -197,43 +197,43 @@
             </div>
             
             <!-- تبويبات الحالات التشغيلية -->
-            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-wrap sm:flex-nowrap" id="status-tabs">
-                <button onclick="setStatusTab('all')" data-tab="all" class="tab-btn active bg-mewa-600 text-white px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+            <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1" id="status-tabs">
+                <button onclick="setStatusTab('all')" data-tab="all" class="tab-btn shrink-0 whitespace-nowrap active bg-mewa-600 text-white px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
                     <i data-lucide="layers" class="w-3.5 h-3.5"></i>
                     <span>جميع الطلبات</span>
                     <span id="tab-cnt-all" class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
                 </button>
-                <button onclick="setStatusTab('new')" data-tab="new" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusTab('new')" data-tab="new" class="tab-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-600"></i>
                     <span>جديدة مدفوعة</span>
                     <span id="tab-cnt-new" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusTab('packaging')" data-tab="packaging" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusTab('packaging')" data-tab="packaging" class="tab-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="box" class="w-3.5 h-3.5 text-blue-600"></i>
                     <span>قيد التجهيز المبرد</span>
                     <span id="tab-cnt-packaging" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusTab('shipping')" data-tab="shipping" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusTab('shipping')" data-tab="shipping" class="tab-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="truck" class="w-3.5 h-3.5 text-purple-600"></i>
                     <span>خرج للتوصيل</span>
                     <span id="tab-cnt-shipping" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusTab('delivered')" data-tab="delivered" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusTab('delivered')" data-tab="delivered" class="tab-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="check-check" class="w-3.5 h-3.5 text-emerald-600"></i>
                     <span>تم التسليم</span>
                     <span id="tab-cnt-delivered" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusTab('delayed')" data-tab="delayed" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusTab('delayed')" data-tab="delayed" class="tab-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-orange-600"></i>
                     <span>تعثر وتأجيل</span>
                     <span id="tab-cnt-delayed" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusTab('disputed')" data-tab="disputed" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusTab('disputed')" data-tab="disputed" class="tab-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
                     <span>شكاوى واعتراضات</span>
                     <span id="tab-cnt-disputed" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusTab('cancelled')" data-tab="cancelled" class="tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusTab('cancelled')" data-tab="cancelled" class="tab-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="x-circle" class="w-3.5 h-3.5 text-slate-500"></i>
                     <span>ملغي ومسترد</span>
                     <span id="tab-cnt-cancelled" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>

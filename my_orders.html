@@ -175,23 +175,23 @@
         <div class="naama-card p-4 rounded-2xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
             
             <!-- تبويبات الحالة -->
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar flex-wrap sm:flex-nowrap" id="status-tabs">
-                <button onclick="setStatusFilter('all')" data-status="all" class="status-btn active bg-mewa-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+            <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1" id="status-tabs">
+                <button onclick="setStatusFilter('all')" data-status="all" class="status-btn shrink-0 whitespace-nowrap active bg-mewa-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-sm">
                     <i data-lucide="layers" class="w-3.5 h-3.5"></i>
                     <span>جميع الطلبات</span>
                     <span id="tab-count-all" class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
                 </button>
-                <button onclick="setStatusFilter('shipping')" data-status="shipping" class="status-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusFilter('shipping')" data-status="shipping" class="status-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="truck" class="w-3.5 h-3.5 text-amber-600"></i>
                     <span>قيد النقل والتوصيل</span>
                     <span id="tab-count-shipping" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusFilter('delivered')" data-status="delivered" class="status-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusFilter('delivered')" data-status="delivered" class="status-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
                     <span>تم التسليم</span>
                     <span id="tab-count-delivered" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
                 </button>
-                <button onclick="setStatusFilter('disputed')" data-status="disputed" class="status-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
+                <button onclick="setStatusFilter('disputed')" data-status="disputed" class="status-btn shrink-0 whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap">
                     <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
                     <span>شكاوى واعتراضات</span>
                     <span id="tab-count-disputed" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>

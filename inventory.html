@@ -1351,17 +1351,17 @@
         function switchTab(tab) {
             currentTab = tab;
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2";
+                btn.className = "tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap";
             });
 
             document.getElementById('tab-content-balances').classList.add('hidden');
             document.getElementById('tab-content-ledger').classList.add('hidden');
 
             if (tab === 'balances') {
-                document.getElementById('tab-btn-balances').className = "tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm";
+                document.getElementById('tab-btn-balances').className = "tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition flex items-center gap-1.5 sm:gap-2 shadow-sm shrink-0 whitespace-nowrap";
                 document.getElementById('tab-content-balances').classList.remove('hidden');
             } else if (tab === 'ledger') {
-                document.getElementById('tab-btn-ledger').className = "tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm";
+                document.getElementById('tab-btn-ledger').className = "tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition flex items-center gap-1.5 sm:gap-2 shadow-sm shrink-0 whitespace-nowrap";
                 document.getElementById('tab-content-ledger').classList.remove('hidden');
             }
 

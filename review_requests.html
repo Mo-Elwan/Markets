@@ -172,21 +172,21 @@
             </div>
         </div>
 
-        <!-- شريط التبويبات الرئيسي للوحة الرقابة والإدارة -->
-        <div class="flex flex-col sm:flex-row items-center gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
-            <button onclick="loadAdminRequests()" class="bg-white hover:bg-slate-50 text-mewa-700 font-bold text-xs px-3.5 py-2.5 rounded-xl shadow-xs border border-slate-200 flex items-center gap-1.5 transition flex-shrink-0" title="تحديث سجل الطلبات">
+        <!-- شريط التبويبات الرئيسي المتجاوب للرقابة والإدارة -->
+        <div class="flex items-center gap-1.5 sm:gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200 overflow-x-auto no-scrollbar scroll-smooth">
+            <button onclick="loadAdminRequests()" class="bg-white hover:bg-slate-50 text-mewa-700 font-bold text-xs px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-xl shadow-xs border border-slate-200 flex items-center gap-1 transition shrink-0" title="تحديث سجل الطلبات">
                 <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-naamaGold-500"></i>
-                <span>تحديث</span>
+                <span class="hidden sm:inline">تحديث</span>
             </button>
-            <button id="admin-tab-btn-requests" onclick="switchAdminTab('requests')" class="w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-white text-mewa-900 shadow-sm border border-slate-200">
+            <button id="admin-tab-btn-requests" onclick="switchAdminTab('requests')" class="shrink-0 sm:flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition whitespace-nowrap bg-white text-mewa-900 shadow-sm border border-slate-200">
                 <i data-lucide="clipboard-list" class="w-4 h-4 text-mewa-600"></i>
-                <span>سجل طلبات التوريد والاعتماد الرقابي</span>
+                <span>طلبات التوريد <span class="hidden md:inline">والاعتماد الرقابي</span></span>
                 <span id="tab-requests-badge" class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
             </button>
-            <button id="admin-tab-btn-quotas" onclick="switchAdminTab('quotas')" class="w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-white/60">
+            <button id="admin-tab-btn-quotas" onclick="switchAdminTab('quotas')" class="shrink-0 sm:flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-white/60">
                 <i data-lucide="scale" class="w-4 h-4 text-emerald-600"></i>
-                <span>حوكمة قيود الأصناف وهوامش المستهلك (الأفراد والمباسط)</span>
-                <span id="tab-quotas-badge" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">إدارة القيود</span>
+                <span>قيود الأصناف <span class="hidden md:inline">وهوامش المستهلك والمباسط</span></span>
+                <span id="tab-quotas-badge" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">القيود</span>
             </button>
         </div>
 
@@ -1168,13 +1168,13 @@
             const secQuotas = document.getElementById('admin-section-quotas');
 
             if (tabName === 'requests') {
-                btnRequests.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-white text-mewa-900 shadow-sm border border-slate-200";
-                btnQuotas.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-white/60";
+                btnRequests.className = "shrink-0 sm:flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition whitespace-nowrap bg-white text-mewa-900 shadow-sm border border-slate-200";
+                btnQuotas.className = "shrink-0 sm:flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-white/60";
                 secRequests.classList.remove('hidden');
                 secQuotas.classList.add('hidden');
             } else {
-                btnQuotas.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-white text-emerald-900 shadow-sm border border-emerald-300";
-                btnRequests.className = "w-full sm:flex-1 py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-600 hover:text-slate-900 hover:bg-white/60";
+                btnQuotas.className = "shrink-0 sm:flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition whitespace-nowrap bg-white text-emerald-900 shadow-sm border border-emerald-300";
+                btnRequests.className = "shrink-0 sm:flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-white/60";
                 secRequests.classList.add('hidden');
                 secQuotas.classList.remove('hidden');
                 loadQuotasTab();
