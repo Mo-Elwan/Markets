@@ -479,15 +479,19 @@
                 }
             });
 
-            try { localStorage.setItem('mewa_active_role', role); } catch(e){}
+            // تم إلغاء التخزين الدائم لضمان بقاء بوابة البائع هي الافتراضية دائماً عند فتح الصفحة
             if (window.lucide) lucide.createIcons();
         }
 
-        // استعادة الدور المفضل للمستخدم عند التحميل
+        // ضبط تاب بوابة البائع كافتراضي دائماً عند فتح الصفحة
         document.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('mewa_active_role');
-            if (saved && ['seller', 'consumer', 'admin', 'all'].includes(saved)) {
-                switchRole(saved);
+            const urlParams = new URLSearchParams(window.location.search);
+            const roleParam = urlParams.get('role');
+            if (roleParam && ['seller', 'consumer', 'admin', 'all'].includes(roleParam)) {
+                switchRole(roleParam);
+            } else {
+                // بوابة البائع (التاب الأول) هي التاب الافتراضي تلقائياً عند فتح الصفحة
+                switchRole('seller');
             }
         });
     </script>
