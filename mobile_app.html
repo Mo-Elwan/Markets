@@ -120,13 +120,35 @@
             box-shadow: 0 6px 14px rgba(197, 155, 39, 0.6);
         }
 
-        /* وضع ملء الشاشة على الجوال الحقيقي */
+        /* وضع ملء الشاشة المتجاوب */
         .phone-mockup.full-view {
             max-width: 100% !important;
-            height: 100vh !important;
+            width: 100% !important;
+            height: calc(100dvh - 52px) !important;
             border-radius: 0 !important;
             box-shadow: none !important;
             margin: 0 !important;
+        }
+        .phone-mockup.full-view .dynamic-island {
+            display: none !important;
+        }
+
+        /* تحسين العرض على الهواتف الحقيقية مباشرة */
+        @media (max-width: 640px) {
+            body {
+                padding: 0 !important;
+                background: #020617 !important;
+            }
+            .phone-mockup {
+                max-width: 100% !important;
+                width: 100% !important;
+                height: calc(100dvh - 48px) !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            .dynamic-island {
+                display: none !important;
+            }
         }
 
         /* Dynamic Island الجزيرة التفاعلية */
@@ -2509,21 +2531,61 @@
         }
 
         function toggleMockupView() {
-            const mockup = document.getElementById('mobile-frame');
-            const viewText = document.getElementById('view-mode-text');
+            const mockup = document.getElementById('phone-container');
+            const viewText = document.getElementById('toggle-text');
+            const toggleIcon = document.getElementById('toggle-icon');
             if (!mockup) return;
+
             isMockupFull = !isMockupFull;
+
+            // طلب ملء الشاشة الفعلي من المتصفح للجوال
+            try {
+                if (isMockupFull) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen().catch(() => {});
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    }
+                } else {
+                    if (document.fullscreenElement && document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => {});
+                    } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            } catch (err) {}
+
             if (isMockupFull) {
                 mockup.classList.add('full-view');
-                if (viewText) viewText.innerText = "وضع الجوال المؤطر";
+                if (viewText) viewText.innerText = "عرض الإطار";
+                if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'minimize-2');
             } else {
                 mockup.classList.remove('full-view');
-                if (viewText) viewText.innerText = "وضع ملء الشاشة";
+                if (viewText) viewText.innerText = "شاشة كاملة";
+                if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'maximize-2');
             }
+
+            if (window.lucide) lucide.createIcons();
+
             setTimeout(() => {
-                if (marketsMap) marketsMap.invalidateSize();
+                if (typeof marketsMap !== 'undefined' && marketsMap) {
+                    marketsMap.invalidateSize();
+                }
             }, 300);
         }
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && isMockupFull) {
+                const mockup = document.getElementById('phone-container');
+                const viewText = document.getElementById('toggle-text');
+                const toggleIcon = document.getElementById('toggle-icon');
+                isMockupFull = false;
+                if (mockup) mockup.classList.remove('full-view');
+                if (viewText) viewText.innerText = "شاشة كاملة";
+                if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'maximize-2');
+                if (window.lucide) lucide.createIcons();
+            }
+        });
 
         function openAddressModal() {
             const m = document.getElementById('modal-address');
