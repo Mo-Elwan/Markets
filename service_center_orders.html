@@ -62,79 +62,60 @@
     <!-- الشريط الذهبي العلوي -->
     <div class="h-1.5 gold-line w-full"></div>
 
-    <!-- شريط الخدمات المصغر -->
-    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-                <span class="font-bold text-slate-700">بوابة التشغيل اللوجستي | استلام طلبات الشراء، الفرز والتبريد، وإدارة أسطول التوصيل</span>
+    <!-- شريط الخدمات المصغر الموحد -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-4 overflow-x-auto whitespace-nowrap">
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                <span class="font-bold text-slate-700">المملكة العربية السعودية | بوابة أسواق النفع العام الوطنية</span>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
-                    <i data-lucide="home" class="w-3.5 h-3.5"></i> الرئيسية
+            <div class="flex items-center gap-3 flex-shrink-0">
+                <a href="index.html" class="text-mewa-700 hover:underline font-bold flex items-center gap-1 transition">
+                    <i data-lucide="home" class="w-3.5 h-3.5 text-mewa-600"></i> الرئيسية
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="store.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
-                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-mewa-600"></i> متجر النفع العام
+                <a href="my_orders.html" class="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1 transition">
+                    <i data-lucide="receipt-text" class="w-3.5 h-3.5 text-emerald-600"></i> مشترياتي وفواتيري
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="merchant_tracking.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
-                    <i data-lucide="clipboard-list" class="w-3.5 h-3.5 text-naamaGold-600"></i> متابعة طلبات التوريد
+                <a href="merchant_submit.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="sprout" class="w-3.5 h-3.5 text-mewa-600"></i> تقديم طلب بيع
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="my_orders.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
-                    <i data-lucide="receipt" class="w-3.5 h-3.5 text-emerald-600"></i> مشترياتي
+                <a href="merchant_tracking.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="clipboard-list" class="w-3.5 h-3.5 text-naamaGold-600"></i> متابعة طلباتي
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="review_requests.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                <a href="inventory.html" class="text-blue-700 hover:text-blue-800 font-bold flex items-center gap-1 transition">
+                    <i data-lucide="boxes" class="w-3.5 h-3.5 text-blue-600"></i> إدارة المخزون
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="service_center_orders.html" class="text-purple-700 hover:text-purple-800 font-bold flex items-center gap-1 transition">
+                    <i data-lucide="package-check" class="w-3.5 h-3.5 text-purple-600"></i> استلام وتجهيز الطلبات
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="review_requests.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
                     <i data-lucide="shield-check" class="w-3.5 h-3.5 text-naamaGold-500"></i> شاشة الرقابة
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- ترويسة الصفحة الرسمية -->
-    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-            <div class="flex items-center gap-4">
-                <a href="index.html" class="flex items-center gap-3">
-                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 w-auto object-contain">
-                    <div class="border-r-2 border-slate-200 pr-3">
-                        <div class="flex items-center gap-2">
-                            <h1 class="text-lg font-black text-mewa-800">بوابة استلام الطلبات وسلاسل الإمداد</h1>
-                            <span class="bg-naamaGold-100 text-naamaGold-700 text-xs font-bold px-2 py-0.5 rounded border border-naamaGold-200">مراكز الخدمة والبائعين</span>
-                        </div>
-                        <p class="text-[11px] text-slate-500">استلام طلبات الشراء المدفوعة، التجهيز المبرد، وتحديث مراحل التسليم للمستهلكين</p>
-                    </div>
-                </a>
-            </div>
-
-            <!-- محول صفة التشغيل وبيانات الدخول -->
-            <div class="flex items-center gap-3">
-                <div class="hidden md:flex items-center gap-2 bg-slate-50 p-1 rounded-xl border border-slate-200 text-xs">
-                    <label class="text-[11px] font-bold text-slate-500 pr-2">صفة الحساب:</label>
-                    <select id="role-filter-select" onchange="onRoleFilterChange(this.value)" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-800 font-bold focus:outline-none focus:border-mewa-600">
-                        <option value="all">جميع المشغلين (عرض مركزي شامل)</option>
-                        <option value="broker:شركة إمداد النفع اللوجستية">مركز خدمة: شركة إمداد النفع اللوجستية (الرياض والخرج)</option>
-                        <option value="broker:مؤسسة الحصاد الأخضر للتوزيع">مركز خدمة: مؤسسة الحصاد الأخضر (الغربية والشرقية)</option>
-                        <option value="broker:شركة طازج للخدمات الزراعية">مركز خدمة: شركة طازج (المدينة وتبوك)</option>
-                        <option value="merchant:مزرعة واحة الخير">بائع مباشر: مزرعة واحة الخير (الخرج)</option>
-                        <option value="merchant:مزارع نخيل بريدة">بائع مباشر: مزارع نخيل بريدة (القصيم)</option>
-                        <option value="merchant:مزارع وادي الدواسر">بائع مباشر: مزارع وادي الدواسر النموذجية</option>
-                        <option value="merchant:بساتين الهدا">بائع مباشر: بساتين الهدا الطائفية</option>
-                        <option value="merchant:شركة مراعي الحجاز">بائع مباشر: شركة مراعي الحجاز للمواشي</option>
-                        <option value="merchant:مناحل جبال السروات">بائع مباشر: مناحل جبال السروات (عسير)</option>
-                        <option value="merchant:مزارع جازان الاستوائية">بائع مباشر: مزارع جازان الاستوائية</option>
-                        <option value="merchant:مزارع حائل">بائع مباشر: مزارع حائل للأعلاف</option>
-                    </select>
+    <!-- ترويسة الصفحة الرسمية الموحدة مع لوجو الوزارة والنفاذ الوطني -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 sm:h-24 gap-4">
+            
+            <!-- الشعار وعنوان المنصة -->
+            <a href="index.html" class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 sm:h-16 w-auto object-contain flex-shrink-0">
+                <div class="border-r-2 border-slate-200 pr-3.5 sm:pr-4 flex flex-col justify-center flex-shrink-0">
+                    <h1 class="text-xl sm:text-2xl font-black text-mewa-800 tracking-tight leading-tight whitespace-nowrap">أسواق النفع العام</h1>
+                    <p class="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap">البوابة الموحدة لإدارة وتداول المنتجات الزراعية والغذائية</p>
                 </div>
+            </a>
 
-                <button onclick="loadOrdersData()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-xl border border-slate-200 flex items-center gap-1.5 transition">
-                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-mewa-600"></i>
-                    <span>تحديث</span>
-                </button>
-                <div id="nafath-auth-container"></div>
-            </div>
+            <!-- النفاذ الوطني الموحد -->
+            <div id="nafath-auth-container" class="flex-shrink-0"></div>
         </div>
     </header>
 
@@ -191,6 +172,27 @@
 
         <!-- شريط الفلترة والبحث السريع -->
         <div class="naama-card p-4 rounded-2xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            <!-- محول صفة الحساب والمشغل -->
+            <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-200 text-xs flex-shrink-0">
+                <label class="text-[11px] font-bold text-slate-500 pr-2 whitespace-nowrap">صفة الحساب:</label>
+                <select id="role-filter-select" onchange="onRoleFilterChange(this.value)" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-800 font-bold focus:outline-none focus:border-mewa-600">
+                    <option value="all">جميع المشغلين (عرض مركزي شامل)</option>
+                    <option value="broker:شركة إمداد النفع اللوجستية">مركز خدمة: شركة إمداد النفع اللوجستية (الرياض والخرج)</option>
+                    <option value="broker:مؤسسة الحصاد الأخضر للتوزيع">مركز خدمة: مؤسسة الحصاد الأخضر (الغربية والشرقية)</option>
+                    <option value="broker:شركة طازج للخدمات الزراعية">مركز خدمة: شركة طازج (المدينة وتبوك)</option>
+                    <option value="merchant:مزرعة واحة الخير">بائع مباشر: مزرعة واحة الخير (الخرج)</option>
+                    <option value="merchant:مزارع نخيل بريدة">بائع مباشر: مزارع نخيل بريدة (القصيم)</option>
+                    <option value="merchant:مزارع وادي الدواسر">بائع مباشر: مزارع وادي الدواسر النموذجية</option>
+                    <option value="merchant:بساتين الهدا">بائع مباشر: بساتين الهدا الطائفية</option>
+                    <option value="merchant:شركة مراعي الحجاز">بائع مباشر: شركة مراعي الحجاز للمواشي</option>
+                    <option value="merchant:مناحل جبال السروات">بائع مباشر: مناحل جبال السروات (عسير)</option>
+                    <option value="merchant:مزارع جازان الاستوائية">بائع مباشر: مزارع جازان الاستوائية</option>
+                    <option value="merchant:مزارع حائل">بائع مباشر: مزارع حائل للأعلاف</option>
+                </select>
+                <button onclick="loadOrdersData()" class="bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-200 flex items-center gap-1 transition" title="تحديث الطلبات">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-mewa-600"></i>
+                </button>
+            </div>
             
             <!-- تبويبات الحالات التشغيلية -->
             <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-wrap sm:flex-nowrap" id="status-tabs">

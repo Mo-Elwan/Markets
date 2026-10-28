@@ -65,65 +65,60 @@
     <!-- الشريط الذهبي العلوي -->
     <div class="h-1.5 gold-line w-full"></div>
 
-    <!-- شريط الخدمات المصغر -->
-    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex items-center gap-2">
+    <!-- شريط الخدمات المصغر الموحد -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-4 overflow-x-auto whitespace-nowrap">
+            <div class="flex items-center gap-2 flex-shrink-0">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-                <span class="font-bold text-slate-700">بوابة المستفيد | استعراض المشتريات، الفواتير الإلكترونية، والتقييم والاعتراضات</span>
+                <span class="font-bold text-slate-700">المملكة العربية السعودية | بوابة أسواق النفع العام الوطنية</span>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
-                    <i data-lucide="home" class="w-3.5 h-3.5"></i> الرئيسية
+            <div class="flex items-center gap-3 flex-shrink-0">
+                <a href="index.html" class="text-mewa-700 hover:underline font-bold flex items-center gap-1 transition">
+                    <i data-lucide="home" class="w-3.5 h-3.5 text-mewa-600"></i> الرئيسية
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="store.html" class="text-mewa-700 hover:underline font-bold flex items-center gap-1">
-                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-mewa-600"></i> متجر النفع العام
+                <a href="my_orders.html" class="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1 transition">
+                    <i data-lucide="receipt-text" class="w-3.5 h-3.5 text-emerald-600"></i> مشترياتي وفواتيري
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="merchant_submit.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                <a href="merchant_submit.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
                     <i data-lucide="sprout" class="w-3.5 h-3.5 text-mewa-600"></i> تقديم طلب بيع
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="merchant_tracking.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                <a href="merchant_tracking.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
                     <i data-lucide="clipboard-list" class="w-3.5 h-3.5 text-naamaGold-600"></i> متابعة طلباتي
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="service_center_orders.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                <a href="inventory.html" class="text-blue-700 hover:text-blue-800 font-bold flex items-center gap-1 transition">
+                    <i data-lucide="boxes" class="w-3.5 h-3.5 text-blue-600"></i> إدارة المخزون
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="service_center_orders.html" class="text-purple-700 hover:text-purple-800 font-bold flex items-center gap-1 transition">
                     <i data-lucide="package-check" class="w-3.5 h-3.5 text-purple-600"></i> استلام وتجهيز الطلبات
                 </a>
                 <span class="text-slate-300">|</span>
-                <a href="review_requests.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1">
+                <a href="review_requests.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
                     <i data-lucide="shield-check" class="w-3.5 h-3.5 text-naamaGold-500"></i> شاشة الرقابة
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- ترويسة الصفحة الرسمية -->
-    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-            <div class="flex items-center gap-4">
-                <a href="index.html" class="flex items-center gap-3">
-                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 w-auto object-contain">
-                    <div class="border-r-2 border-slate-200 pr-3">
-                        <div class="flex items-center gap-2">
-                            <h1 class="text-lg font-black text-mewa-800">مشترياتي وفواتيري الزراعية</h1>
-                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded border border-emerald-200">خدمة المستفيدين</span>
-                        </div>
-                        <p class="text-[11px] text-slate-500">سندات الاستلام الإلكترونية، تقييم المحاصيل، وتقديم الملاحظات والاعتراضات</p>
-                    </div>
-                </a>
-            </div>
+    <!-- ترويسة الصفحة الرسمية الموحدة مع لوجو الوزارة والنفاذ الوطني -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 sm:h-24 gap-4">
+            
+            <!-- الشعار وعنوان المنصة -->
+            <a href="index.html" class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 sm:h-16 w-auto object-contain flex-shrink-0">
+                <div class="border-r-2 border-slate-200 pr-3.5 sm:pr-4 flex flex-col justify-center flex-shrink-0">
+                    <h1 class="text-xl sm:text-2xl font-black text-mewa-800 tracking-tight leading-tight whitespace-nowrap">أسواق النفع العام</h1>
+                    <p class="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap">البوابة الموحدة لإدارة وتداول المنتجات الزراعية والغذائية</p>
+                </div>
+            </a>
 
-            <!-- معلومات الدخول وزر العودة للمتجر -->
-            <div class="flex items-center gap-3">
-                <a href="store.html" class="bg-mewa-600 hover:bg-mewa-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
-                    <i data-lucide="shopping-bag" class="w-4 h-4 text-naamaGold-400"></i>
-                    <span>مواصلة التسوق</span>
-                </a>
-                <div id="nafath-auth-container"></div>
-            </div>
+            <!-- النفاذ الوطني الموحد -->
+            <div id="nafath-auth-container" class="flex-shrink-0"></div>
         </div>
     </header>
 
@@ -132,7 +127,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="space-y-1.5">
-                    <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-0.5 rounded-full text-xs font-bold text-naamaGold-400 border border-white/15">
+                                    <div class="flex items-center gap-2 flex-shrink-0">
+                    <a href="store.html" class="bg-white/15 hover:bg-white/25 text-white border border-white/25 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                        <i data-lucide="shopping-bag" class="w-4 h-4 text-naamaGold-400"></i>
+                        <span>مواصلة التسوق بالمتجر</span>
+                    </a>
+                </div>
+                <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-0.5 rounded-full text-xs font-bold text-naamaGold-400 border border-white/15">
                         <i data-lucide="receipt-text" class="w-3.5 h-3.5"></i>
                         <span>سجل المشتريات المعتمد برمز QR الموحد</span>
                     </div>
