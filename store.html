@@ -557,7 +557,7 @@
                     <!-- شارة تصنيف الطلب: مستهلك أم مبسط -->
                     <div id="inv-order-type-container" class="col-span-2 pt-2 border-t border-slate-200">
                         <div id="inv-stall-badge" class="hidden p-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs flex items-center justify-between">
-                            <span class="bg-blue-600 text-white text-[10px] font-black px-2 py-0.5 rounded-md">طلب مبسط / دلال بالسوق (B2B)</span>
+                            <span class="bg-blue-600 text-white text-[10px] font-black px-2 py-0.5 rounded-md">طلب مبسط / دلال بالسوق</span>
                             <span class="font-bold text-[11px]" id="inv-stall-loc-text">منفذ التوزيع: </span>
                         </div>
                         <div id="inv-consumer-badge" class="hidden p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between">
@@ -2299,7 +2299,7 @@
             if (hasExceededRestricted) {
                 if (stallBanner) stallBanner.classList.remove('hidden');
                 if (stallLocationContainer) stallLocationContainer.classList.remove('hidden');
-                if (btnSubmitText) btnSubmitText.innerText = "تأكيد طلب التوريد للمبسط (B2B)";
+                if (btnSubmitText) btnSubmitText.innerText = "تأكيد طلب التوريد للمبسط";
             } else {
                 if (stallBanner) stallBanner.classList.add('hidden');
                 if (stallLocationContainer) stallLocationContainer.classList.add('hidden');
