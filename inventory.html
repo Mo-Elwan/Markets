@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متابعة المخزون والوارد والمنصرف | منصة أسواق النفع العام - نما</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mewa: {
+                            50: '#f0f9f4',
+                            100: '#dbf0e4',
+                            600: '#006837',
+                            700: '#00542c',
+                            800: '#034424',
+                            900: '#02381e',
+                        },
+                        naamaGold: {
+                            100: '#fcf8ec',
+                            400: '#e3b84c',
+                            500: '#c59b27',
+                            600: '#a7801a',
+                        }
+                    },
+                    fontFamily: {
+                        tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
+        .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
+        .naama-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px -2px rgba(0, 104, 55, 0.05);
+        }
+        .section-tag {
+            border-right: 4px solid #c59b27;
+            padding-right: 12px;
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #printable-report, #printable-report * { visibility: visible; }
+            #printable-report { position: absolute; left: 0; top: 0; width: 100%; border: none !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- الشريط الذهبي العلوي -->
+    <div class="h-1.5 gold-line w-full"></div>
+
+    <!-- شريط الخدمات المصغر -->
+    <div class="bg-white border-b border-slate-200/80 text-xs py-2 text-slate-500 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                <span class="font-bold text-slate-700">بوابة إدارة المخزون اللوجستي | متابعة أرصدة الأصناف، الوارد من الحقول، والمنصرف للأسواق</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="home" class="w-3.5 h-3.5"></i> الرئيسية
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="merchant_tracking.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="clipboard-list" class="w-3.5 h-3.5 text-naamaGold-600"></i> طلبات التوريد وقناة البيع
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="store.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-mewa-600"></i> متجر النفع العام
+                </a>
+                <span class="text-slate-300">|</span>
+                <a href="review_requests.html" class="text-slate-600 hover:text-mewa-700 font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i> الرقابة الحكومية
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ترويسة الصفحة الرسمية -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-14 w-auto object-contain">
+                    <div class="border-r-2 border-slate-200 pr-3">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-black text-mewa-800">إدارة المخزون والوارد والمنصرف</h1>
+                            <span class="bg-emerald-50 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded border border-emerald-200">المزارع ومراكز الخدمة</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500">متابعة أرصدة المحاصيل والمواشي، حوكمة تدفقات الوارد وحصص المنصرف للمستهلكين والمباسط</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- محول المنشأة وإجراءات سريعة -->
+            <div class="flex items-center gap-3">
+                <div class="hidden lg:flex items-center gap-2 bg-slate-50 p-1 rounded-xl border border-slate-200 text-xs">
+                    <label class="text-[11px] font-bold text-slate-600 pr-2 flex items-center gap-1">
+                        <i data-lucide="building-2" class="w-3.5 h-3.5 text-mewa-600"></i> المنشأة / المستودع:
+                    </label>
+                    <select id="facility-filter-select" onchange="onFacilityChange(this.value)" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-800 font-bold focus:outline-none focus:border-mewa-600">
+                        <option value="all">جميع المنشآت والمستودعات (عرض مركزي)</option>
+                        <optgroup label="مراكز الخدمة المعتمدة">
+                            <option value="broker:شركة إمداد النفع اللوجستية">مركز خدمة: شركة إمداد النفع اللوجستية (الرياض والخرج)</option>
+                            <option value="broker:مؤسسة الحصاد الأخضر للتوزيع">مركز خدمة: مؤسسة الحصاد الأخضر (الغربية والشرقية)</option>
+                            <option value="broker:شركة طازج للخدمات الزراعية">مركز خدمة: شركة طازج المبردة (المدينة وتبوك)</option>
+                            <option value="broker:شركة ميناء جدة للخدمات المبردة والتوزيع">مركز خدمة: شركة ميناء جدة للتوزيع</option>
+                        </optgroup>
+                        <optgroup label="المزارع والمنتجون المباشرون">
+                            <option value="merchant:مزرعة واحة الخرج العضوية (سليمان العبدالله)">مزرعة واحة الخرج العضوية (سليمان العبدالله)</option>
+                            <option value="merchant:مزارع نخيل بريدة النموذجية">مزارع نخيل بريدة النموذجية (القصيم)</option>
+                            <option value="merchant:مزارع وادي الدواسر النموذجية">مزارع وادي الدواسر النموذجية</option>
+                            <option value="merchant:بساتين الهدا الطائفية">بساتين الهدا الطائفية (رمان وعنب)</option>
+                            <option value="merchant:مشاريع مراعي الحجاز الوطنية">مشاريع مراعي الحجاز الوطنية (مواشي)</option>
+                            <option value="merchant:مزارع جبال فيفاء الخضراء">مزارع جبال فيفاء الخضراء (جازان)</option>
+                            <option value="merchant:مزارع الشمال للأعلاف الخضراء">مزارع الشمال للأعلاف الخضراء (حائل)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <button onclick="openInboundModal()" class="bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-down-left" class="w-4 h-4 text-emerald-200"></i>
+                    <span>تسجيل وارد (+ حصاد)</span>
+                </button>
+
+                <button onclick="openOutboundModal()" class="bg-slate-800 hover:bg-slate-900 active:scale-95 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 text-naamaGold-400"></i>
+                    <span>تسجيل صرف (- مبيعات/مبسط)</span>
+                </button>
+
+                <button onclick="printInventoryReport()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2.5 rounded-xl border border-slate-200 flex items-center gap-1.5 transition">
+                    <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-600"></i>
+                    <span class="hidden sm:inline">طباعة التقرير</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- شريط المؤشرات الحية للمخزون (KPIs) -->
+    <section class="bg-gradient-to-r from-mewa-900 via-mewa-800 to-slate-900 text-white py-6 border-b-2 border-naamaGold-500 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-0.5 rounded-full text-xs font-bold text-naamaGold-400 border border-white/15">
+                        <i data-lucide="boxes" class="w-3.5 h-3.5"></i>
+                        <span>لوحة التحكم اللحظية للمخزون وسلاسل التوريد</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-black mt-1">حالة الأرصدة والتدفقات اللوجستية للمحاصيل</h2>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-emerald-100 bg-white/5 p-2 rounded-xl border border-white/10">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-naamaGold-400"></i>
+                    <span>آخر مزامنة آلية مع المتجر وسجلات التوريد: </span>
+                    <strong id="last-sync-time" class="text-white font-mono">الآن</strong>
+                </div>
+            </div>
+
+            <!-- بطاقات العدادات والمؤشرات -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 text-slate-800">
+                
+                <!-- 1. إجمالي الرصيد المتوفر -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-500">إجمالي الرصيد المتوفر</span>
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                            <i data-lucide="package-check" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-total-stock" class="text-2xl font-black text-slate-900">0</span>
+                        <span class="text-[10px] text-slate-500 font-bold mr-1">وحدة / طرد</span>
+                    </div>
+                    <p class="text-[10px] text-emerald-700 font-bold mt-1 flex items-center gap-1">
+                        <i data-lucide="check" class="w-3 h-3"></i> جاهز للعرض والتداول
+                    </p>
+                </div>
+
+                <!-- 2. إجمالي الوارد اليوم والشهري -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-500">إجمالي الوارد (Inbound)</span>
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                            <i data-lucide="arrow-down-left" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-total-inbound" class="text-2xl font-black text-blue-700">0</span>
+                        <span class="text-[10px] text-slate-500 font-bold mr-1">وحدة مستلمة</span>
+                    </div>
+                    <p class="text-[10px] text-blue-600 font-semibold mt-1">توريدات مزارع وحصاد موثق</p>
+                </div>
+
+                <!-- 3. إجمالي المنصرف (مبيعات + مباسط) -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-500">إجمالي المنصرف (Outbound)</span>
+                        <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-total-outbound" class="text-2xl font-black text-amber-700">0</span>
+                        <span class="text-[10px] text-slate-500 font-bold mr-1">وحدة مبيعة</span>
+                    </div>
+                    <p class="text-[10px] text-amber-800 font-semibold mt-1">مستهلكين ومباسط مركزية</p>
+                </div>
+
+                <!-- 4. أصناف منخفضة المخزون -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-500">تنبيه انخفاض الرصيد</span>
+                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
+                            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-low-stock-count" class="text-2xl font-black text-rose-600">0</span>
+                        <span class="text-[10px] text-slate-500 font-bold mr-1">صنف اقترب من النفاد</span>
+                    </div>
+                    <p class="text-[10px] text-rose-600 font-semibold mt-1">يتطلب أمر توريد عاجل</p>
+                </div>
+
+                <!-- 5. الأصناف المقيدة بحصص الأفراد -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between col-span-2 sm:col-span-1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-500">الأصناف المقيدة بسقف</span>
+                        <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center">
+                            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-restricted-count" class="text-2xl font-black text-purple-700">0</span>
+                        <span class="text-[10px] text-slate-500 font-bold mr-1">صنف استراتيجي</span>
+                    </div>
+                    <p class="text-[10px] text-purple-700 font-semibold mt-1">حوكمة ومنع احتكار</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- المحتوى الرئيسي وتبويبات العرض -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
+
+        <!-- شريط التبويبات الرئيسي للوحة المخزون -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-3 no-print">
+            
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                <button type="button" onclick="switchInventoryTab('balances')" id="tab-btn-balances" class="inv-tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <span>أرصدة الأصناف اللحظية</span>
+                    <span id="badge-tab-balances-count" class="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+                </button>
+
+                <button type="button" onclick="switchInventoryTab('ledger')" id="tab-btn-ledger" class="inv-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i data-lucide="history" class="w-4 h-4 text-mewa-600"></i>
+                    <span>سجل حركات الوارد والمنصرف</span>
+                    <span id="badge-tab-ledger-count" class="bg-slate-200 text-slate-800 text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+                </button>
+
+                <button type="button" onclick="switchInventoryTab('warehouses')" id="tab-btn-warehouses" class="inv-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i data-lucide="warehouse" class="w-4 h-4 text-amber-600"></i>
+                    <span>غرف التبريد والمستودعات</span>
+                </button>
+            </div>
+
+            <!-- مربع البحث السريع -->
+            <div class="relative w-full sm:w-72">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="inventory-search" oninput="handleInventorySearch(this.value)" placeholder="ابحث باسم الصنف، المزرعة، أو الكود..." class="w-full text-xs pr-9 pl-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-mewa-600 transition">
+            </div>
+
+        </div>
+
+        <!-- أشرطة الفلاتر المتقدمة لأرصدة الأصناف -->
+        <div id="filter-bar-container" class="naama-card p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 no-print">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2 text-xs">
+                <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                    <i data-lucide="filter" class="w-3.5 h-3.5 text-mewa-600"></i>
+                    تصفية الأصناف وسجلات الجرد:
+                </span>
+                <button onclick="resetInventoryFilters()" class="text-[11px] text-rose-600 hover:underline font-bold flex items-center gap-1">
+                    <i data-lucide="rotate-ccw" class="w-3 h-3"></i> إعادة تعيين الفلاتر
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-600 mb-1">التصنيف الزراعي:</label>
+                    <select id="filter-category" onchange="applyInventoryFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="all">جميع التصنيفات</option>
+                        <option value="خضروات">خضروات طازجة</option>
+                        <option value="فواكه">فواكه موسمية</option>
+                        <option value="تمور">تمور وعسل فاخر</option>
+                        <option value="مواشي">مواشي وأعلاف</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-600 mb-1">حالة رصيد المخزون:</label>
+                    <select id="filter-stock-status" onchange="applyInventoryFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="all">جميع الحالات</option>
+                        <option value="available">متوفر بوفرة (فوق 50)</option>
+                        <option value="medium">متوفر باعتدال (21 - 50)</option>
+                        <option value="low">منخفض الرصيد (≤ 20)</option>
+                        <option value="out">نفد المخزون (0)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-600 mb-1">صفة القيد الرقابي:</label>
+                    <select id="filter-restricted" onchange="applyInventoryFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="all">جميع الأصناف (مقيدة وحرة)</option>
+                        <option value="restricted">أصناف مقيدة بسقف أفراد فقط</option>
+                        <option value="unrestricted">أصناف حرة غير مقيدة</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-600 mb-1">قناة وسلسلة التوريد:</label>
+                    <select id="filter-fulfillment" onchange="applyInventoryFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 font-bold text-slate-700 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="all">جميع القنوات</option>
+                        <option value="broker">مراكز خدمة مبردة ومفحوصة</option>
+                        <option value="direct">توريد مزارع مباشر</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== تبويب 1: جدول وبطاقات أرصدة الأصناف ==================== -->
+        <div id="tab-content-balances" class="space-y-4">
+            
+            <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>قائمة أرصدة الأصناف المعتمدة:</span>
+                    <strong id="balances-count-text" class="text-mewa-700">0 صنف</strong>
+                </span>
+                <span class="text-slate-400">الأرصدة تُحدّث فورياً عند كل حركة شراء بالمتجر أو إذن وارد</span>
+            </div>
+
+            <!-- جدول الأرصدة الشامل -->
+            <div class="naama-card rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-slate-50/80 text-slate-700 font-black border-b border-slate-200 text-[11px]">
+                            <tr>
+                                <th class="p-3.5">الصنف والمحصول</th>
+                                <th class="p-3.5">المنشأة الموردة / مركز الخدمة</th>
+                                <th class="p-3.5 text-center">صفة القيد الرقابي</th>
+                                <th class="p-3.5 text-center">الرصيد الافتتاحي</th>
+                                <th class="p-3.5 text-center text-blue-700 font-bold">إجمالي الوارد (+)</th>
+                                <th class="p-3.5 text-center text-amber-700 font-bold">إجمالي المنصرف (-)</th>
+                                <th class="p-3.5 text-center text-emerald-800 font-black">الرصيد المتاح الحالي</th>
+                                <th class="p-3.5 text-center">حالة الرصيد</th>
+                                <th class="p-3.5 text-center no-print">إجراءات سريعة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="balances-table-body" class="divide-y divide-slate-100">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== تبويب 2: سجل حركات الوارد والمنصرف التفصيلي ==================== -->
+        <div id="tab-content-ledger" class="space-y-4 hidden">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                        <i data-lucide="receipt" class="w-4 h-4 text-mewa-600"></i>
+                        <span>سجل الحركات المخزنية والتدفقات (Ledger):</span>
+                    </span>
+                    <span id="ledger-count-text" class="bg-mewa-50 text-mewa-800 px-2 py-0.5 rounded font-black border border-mewa-200">0 حركة</span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="filterLedgerType('all')" id="btn-lt-all" class="lt-btn active bg-slate-900 text-white font-bold text-xs px-3 py-1 rounded-lg">جميع الحركات</button>
+                    <button onclick="filterLedgerType('inbound')" id="btn-lt-inbound" class="lt-btn bg-slate-100 text-slate-700 font-bold text-xs px-3 py-1 rounded-lg hover:bg-slate-200">الوارد فقط (+)</button>
+                    <button onclick="filterLedgerType('outbound')" id="btn-lt-outbound" class="lt-btn bg-slate-100 text-slate-700 font-bold text-xs px-3 py-1 rounded-lg hover:bg-slate-200">المنصرف فقط (-)</button>
+                </div>
+            </div>
+
+            <!-- جدول حركات الوارد والمنصرف -->
+            <div class="naama-card rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-slate-50/80 text-slate-700 font-black border-b border-slate-200 text-[11px]">
+                            <tr>
+                                <th class="p-3.5">رقم الإذن / الحركة</th>
+                                <th class="p-3.5">التاريخ والوقت</th>
+                                <th class="p-3.5">نوع الحركة</th>
+                                <th class="p-3.5">الصنف</th>
+                                <th class="p-3.5 text-center">الكمية والوحدة</th>
+                                <th class="p-3.5 text-center">الرصيد بعد الحركة</th>
+                                <th class="p-3.5">الجهة / الوجهة الموردة</th>
+                                <th class="p-3.5">البيان ورقم التوثيق</th>
+                                <th class="p-3.5 text-center">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-table-body" class="divide-y divide-slate-100">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== تبويب 3: غرف التبريد والمستودعات ==================== -->
+        <div id="tab-content-warehouses" class="space-y-4 hidden">
+            
+            <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                    <i data-lucide="snowflake" class="w-4 h-4 text-blue-600"></i>
+                    <span>غرف التبريد والمستودعات المعتمدة لدى منصة أسواق النفع العام:</span>
+                </span>
+                <span class="text-[11px] text-slate-500">مراقبة درجات الحرارة ونسبة الإشغال السعوي</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="warehouses-cards-container">
+                <!-- Dynamically populated -->
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ==================== نافذة تسجيل إذن وارد جديد (+ وارد) ==================== -->
+    <div id="modal-inbound" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                        <i data-lucide="arrow-down-left" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">تسجيل إذن وارد جديد (Inbound Entry)</h3>
+                        <p class="text-[10px] text-slate-500">إضافة كميات محاصيل جديدة مستلمة من الحصاد أو مراكز التجميع</p>
+                    </div>
+                </div>
+                <button onclick="closeInboundModal()" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleInboundSubmit(event)" class="space-y-3.5 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">اختر المنشأة / المستودع المستلم: <span class="text-rose-500">*</span></label>
+                    <select id="in-facility" required class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <option value="شركة إمداد النفع اللوجستية (مركز الرياض والخرج)">مركز خدمة: شركة إمداد النفع اللوجستية (مستودع الرياض المبرد)</option>
+                        <option value="مؤسسة الحصاد الأخضر للتوزيع (الغربية)">مركز خدمة: مؤسسة الحصاد الأخضر للتوزيع (مستودع جدة)</option>
+                        <option value="مزرعة واحة الخرج العضوية (سليمان العبدالله)">مزرعة واحة الخرج العضوية (سليمان العبدالله)</option>
+                        <option value="مزارع نخيل بريدة النموذجية">مزارع نخيل بريدة النموذجية (القصيم)</option>
+                        <option value="مشاريع مراعي الحجاز الوطنية">مشاريع مراعي الحجاز الوطنية (مستودع اللحوم)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">اختر الصنف: <span class="text-rose-500">*</span></label>
+                    <select id="in-product-id" onchange="onInboundProductChange(this.value)" required class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <!-- Populated -->
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">الكمية الواردة: <span class="text-rose-500">*</span></label>
+                        <input type="number" step="any" min="0.1" id="in-qty" required placeholder="مثال: 150" class="w-full p-2.5 rounded-xl border border-slate-200 bg-white font-bold text-slate-800 focus:outline-none focus:border-mewa-600">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">وحدة القياس:</label>
+                        <input type="text" id="in-unit" readonly class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-100 font-bold text-slate-600" value="كجم">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">نوع الوارد: <span class="text-rose-500">*</span></label>
+                        <select id="in-type" class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-mewa-600">
+                            <option value="حصاد حقل جديد">حصاد حقل مباشر</option>
+                            <option value="توريد شحنة مبردة">توريد شحنة مبردة معتمدة</option>
+                            <option value="مرتجع من مبسط">مرتجع من مبسط / سوق</option>
+                            <option value="تسوية جردية (+)">تسوية جردية فائض (+)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">رقم دفعة الحصاد / الإرسالية:</label>
+                        <input type="text" id="in-batch-no" placeholder="مثال: BATCH-2026-90" class="w-full p-2.5 rounded-xl border border-slate-200 bg-white font-medium text-slate-800 focus:outline-none focus:border-mewa-600">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">بيان ومصدر التوريد / ملاحظات الجودة:</label>
+                    <textarea id="in-notes" rows="2" placeholder="أدخل اسم الحقل أو رقم المركبة ودرجة حرارة الاستلام المعتمدة..." class="w-full p-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-mewa-600"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeInboundModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">إلغاء</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                        <span>اعتماد وتوثيق إذن الوارد</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== نافذة تسجيل إذن صرف جديد (- منصرف) ==================== -->
+    <div id="modal-outbound" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">تسجيل إذن صرف جديد (Outbound Entry)</h3>
+                        <p class="text-[10px] text-slate-500">صرف كميات للمباسط، مبيعات تجارية، عينات مختبر، أو تالف فرز</p>
+                    </div>
+                </div>
+                <button onclick="closeOutboundModal()" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleOutboundSubmit(event)" class="space-y-3.5 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">اختر الصنف المراد الصرف منه: <span class="text-rose-500">*</span></label>
+                    <select id="out-product-id" onchange="onOutboundProductChange(this.value)" required class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-mewa-600">
+                        <!-- Populated -->
+                    </select>
+                    <p id="out-current-avail-hint" class="text-[10px] text-emerald-700 font-bold mt-1">الرصيد المتاح حالياً: 0</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">الكمية المصروفة: <span class="text-rose-500">*</span></label>
+                        <input type="number" step="any" min="0.1" id="out-qty" required placeholder="مثال: 50" class="w-full p-2.5 rounded-xl border border-slate-200 bg-white font-bold text-slate-800 focus:outline-none focus:border-mewa-600">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">سبب وجهة الصرف: <span class="text-rose-500">*</span></label>
+                        <select id="out-reason" class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-mewa-600">
+                            <option value="صرف لمبسط سوق النفع العام">توريد لمبسط سوق النفع العام</option>
+                            <option value="مبيعات طلبية مستهلك معتمدة">مبيعات طلبية متجر معتمدة</option>
+                            <option value="سحب عينات فحص مخبري">سحب عينات فحص مخبري ومتبقيات</option>
+                            <option value="تالف فرز وتعبئة">إتلاف / تالف فرز وتعبئة (-)</option>
+                            <option value="تسوية جردية (-)">تسوية جردية عجز (-)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">اسم المستلم / رقم المبسط / رقم الطلب: <span class="text-rose-500">*</span></label>
+                    <input type="text" id="out-recipient" required placeholder="مثال: مبسط رقم 44 - سوق عتيقة المركزي" class="w-full p-2.5 rounded-xl border border-slate-200 bg-white font-medium text-slate-800 focus:outline-none focus:border-mewa-600">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">بيان إضافي وملاحظات:</label>
+                    <textarea id="out-notes" rows="2" placeholder="أدخل تفاصيل التوصيل أو سبب الفقد..." class="w-full p-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:border-mewa-600"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeOutboundModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition">إلغاء</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="check" class="w-4 h-4 text-naamaGold-400"></i>
+                        <span>تأكيد إذن الصرف وخصم الرصيد</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== نافذة كشف حركة صنف محدد (Stock Ledger Modal) ==================== -->
+    <div id="modal-product-history" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-slate-900 text-naamaGold-400 flex items-center justify-center font-bold">
+                        <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 id="ph-modal-title" class="font-black text-slate-900 text-sm">كشف حركة الصنف التفصيلي</h3>
+                        <p id="ph-modal-sub" class="text-[10px] text-slate-500">سجل حركة الوارد والمنصرف والرصيد التراكمي</p>
+                    </div>
+                </div>
+                <button onclick="closeProductHistoryModal()" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- ملخص الصنف -->
+            <div class="grid grid-cols-3 gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-center text-xs">
+                <div>
+                    <span class="text-[10px] text-slate-400 block font-semibold">إجمالي الوارد</span>
+                    <strong id="ph-in-total" class="text-blue-700 text-sm font-black">0</strong>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 block font-semibold">إجمالي المنصرف</span>
+                    <strong id="ph-out-total" class="text-amber-700 text-sm font-black">0</strong>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 block font-semibold">الرصيد المتاح الحالي</span>
+                    <strong id="ph-cur-total" class="text-emerald-700 text-sm font-black">0</strong>
+                </div>
+            </div>
+
+            <!-- جدول الحركات -->
+            <div class="overflow-x-auto max-h-72 overflow-y-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-right text-xs">
+                    <thead class="bg-slate-100 text-slate-700 font-bold text-[10px] sticky top-0">
+                        <tr>
+                            <th class="p-2.5">التاريخ</th>
+                            <th class="p-2.5">نوع العملية</th>
+                            <th class="p-2.5 text-center">الكمية</th>
+                            <th class="p-2.5 text-center">الرصيد بعد</th>
+                            <th class="p-2.5">البيان / الوجهة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ph-table-body" class="divide-y divide-slate-100">
+                        <!-- Populated -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeProductHistoryModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold text-slate-700 transition">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الطباعة الرسمية المخفية (Printable Sheet) -->
+    <div id="printable-report" class="hidden p-8 text-right bg-white text-slate-900 font-tajawal">
+        <div class="flex justify-between items-center border-b-2 border-slate-900 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <img src="static/images/mewa_logo.png" alt="الوزارة" class="h-16 w-auto">
+                <div>
+                    <h2 class="text-lg font-black">وزارة البيئة والمياه والزراعة</h2>
+                    <h3 class="text-sm font-bold text-emerald-800">منظومة أسواق النفع العام الوطنية - نما</h3>
+                </div>
+            </div>
+            <div class="text-left text-xs space-y-1">
+                <p><strong>تقرير:</strong> كشف جرد المخزون والوارد والمنصرف الرسمي</p>
+                <p><strong>تاريخ الاستخراج:</strong> <span id="print-date"></span></p>
+                <p><strong>المنشأة:</strong> <span id="print-facility-name">جميع المنشآت</span></p>
+            </div>
+        </div>
+        <div id="print-table-container"></div>
+        <div class="mt-8 pt-4 border-t border-slate-300 flex justify-between text-xs text-slate-500">
+            <span>تم الاستخراج آلياً من منصة أسواق النفع العام الوطنية - حوكمة سلاسل الإمداد الغذائي</span>
+            <span>الختم والاعتماد الرقمي الرسمي</span>
+        </div>
+    </div>
+
+    <!-- التوست للإشعارات -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div id="toast-inner" class="bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500">
+            <i data-lucide="check-circle" class="w-4 h-4 text-naamaGold-400"></i>
+            <span id="toast-msg">تمت العملية بنجاح</span>
+        </div>
+    </div>
+
+    <!-- التذييل الرسمي -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500 no-print">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <div class="flex items-center justify-center gap-2 font-bold text-slate-700">
+                <i data-lucide="shield-check" class="w-4 h-4 text-mewa-600"></i>
+                <span>المنصة الوطنية لأسواق النفع العام • وزارة البيئة والمياه والزراعة</span>
+            </div>
+            <p>© 2026 جميع الحقوق محفوظة لمنصة نما للخدمات الزراعية الإلكترونية بالمملكة العربية السعودية</p>
+        </div>
+    </footer>
+
+    <!-- سكربت العمليات وإدارة المخزون التفاعلي -->
+    <script>
+        // الأصناف الأساسية للمخزون متطابقة مع متجر النفع العام
+        const BASE_PRODUCTS = [
+            {
+                id: 101,
+                sku: "VEG-TOM-01",
+                name: "طماطم محمية نخب أول (فاخرة)",
+                category: "خضروات",
+                unit: "كرتون (5 كجم)",
+                merchant_name: "مزرعة واحة الخرج العضوية (سليمان العبدالله)",
+                broker_name: "شركة إمداد النفع اللوجستية",
+                fulfillment_mode: "broker",
+                is_restricted: 1,
+                max_consumer_qty: 3.0,
+                opening_stock: 400,
+                storage_type: "غرفة تبريد (10° مئوية)",
+                unit_price: 24.0,
+                image: "static/images/products/tomatoes.jpg"
+            },
+            {
+                id: 103,
+                sku: "VEG-POT-02",
+                name: "بطاطس حائلي مخصص للقلي والطبخ",
+                category: "خضروات",
+                unit: "شوال وسط (10 كجم)",
+                merchant_name: "مزارع الشمال للأعلاف والبطاطس (حائل)",
+                broker_name: null,
+                fulfillment_mode: "direct",
+                is_restricted: 1,
+                max_consumer_qty: 2.0,
+                opening_stock: 350,
+                storage_type: "مستودع تهوية مظلل (15° مئوية)",
+                unit_price: 22.0,
+                image: "static/images/products/potatoes.jpg"
+            },
+            {
+                id: 102,
+                sku: "VEG-CUC-03",
+                name: "خيار محمي مقرمش قطاف الصباح",
+                category: "خضروات",
+                unit: "صندوق فلين (4 كجم)",
+                merchant_name: "مزرعة واحة الخرج العضوية (سليمان العبدالله)",
+                broker_name: "شركة إمداد النفع اللوجستية",
+                fulfillment_mode: "broker",
+                is_restricted: 0,
+                max_consumer_qty: 5.0,
+                opening_stock: 280,
+                storage_type: "غرفة تبريد (8° مئوية)",
+                unit_price: 16.5,
+                image: "static/images/products/cucumbers.jpg"
+            },
+            {
+                id: 104,
+                sku: "DAT-SUK-01",
+                name: "تمر سكري القصيم مفتل ملكي",
+                category: "تمور",
+                unit: "كرتون حبة فاخرة (3 كجم)",
+                merchant_name: "مزارع نخيل بريدة النموذجية",
+                broker_name: "شركة إمداد النفع اللوجستية",
+                fulfillment_mode: "broker",
+                is_restricted: 0,
+                max_consumer_qty: 10.0,
+                opening_stock: 500,
+                storage_type: "مستودع جاف مبرد (18° مئوية)",
+                unit_price: 65.0,
+                image: "static/images/products/dates_sukari.jpg"
+            },
+            {
+                id: 105,
+                sku: "DAT-AJW-02",
+                name: "تمر عجوة المدينة المنورة العالية (عضوي)",
+                category: "تمور",
+                unit: "علبة فاخرة محكمة (1 كجم)",
+                merchant_name: "مزارع طيبة المباركة (العالية)",
+                broker_name: "شركة طازج للخدمات الزراعية",
+                fulfillment_mode: "broker",
+                is_restricted: 1,
+                max_consumer_qty: 3.0,
+                opening_stock: 220,
+                storage_type: "غرفة تحكم رطوبة ومبردة (15° مئوية)",
+                unit_price: 85.0,
+                image: "static/images/products/dates_ajwa.jpg"
+            },
+            {
+                id: 113,
+                sku: "FRU-WAT-01",
+                name: "بطيخ وادي الدواسر أحمر سكري فاخر",
+                category: "فواكه",
+                unit: "كرتون (حبة كبيرة 8-10 كجم)",
+                merchant_name: "مزارع وادي الدواسر النموذجية",
+                broker_name: "شركة إمداد النفع اللوجستية",
+                fulfillment_mode: "broker",
+                is_restricted: 0,
+                max_consumer_qty: 6.0,
+                opening_stock: 1200,
+                storage_type: "ساحة مبردة ومظللة",
+                unit_price: 18.0,
+                image: "static/images/products/watermelon.jpg"
+            },
+            {
+                id: 115,
+                sku: "FRU-POM-02",
+                name: "رمان الطائف الفاخر (حلو المذاق)",
+                category: "فواكه",
+                unit: "صندوق (7 كجم)",
+                merchant_name: "بساتين الهدا الطائفية",
+                broker_name: null,
+                fulfillment_mode: "direct",
+                is_restricted: 0,
+                max_consumer_qty: 4.0,
+                opening_stock: 180,
+                storage_type: "غرفة تبريد (6° مئوية)",
+                unit_price: 55.0,
+                image: "static/images/products/pomegranates.jpg"
+            },
+            {
+                id: 117,
+                sku: "HON-SID-01",
+                name: "عسل سدر بلدي جبلي أصلي (مفحوص مخبرياً)",
+                category: "تمور",
+                unit: "مرطبان زجاجي (1 كجم)",
+                merchant_name: "مناحل جبال السروات (عسير)",
+                broker_name: "مؤسسة الحصاد الأخضر للتوزيع",
+                fulfillment_mode: "broker",
+                is_restricted: 1,
+                max_consumer_qty: 2.0,
+                opening_stock: 95,
+                storage_type: "مستودع معتدل جاف (20° مئوية)",
+                unit_price: 320.0,
+                image: "static/images/products/honey_sidr.jpg"
+            },
+            {
+                id: 111,
+                sku: "LIV-HAR-01",
+                name: "خروف حري بلدي مذبوح ومبرد (مختوم)",
+                category: "مواشي",
+                unit: "ذبيحة كاملة (14-16 كجم)",
+                merchant_name: "مشاريع مراعي الحجاز الوطنية",
+                broker_name: "شركة إمداد النفع اللوجستية",
+                fulfillment_mode: "broker",
+                is_restricted: 1,
+                max_consumer_qty: 2.0,
+                opening_stock: 60,
+                storage_type: "ثلاجة لحوم مركزية (4° مئوية)",
+                unit_price: 1450.0,
+                image: "static/images/products/sheep_harri.jpg"
+            },
+            {
+                id: 112,
+                sku: "LIV-ALF-02",
+                name: "برسيم حائلي صافي مجفف مشدود",
+                category: "مواشي",
+                unit: "بالة شديدة النقاء",
+                merchant_name: "مزارع الشمال للأعلاف الخضراء",
+                broker_name: null,
+                fulfillment_mode: "direct",
+                is_restricted: 0,
+                max_consumer_qty: 40.0,
+                opening_stock: 800,
+                storage_type: "مستودع أعلاف جاف ومهوى",
+                unit_price: 26.0,
+                image: "static/images/products/alfalfa_hay.jpg"
+            }
+        ];
+
+        // مستودعات وغرف التبريد المعتمدة
+        const WAREHOUSES = [
+            {
+                id: "WH-RYD-01",
+                name: "مستودع التبريد المركزي بالرياض (عتيقة)",
+                operator: "شركة إمداد النفع اللوجستية",
+                type: "غرف تبريد عملاقة متعددة المراحل",
+                temp: "4° مئوية إلى 10° مئوية",
+                capacity: "500 طن متري",
+                occupancy: 78,
+                location: "سوق عتيقة المركزي - الرياض"
+            },
+            {
+                id: "WH-JED-02",
+                name: "مركز الخدمات اللوجستية والتبريد بجدة (الصفا)",
+                operator: "مؤسسة الحصاد الأخضر للتوزيع",
+                type: "تبريد متطور وفحص مخبري",
+                temp: "5° مئوية",
+                capacity: "350 طن متري",
+                occupancy: 62,
+                location: "سوق النفع العام المركزي بجدة"
+            },
+            {
+                id: "WH-KHA-03",
+                name: "مستودع مزارع الخرج للفرز السريع",
+                operator: "مزرعة واحة الخرج العضوية",
+                type: "تجميع أولي وتدريج وتعبئة",
+                temp: "12° مئوية",
+                capacity: "200 طن متري",
+                occupancy: 45,
+                location: "الخرج - المنطقة الزراعية"
+            }
+        ];
+
+        // الحالة والمتغيرات العامة
+        let inventoryBalances = [];
+        let inventoryTransactions = [];
+        let filteredBalances = [];
+        let currentTab = 'balances';
+        let ledgerFilterType = 'all';
+        let searchQuery = '';
+        let selectedFacility = 'all';
+
+        // تهيئة البيانات عند فتح الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            initInventoryData();
+            updateLastSyncTime();
+            renderAll();
+            lucide.createIcons();
+        });
+
+        function updateLastSyncTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const elem = document.getElementById('last-sync-time');
+            if (elem) elem.innerText = timeStr;
+            const printDate = document.getElementById('print-date');
+            if (printDate) printDate.innerText = now.toLocaleString('ar-SA');
+        }
+
+        function initInventoryData() {
+            // قراءة حركات المخزون المخزنة أو تهيئتها
+            const storedTx = localStorage.getItem('inventory_transactions');
+            if (storedTx) {
+                try {
+                    inventoryTransactions = JSON.parse(storedTx);
+                } catch (e) {
+                    inventoryTransactions = [];
+                }
+            }
+
+            if (!inventoryTransactions || inventoryTransactions.length === 0) {
+                // إنشاء حركات افتتاحية واقعية للمحاكاة
+                inventoryTransactions = [
+                    {
+                        id: "TX-IN-1001",
+                        date: "2026-10-27 08:30",
+                        type: "وارد حصاد حقل",
+                        productId: 101,
+                        productName: "طماطم محمية نخب أول (فاخرة)",
+                        qty: 250,
+                        unit: "كرتون (5 كجم)",
+                        is_inbound: true,
+                        facility: "شركة إمداد النفع اللوجستية (مركز الرياض والخرج)",
+                        notes: "وارد مباشر من البيوت المحمية - فحص متبقيات سليم 100%",
+                        batch_no: "BATCH-TOM-01",
+                        balance_after: 650
+                    },
+                    {
+                        id: "TX-IN-1002",
+                        date: "2026-10-27 09:15",
+                        type: "وارد حصاد حقل",
+                        productId: 113,
+                        productName: "بطيخ وادي الدواسر أحمر سكري فاخر",
+                        qty: 400,
+                        unit: "كرتون (حبة كبيرة 8-10 كجم)",
+                        is_inbound: true,
+                        facility: "شركة إمداد النفع اللوجستية (مركز الرياض والخرج)",
+                        notes: "شحنة شاحنة مبردة رقم 12 من مزارع وادي الدواسر",
+                        batch_no: "BATCH-WAT-88",
+                        balance_after: 1600
+                    },
+                    {
+                        id: "TX-OUT-2001",
+                        date: "2026-10-27 11:45",
+                        type: "صرف لمبسط سوق النفع العام",
+                        productId: 101,
+                        productName: "طماطم محمية نخب أول (فاخرة)",
+                        qty: 40,
+                        unit: "كرتون (5 كجم)",
+                        is_inbound: false,
+                        facility: "شركة إمداد النفع اللوجستية (مركز الرياض والخرج)",
+                        notes: "صرف لمبسط رقم 44 - سوق عتيقة المركزي",
+                        recipient: "مبسط رقم 44 (أبو فهد التميمي)",
+                        balance_after: 610
+                    },
+                    {
+                        id: "TX-OUT-2002",
+                        date: "2026-10-27 14:10",
+                        type: "مبيعات متجر أفراد",
+                        productId: 104,
+                        productName: "تمر سكري القصيم مفتل ملكي",
+                        qty: 15,
+                        unit: "كرتون حبة فاخرة (3 كجم)",
+                        is_inbound: false,
+                        facility: "شركة إمداد النفع اللوجستية (مركز الرياض والخرج)",
+                        notes: "طلب متجر رقم ORD-7491 للدفع عند الاستلام",
+                        recipient: "المشتري: محمد الشمري (الرياض)",
+                        balance_after: 485
+                    },
+                    {
+                        id: "TX-OUT-2003",
+                        date: "2026-10-28 07:20",
+                        type: "مبيعات متجر أفراد",
+                        productId: 111,
+                        productName: "خروف حري بلدي مذبوح ومبرد (مختوم)",
+                        qty: 2,
+                        unit: "ذبيحة كاملة (14-16 كجم)",
+                        is_inbound: false,
+                        facility: "مشاريع مراعي الحجاز الوطنية",
+                        notes: "طلب متجر عائلي رقم ORD-9921",
+                        recipient: "المشتري: عبدالرحمن الدوسري (جدة)",
+                        balance_after: 58
+                    }
+                ];
+                saveTransactions();
+            }
+
+            // دمج مبيعات منصة المتجر تلقائياً إن وجدت
+            integratePlatformOrders();
+
+            // حساب الأرصدة الحالية لكل صنف
+            recalculateBalances();
+        }
+
+        function integratePlatformOrders() {
+            // قراءة الطلبات المؤكدة بالمتجر لحساب المنصرف الحقيقي
+            const storeOrders = JSON.parse(localStorage.getItem('platform_orders') || '[]');
+            storeOrders.forEach(ord => {
+                if (!ord.inventory_deducted) {
+                    (ord.items || []).forEach(item => {
+                        const existingTx = inventoryTransactions.some(t => t.notes && t.notes.includes(ord.id || ord.order_number));
+                        if (!existingTx) {
+                            inventoryTransactions.unshift({
+                                id: `TX-ORD-${Math.floor(Math.random()*9000 + 1000)}`,
+                                date: ord.date || new Date().toISOString().replace('T', ' ').slice(0, 16),
+                                type: (ord.is_stall_distribution || ord.distribution_location) ? "صرف لمبسط سوق النفع العام" : "مبيعات متجر أفراد",
+                                productId: item.id,
+                                productName: item.name,
+                                qty: parseFloat(item.quantity) || 1,
+                                unit: item.unit || "كجم",
+                                is_inbound: false,
+                                facility: item.broker_name || item.merchant_name || "مركز خدمة معتمد",
+                                notes: `أمر شراء المتجر رقم #${ord.id || ord.order_number}`,
+                                recipient: ord.customer_name ? `${ord.customer_name} (${ord.customer_phone || ''})` : (ord.distribution_location || "مشتري معتمد")
+                            });
+                        }
+                    });
+                    ord.inventory_deducted = true;
+                }
+            });
+            saveTransactions();
+        }
+
+        function saveTransactions() {
+            localStorage.setItem('inventory_transactions', JSON.stringify(inventoryTransactions));
+        }
+
+        function recalculateBalances() {
+            // تجميع الوارد والمنصرف لكل صنف من قاعدة البيانات
+            inventoryBalances = BASE_PRODUCTS.map(bp => {
+                let inboundSum = 0;
+                let outboundSum = 0;
+
+                inventoryTransactions.forEach(tx => {
+                    if (tx.productId === bp.id) {
+                        if (tx.is_inbound) {
+                            inboundSum += parseFloat(tx.qty) || 0;
+                        } else {
+                            outboundSum += parseFloat(tx.qty) || 0;
+                        }
+                    }
+                });
+
+                const currentStock = Math.max(0, bp.opening_stock + inboundSum - outboundSum);
+                const capacity = bp.opening_stock * 2; // تقدير السعة الاستيعابية القصوى
+                const occupancyPercent = Math.min(100, Math.round((currentStock / capacity) * 100));
+
+                let stockStatus = 'available';
+                let statusBadge = { text: 'متوفر بوفرة', class: 'bg-emerald-50 text-emerald-800 border-emerald-300' };
+
+                if (currentStock === 0) {
+                    stockStatus = 'out';
+                    statusBadge = { text: 'نفد من المستودع', class: 'bg-rose-50 text-rose-800 border-rose-300' };
+                } else if (currentStock <= 20) {
+                    stockStatus = 'low';
+                    statusBadge = { text: 'منخفض - يلزم توريد', class: 'bg-rose-50 text-rose-700 border-rose-300' };
+                } else if (currentStock <= 50) {
+                    stockStatus = 'medium';
+                    statusBadge = { text: 'مستوى آمن', class: 'bg-amber-50 text-amber-800 border-amber-300' };
+                }
+
+                return {
+                    ...bp,
+                    inbound_qty: inboundSum,
+                    outbound_qty: outboundSum,
+                    current_stock: currentStock,
+                    capacity: capacity,
+                    occupancy_percent: occupancyPercent,
+                    stock_status: stockStatus,
+                    status_badge: statusBadge
+                };
+            });
+
+            applyInventoryFilters();
+        }
+
+        function renderAll() {
+            renderKPICards();
+            renderBalancesTable();
+            renderLedgerTable();
+            renderWarehousesCards();
+            populateModalProductDropdowns();
+        }
+
+        function renderKPICards() {
+            let totalCurrent = 0;
+            let totalIn = 0;
+            let totalOut = 0;
+            let lowCount = 0;
+            let restrictedCount = 0;
+
+            inventoryBalances.forEach(p => {
+                totalCurrent += p.current_stock;
+                totalIn += p.inbound_qty;
+                totalOut += p.outbound_qty;
+                if (p.current_stock <= 20) lowCount++;
+                if (p.is_restricted === 1) restrictedCount++;
+            });
+
+            document.getElementById('kpi-total-stock').innerText = totalCurrent.toLocaleString('ar-SA');
+            document.getElementById('kpi-total-inbound').innerText = totalIn.toLocaleString('ar-SA');
+            document.getElementById('kpi-total-outbound').innerText = totalOut.toLocaleString('ar-SA');
+            document.getElementById('kpi-low-stock-count').innerText = lowCount.toLocaleString('ar-SA');
+            document.getElementById('kpi-restricted-count').innerText = restrictedCount.toLocaleString('ar-SA');
+
+            document.getElementById('badge-tab-balances-count').innerText = inventoryBalances.length;
+            document.getElementById('badge-tab-ledger-count').innerText = inventoryTransactions.length;
+        }
+
+        function applyInventoryFilters() {
+            const cat = document.getElementById('filter-category').value;
+            const stockStatus = document.getElementById('filter-stock-status').value;
+            const restricted = document.getElementById('filter-restricted').value;
+            const fulfillment = document.getElementById('filter-fulfillment').value;
+
+            let list = [...inventoryBalances];
+
+            // فلترة المنشأة
+            if (selectedFacility !== 'all') {
+                if (selectedFacility.startsWith('broker:')) {
+                    const brokerName = selectedFacility.replace('broker:', '');
+                    list = list.filter(p => p.broker_name === brokerName);
+                } else if (selectedFacility.startsWith('merchant:')) {
+                    const merchantName = selectedFacility.replace('merchant:', '');
+                    list = list.filter(p => p.merchant_name && p.merchant_name.includes(merchantName));
+                }
+            }
+
+            // فلترة التصنيف
+            if (cat !== 'all') {
+                list = list.filter(p => (p.category || '').includes(cat));
+            }
+
+            // فلترة حالة الرصيد
+            if (stockStatus !== 'all') {
+                list = list.filter(p => p.stock_status === stockStatus);
+            }
+
+            // فلترة صفة القيد
+            if (restricted === 'restricted') {
+                list = list.filter(p => p.is_restricted === 1);
+            } else if (restricted === 'unrestricted') {
+                list = list.filter(p => p.is_restricted === 0);
+            }
+
+            // فلترة قناة التوريد
+            if (fulfillment !== 'all') {
+                list = list.filter(p => p.fulfillment_mode === fulfillment);
+            }
+
+            // بحث نصي
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                list = list.filter(p => 
+                    (p.name && p.name.toLowerCase().includes(q)) ||
+                    (p.sku && p.sku.toLowerCase().includes(q)) ||
+                    (p.merchant_name && p.merchant_name.toLowerCase().includes(q)) ||
+                    (p.broker_name && p.broker_name.toLowerCase().includes(q)) ||
+                    (p.category && p.category.toLowerCase().includes(q))
+                );
+            }
+
+            filteredBalances = list;
+            renderBalancesTable();
+        }
+
+        function renderBalancesTable() {
+            const tbody = document.getElementById('balances-table-body');
+            const countText = document.getElementById('balances-count-text');
+            countText.innerText = `${filteredBalances.length} صنف مسجل`;
+
+            if (filteredBalances.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-8 text-center text-slate-400">
+                            <i data-lucide="package-search" class="w-8 h-8 mx-auto text-slate-300 mb-2"></i>
+                            <p class="font-bold text-slate-600">لا توجد أصناف مطابقة لمعايير البحث أو الفلترة المحددة</p>
+                        </td>
+                    </tr>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            tbody.innerHTML = filteredBalances.map(p => {
+                const isBroker = p.fulfillment_mode === 'broker';
+
+                return `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <!-- الصنف والمحصول -->
+                        <td class="p-3.5">
+                            <div class="flex items-center gap-3">
+                                <img src="${p.image}" alt="${p.name}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                                <div class="space-y-0.5">
+                                    <div class="font-black text-slate-900 leading-snug">${p.name}</div>
+                                    <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                                        <span class="bg-slate-100 text-slate-700 font-mono px-1.5 py-0.2 rounded font-bold">${p.sku}</span>
+                                        <span>•</span>
+                                        <span class="font-medium">${p.category}</span>
+                                        <span>•</span>
+                                        <span class="text-mewa-700 font-bold">${p.unit_price} ر.س / ${p.unit}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- المنشأة الموردة / مركز الخدمة -->
+                        <td class="p-3.5">
+                            <div class="space-y-1">
+                                <div class="font-bold text-slate-800 text-[11px] flex items-center gap-1">
+                                    <i data-lucide="tractor" class="w-3 h-3 text-mewa-600 shrink-0"></i>
+                                    <span class="truncate max-w-[160px]" title="${p.merchant_name}">${p.merchant_name}</span>
+                                </div>
+                                ${isBroker ? `
+                                    <div class="bg-amber-50 text-amber-900 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-200 flex items-center gap-1 w-fit">
+                                        <i data-lucide="shield-check" class="w-3 h-3 text-amber-600"></i>
+                                        <span class="truncate max-w-[140px]">${p.broker_name}</span>
+                                    </div>
+                                ` : `
+                                    <div class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-200 flex items-center gap-1 w-fit">
+                                        <i data-lucide="sprout" class="w-3 h-3 text-emerald-600"></i>
+                                        <span>توريد مزارع مباشر</span>
+                                    </div>
+                                `}
+                            </div>
+                        </td>
+
+                        <!-- صفة القيد الرقابي -->
+                        <td class="p-3.5 text-center">
+                            ${p.is_restricted === 1 ? `
+                                <div class="inline-flex flex-col items-center">
+                                    <span class="bg-purple-50 text-purple-800 border border-purple-200 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
+                                        <i data-lucide="lock" class="w-3 h-3 text-purple-600"></i> صنف مقيد بسقف
+                                    </span>
+                                    <span class="text-[9px] text-slate-500 font-bold mt-0.5">حد أفراد: ${p.max_consumer_qty} ${p.unit}</span>
+                                </div>
+                            ` : `
+                                <span class="bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded-full text-[10px] font-bold inline-flex items-center gap-1">
+                                    <i data-lucide="unlock" class="w-3 h-3 text-slate-500"></i> صنف حر مفتوح
+                                </span>
+                            `}
+                        </td>
+
+                        <!-- الرصيد الافتتاحي -->
+                        <td class="p-3.5 text-center font-bold text-slate-500 font-mono">
+                            ${p.opening_stock.toLocaleString('ar-SA')}
+                        </td>
+
+                        <!-- إجمالي الوارد (+) -->
+                        <td class="p-3.5 text-center font-bold text-blue-700 font-mono bg-blue-50/30">
+                            +${p.inbound_qty.toLocaleString('ar-SA')}
+                        </td>
+
+                        <!-- إجمالي المنصرف (-) -->
+                        <td class="p-3.5 text-center font-bold text-amber-700 font-mono bg-amber-50/30">
+                            -${p.outbound_qty.toLocaleString('ar-SA')}
+                        </td>
+
+                        <!-- الرصيد المتاح الحالي -->
+                        <td class="p-3.5 text-center bg-emerald-50/40">
+                            <div class="space-y-1">
+                                <span class="text-base font-black text-mewa-800 font-mono">${p.current_stock.toLocaleString('ar-SA')}</span>
+                                <span class="text-[10px] text-slate-500 block">${p.unit}</span>
+                            </div>
+                        </td>
+
+                        <!-- حالة الرصيد والشريط -->
+                        <td class="p-3.5 text-center">
+                            <span class="${p.status_badge.class} border px-2 py-0.5 rounded-full text-[10px] font-bold whitespace-nowrap">
+                                ${p.status_badge.text}
+                            </span>
+                        </td>
+
+                        <!-- إجراءات سريعة -->
+                        <td class="p-3.5 text-center no-print">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="quickInbound(${p.id})" title="تسجيل إذن وارد لهذا الصنف" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg border border-emerald-200 transition">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <button onclick="quickOutbound(${p.id})" title="تسجيل إذن صرف من هذا الصنف" class="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg border border-amber-200 transition">
+                                    <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <button onclick="openProductHistory(${p.id})" title="عرض كشف حركة الصنف التفصيلي" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg border border-slate-200 transition">
+                                    <i data-lucide="history" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function renderLedgerTable() {
+            const tbody = document.getElementById('ledger-table-body');
+            const countText = document.getElementById('ledger-count-text');
+
+            let list = [...inventoryTransactions];
+
+            // فلترة نوع الحركة (وارد / منصرف)
+            if (ledgerFilterType === 'inbound') {
+                list = list.filter(t => t.is_inbound);
+            } else if (ledgerFilterType === 'outbound') {
+                list = list.filter(t => !t.is_inbound);
+            }
+
+            countText.innerText = `${list.length} حركة مسجلة`;
+
+            if (list.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-8 text-center text-slate-400">
+                            <i data-lucide="file-text" class="w-8 h-8 mx-auto text-slate-300 mb-2"></i>
+                            <p class="font-bold text-slate-600">لا توجد حركات وارد أو منصرف مسجلة حالياً</p>
+                        </td>
+                    </tr>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            tbody.innerHTML = list.map(t => {
+                const isIn = t.is_inbound;
+
+                return `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="p-3.5 font-bold font-mono text-slate-900">${t.id}</td>
+                        <td class="p-3.5 text-slate-500 font-mono text-[11px] whitespace-nowrap">${t.date}</td>
+                        <td class="p-3.5">
+                            <span class="${isIn ? 'bg-blue-50 text-blue-800 border-blue-200' : 'bg-amber-50 text-amber-800 border-amber-200'} border px-2 py-0.5 rounded-md font-bold text-[10px] inline-flex items-center gap-1">
+                                <i data-lucide="${isIn ? 'arrow-down-left' : 'arrow-up-right'}" class="w-3 h-3"></i>
+                                <span>${t.type}</span>
+                            </span>
+                        </td>
+                        <td class="p-3.5 font-black text-slate-800">${t.productName}</td>
+                        <td class="p-3.5 text-center font-bold font-mono text-sm ${isIn ? 'text-blue-700' : 'text-amber-700'}">
+                            ${isIn ? `+${t.qty}` : `-${t.qty}`} <span class="text-[10px] text-slate-400 font-normal font-tajawal">${t.unit}</span>
+                        </td>
+                        <td class="p-3.5 text-center font-bold font-mono text-slate-700">
+                            ${t.balance_after ? t.balance_after.toLocaleString('ar-SA') : '-'}
+                        </td>
+                        <td class="p-3.5 text-slate-700 font-medium text-[11px] truncate max-w-[160px]" title="${t.facility || t.recipient || ''}">
+                            ${isIn ? (t.facility || 'المزرعة الموردة') : (t.recipient || 'مبسط / متجر')}
+                        </td>
+                        <td class="p-3.5 text-slate-600 text-[11px] max-w-[200px] truncate" title="${t.notes || ''}">
+                            ${t.notes || 'توثيق رسمي بمنظومة أسواق النفع العام'}
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full text-[9.5px] font-bold">
+                                موثق ومكتمل
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function renderWarehousesCards() {
+            const container = document.getElementById('warehouses-cards-container');
+            container.innerHTML = WAREHOUSES.map(w => `
+                <div class="naama-card p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition">
+                    <div class="flex items-start justify-between">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                            <i data-lucide="warehouse" class="w-5 h-5"></i>
+                        </div>
+                        <span class="bg-emerald-50 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded-full border border-emerald-200">
+                            تشغيل نشط 24/7
+                        </span>
+                    </div>
+
+                    <div>
+                        <h4 class="font-black text-slate-900 text-sm leading-snug">${w.name}</h4>
+                        <p class="text-[11px] text-slate-500 font-semibold mt-0.5 flex items-center gap-1">
+                            <i data-lucide="building" class="w-3 h-3 text-mewa-600"></i>
+                            <span>المشغل: ${w.operator}</span>
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-2 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">نطاق التبريد:</span>
+                            <span class="font-bold text-blue-700 font-mono">${w.temp}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">السعة الاستيعابية:</span>
+                            <span class="font-bold text-slate-800">${w.capacity}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">الموقع الجغرافي:</span>
+                            <span class="font-bold text-slate-700">${w.location}</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-[11px] font-bold mb-1">
+                            <span class="text-slate-600">نسبة الإشغال السعوي:</span>
+                            <span class="text-mewa-700 font-mono">${w.occupancy}%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-emerald-500 to-mewa-600 h-full rounded-full" style="width: ${w.occupancy}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function populateModalProductDropdowns() {
+            const inSelect = document.getElementById('in-product-id');
+            const outSelect = document.getElementById('out-product-id');
+            if (!inSelect || !outSelect) return;
+
+            const opts = inventoryBalances.map(p => `
+                <option value="${p.id}">${p.name} (${p.category}) - الرصيد الحالي: ${p.current_stock} ${p.unit}</option>
+            `).join('');
+
+            inSelect.innerHTML = opts;
+            outSelect.innerHTML = opts;
+
+            if (inventoryBalances.length > 0) {
+                onInboundProductChange(inventoryBalances[0].id);
+                onOutboundProductChange(inventoryBalances[0].id);
+            }
+        }
+
+        function onInboundProductChange(id) {
+            const p = inventoryBalances.find(x => x.id == id);
+            if (p) {
+                document.getElementById('in-unit').value = p.unit;
+            }
+        }
+
+        function onOutboundProductChange(id) {
+            const p = inventoryBalances.find(x => x.id == id);
+            if (p) {
+                document.getElementById('out-current-avail-hint').innerText = `الرصيد المتاح حالياً لهذا الصنف: ${p.current_stock} ${p.unit}`;
+                document.getElementById('out-qty').max = p.current_stock;
+            }
+        }
+
+        function switchInventoryTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.inv-tab-btn').forEach(btn => {
+                btn.className = "inv-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2";
+            });
+
+            document.getElementById('tab-content-balances').classList.add('hidden');
+            document.getElementById('tab-content-ledger').classList.add('hidden');
+            document.getElementById('tab-content-warehouses').classList.add('hidden');
+
+            const filterBar = document.getElementById('filter-bar-container');
+
+            if (tab === 'balances') {
+                document.getElementById('tab-btn-balances').className = "inv-tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm";
+                document.getElementById('tab-content-balances').classList.remove('hidden');
+                filterBar.classList.remove('hidden');
+            } else if (tab === 'ledger') {
+                document.getElementById('tab-btn-ledger').className = "inv-tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm";
+                document.getElementById('tab-content-ledger').classList.remove('hidden');
+                filterBar.classList.add('hidden');
+            } else if (tab === 'warehouses') {
+                document.getElementById('tab-btn-warehouses').className = "inv-tab-btn active bg-mewa-600 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm";
+                document.getElementById('tab-content-warehouses').classList.remove('hidden');
+                filterBar.classList.add('hidden');
+            }
+
+            lucide.createIcons();
+        }
+
+        function filterLedgerType(type) {
+            ledgerFilterType = type;
+            document.querySelectorAll('.lt-btn').forEach(btn => {
+                btn.className = "lt-btn bg-slate-100 text-slate-700 font-bold text-xs px-3 py-1 rounded-lg hover:bg-slate-200";
+            });
+            document.getElementById(`btn-lt-${type}`).className = "lt-btn active bg-slate-900 text-white font-bold text-xs px-3 py-1 rounded-lg";
+            renderLedgerTable();
+        }
+
+        function handleInventorySearch(val) {
+            searchQuery = val.trim();
+            applyInventoryFilters();
+        }
+
+        function onFacilityChange(val) {
+            selectedFacility = val;
+            applyInventoryFilters();
+        }
+
+        function resetInventoryFilters() {
+            document.getElementById('filter-category').value = 'all';
+            document.getElementById('filter-stock-status').value = 'all';
+            document.getElementById('filter-restricted').value = 'all';
+            document.getElementById('filter-fulfillment').value = 'all';
+            document.getElementById('inventory-search').value = '';
+            searchQuery = '';
+            selectedFacility = 'all';
+            document.getElementById('facility-filter-select').value = 'all';
+            applyInventoryFilters();
+            showToast("تمت إعادة ضبط فلاتر المخزون بنجاح");
+        }
+
+        // نوافذ الوارد والصرف السريعة
+        function openInboundModal() {
+            document.getElementById('modal-inbound').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeInboundModal() {
+            document.getElementById('modal-inbound').classList.add('hidden');
+        }
+
+        function quickInbound(productId) {
+            openInboundModal();
+            document.getElementById('in-product-id').value = productId;
+            onInboundProductChange(productId);
+        }
+
+        function handleInboundSubmit(e) {
+            e.preventDefault();
+            const prodId = parseInt(document.getElementById('in-product-id').value);
+            const p = inventoryBalances.find(x => x.id === prodId);
+            const qty = parseFloat(document.getElementById('in-qty').value);
+            const type = document.getElementById('in-type').value;
+            const facility = document.getElementById('in-facility').value;
+            const notes = document.getElementById('in-notes').value || 'إذن توريد جديد موثق';
+            const batchNo = document.getElementById('in-batch-no').value || `BATCH-${Math.floor(Math.random()*9000)}`;
+
+            if (!p || qty <= 0) return;
+
+            const newBalanceAfter = p.current_stock + qty;
+            const txId = `TX-IN-${Math.floor(Math.random()*9000 + 1000)}`;
+            const dateStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
+
+            inventoryTransactions.unshift({
+                id: txId,
+                date: dateStr,
+                type: type,
+                productId: p.id,
+                productName: p.name,
+                qty: qty,
+                unit: p.unit,
+                is_inbound: true,
+                facility: facility,
+                notes: notes,
+                batch_no: batchNo,
+                balance_after: newBalanceAfter
+            });
+
+            saveTransactions();
+            recalculateBalances();
+            renderAll();
+            closeInboundModal();
+            showToast(`تم تسجيل إذن الوارد بنجاح برقم: ${txId} وتم تحديث الرصيد`);
+        }
+
+        function openOutboundModal() {
+            document.getElementById('modal-outbound').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeOutboundModal() {
+            document.getElementById('modal-outbound').classList.add('hidden');
+        }
+
+        function quickOutbound(productId) {
+            openOutboundModal();
+            document.getElementById('out-product-id').value = productId;
+            onOutboundProductChange(productId);
+        }
+
+        function handleOutboundSubmit(e) {
+            e.preventDefault();
+            const prodId = parseInt(document.getElementById('out-product-id').value);
+            const p = inventoryBalances.find(x => x.id === prodId);
+            const qty = parseFloat(document.getElementById('out-qty').value);
+            const reason = document.getElementById('out-reason').value;
+            const recipient = document.getElementById('out-recipient').value;
+            const notes = document.getElementById('out-notes').value || 'صرف رسمي معتمد';
+
+            if (!p || qty <= 0) return;
+
+            if (qty > p.current_stock) {
+                showToast(`الكمية المطلوبة (${qty}) تتجاوز الرصيد المتاح حالياً (${p.current_stock})`, true);
+                return;
+            }
+
+            const newBalanceAfter = p.current_stock - qty;
+            const txId = `TX-OUT-${Math.floor(Math.random()*9000 + 1000)}`;
+            const dateStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
+
+            inventoryTransactions.unshift({
+                id: txId,
+                date: dateStr,
+                type: reason,
+                productId: p.id,
+                productName: p.name,
+                qty: qty,
+                unit: p.unit,
+                is_inbound: false,
+                facility: p.broker_name || p.merchant_name,
+                recipient: recipient,
+                notes: notes,
+                balance_after: newBalanceAfter
+            });
+
+            saveTransactions();
+            recalculateBalances();
+            renderAll();
+            closeOutboundModal();
+            showToast(`تم تسجيل إذن الصرف بنجاح برقم: ${txId} وتم خصم الكمية من الرصيد`);
+        }
+
+        // كشف حركة الصنف التفصيلي
+        function openProductHistory(prodId) {
+            const p = inventoryBalances.find(x => x.id === prodId);
+            if (!p) return;
+
+            document.getElementById('ph-modal-title').innerText = `كشف حركة الصنف: ${p.name}`;
+            document.getElementById('ph-modal-sub').innerText = `الرمز: ${p.sku} • التصنيف: ${p.category} • المنشأة: ${p.merchant_name}`;
+
+            document.getElementById('ph-in-total').innerText = `+${p.inbound_qty} ${p.unit}`;
+            document.getElementById('ph-out-total').innerText = `-${p.outbound_qty} ${p.unit}`;
+            document.getElementById('ph-cur-total').innerText = `${p.current_stock} ${p.unit}`;
+
+            const tbody = document.getElementById('ph-table-body');
+            const history = inventoryTransactions.filter(t => t.productId === prodId);
+
+            if (history.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="p-4 text-center text-slate-400 text-xs">لا توجد حركات مسجلة لهذا الصنف بعد</td>
+                    </tr>
+                `;
+            } else {
+                tbody.innerHTML = history.map(t => `
+                    <tr>
+                        <td class="p-2.5 font-mono text-[10px] text-slate-500">${t.date}</td>
+                        <td class="p-2.5">
+                            <span class="${t.is_inbound ? 'text-blue-700' : 'text-amber-700'} font-bold">
+                                ${t.is_inbound ? '📥 وارد:' : '📤 صرف:'} ${t.type}
+                            </span>
+                        </td>
+                        <td class="p-2.5 text-center font-bold font-mono ${t.is_inbound ? 'text-blue-700' : 'text-amber-700'}">
+                            ${t.is_inbound ? `+${t.qty}` : `-${t.qty}`}
+                        </td>
+                        <td class="p-2.5 text-center font-bold font-mono text-slate-800">
+                            ${t.balance_after ? t.balance_after : '-'}
+                        </td>
+                        <td class="p-2.5 text-slate-600 truncate max-w-[180px]" title="${t.notes || t.recipient || ''}">
+                            ${t.recipient || t.notes || '-'}
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            document.getElementById('modal-product-history').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeProductHistoryModal() {
+            document.getElementById('modal-product-history').classList.add('hidden');
+        }
+
+        function printInventoryReport() {
+            const fac = document.getElementById('facility-filter-select');
+            const facText = fac ? fac.options[fac.selectedIndex].text : 'جميع المنشآت';
+            document.getElementById('print-facility-name').innerText = facText;
+
+            const printContainer = document.getElementById('print-table-container');
+            printContainer.innerHTML = `
+                <table class="w-full text-right text-xs border border-slate-300">
+                    <thead class="bg-slate-100 font-bold border-b border-slate-300">
+                        <tr>
+                            <th class="p-2 border">#</th>
+                            <th class="p-2 border">كود الصنف</th>
+                            <th class="p-2 border">اسم الصنف والمحصول</th>
+                            <th class="p-2 border">المنشأة الموردة</th>
+                            <th class="p-2 border text-center">الرصيد الافتتاحي</th>
+                            <th class="p-2 border text-center">الوارد (+)</th>
+                            <th class="p-2 border text-center">المنصرف (-)</th>
+                            <th class="p-2 border text-center font-black">الرصيد المتاح الحالي</th>
+                            <th class="p-2 border text-center">الوحدة</th>
+                            <th class="p-2 border text-center">السعر المعتمد</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredBalances.map((p, idx) => `
+                            <tr class="border-b border-slate-200">
+                                <td class="p-2 border text-center font-bold">${idx + 1}</td>
+                                <td class="p-2 border font-mono">${p.sku}</td>
+                                <td class="p-2 border font-bold">${p.name}</td>
+                                <td class="p-2 border">${p.merchant_name}</td>
+                                <td class="p-2 border text-center font-mono">${p.opening_stock}</td>
+                                <td class="p-2 border text-center font-mono text-blue-800">+${p.inbound_qty}</td>
+                                <td class="p-2 border text-center font-mono text-amber-800">-${p.outbound_qty}</td>
+                                <td class="p-2 border text-center font-mono font-black text-emerald-900">${p.current_stock}</td>
+                                <td class="p-2 border text-center">${p.unit}</td>
+                                <td class="p-2 border text-center">${p.unit_price} ر.س</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            window.print();
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const inner = document.getElementById('toast-inner');
+            const msg = document.getElementById('toast-msg');
+            msg.innerText = message;
+            if (isError) {
+                inner.className = "bg-rose-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-rose-500";
+            } else {
+                inner.className = "bg-mewa-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-bold border border-naamaGold-500";
+            }
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
