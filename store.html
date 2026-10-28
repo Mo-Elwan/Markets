@@ -201,54 +201,6 @@
     <!-- المحتوى الرئيسي للمتجر -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
 
-        <!-- شريط التصفية والبحث المتقدم -->
-        <div class="naama-card p-4 rounded-2xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-            
-            <!-- أزرار التصنيفات -->
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar flex-wrap sm:flex-nowrap" id="category-tabs">
-                <button onclick="setCategory('all')" data-cat="all" class="cat-btn active bg-mewa-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap shadow-sm">
-                    <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
-                    <span>جميع المنتجات</span>
-                    <span id="badge-all" class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
-                </button>
-                <button onclick="setCategory('خضروات')" data-cat="خضروات" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
-                    <i data-lucide="carrot" class="w-3.5 h-3.5 text-mewa-600"></i>
-                    <span>خضروات طازجة</span>
-                    <span id="badge-veg" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
-                </button>
-                <button onclick="setCategory('فواكه')" data-cat="فواكه" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
-                    <i data-lucide="apple" class="w-3.5 h-3.5 text-amber-600"></i>
-                    <span>فواكه موسمية</span>
-                    <span id="badge-fruit" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
-                </button>
-                <button onclick="setCategory('تمور')" data-cat="تمور" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-naamaGold-600"></i>
-                    <span>تمور وعسل فاخر</span>
-                    <span id="badge-dates" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
-                </button>
-                <button onclick="setCategory('مواشي')" data-cat="مواشي" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
-                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-700"></i>
-                    <span>مواشي وأعلاف</span>
-                    <span id="badge-livestock" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
-                </button>
-            </div>
-
-            <!-- مربع البحث والترتيب -->
-            <div class="flex items-center gap-3">
-                <div class="relative flex-grow md:w-64">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2"></i>
-                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="ابحث باسم المنتج أو المزرعة..." class="w-full text-xs pr-9 pl-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-mewa-600 focus:outline-none transition">
-                </div>
-                <select id="sort-select" onchange="handleSort(this.value)" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 font-bold focus:outline-none focus:border-mewa-600">
-                    <option value="featured">الأحدث والمميز</option>
-                    <option value="price-asc">السعر: من الأقل</option>
-                    <option value="price-desc">السعر: من الأعلى</option>
-                    <option value="stock-desc">الكمية الأكثر توفراً</option>
-                    <option value="rating-desc">الأعلى تقييماً ★</option>
-                </select>
-            </div>
-        </div>
-
         <!-- شريط التصفية الجغرافي والأسواق المركزية والمتاجر والتقييمات -->
         <div class="naama-card p-4 rounded-2xl bg-gradient-to-r from-emerald-50/50 via-white to-amber-50/40 border border-slate-200/90 shadow-sm space-y-3">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
@@ -363,6 +315,54 @@
                     <i data-lucide="filter" class="w-3.5 h-3.5"></i>
                     <span id="btn-sc-toggle-text">عرض منتجات مراكز الخدمة فقط</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- شريط التصفية والبحث المتقدم وتصنيفات المحاصيل -->
+        <div class="naama-card p-4 rounded-2xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+            
+            <!-- أزرار التصنيفات -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar flex-wrap sm:flex-nowrap" id="category-tabs">
+                <button onclick="setCategory('all')" data-cat="all" class="cat-btn active bg-mewa-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap shadow-sm">
+                    <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+                    <span>جميع المنتجات</span>
+                    <span id="badge-all" class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+                <button onclick="setCategory('خضروات')" data-cat="خضروات" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+                    <i data-lucide="carrot" class="w-3.5 h-3.5 text-mewa-600"></i>
+                    <span>خضروات طازجة</span>
+                    <span id="badge-veg" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
+                </button>
+                <button onclick="setCategory('فواكه')" data-cat="فواكه" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+                    <i data-lucide="apple" class="w-3.5 h-3.5 text-amber-600"></i>
+                    <span>فواكه موسمية</span>
+                    <span id="badge-fruit" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
+                </button>
+                <button onclick="setCategory('تمور')" data-cat="تمور" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-naamaGold-600"></i>
+                    <span>تمور وعسل فاخر</span>
+                    <span id="badge-dates" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
+                </button>
+                <button onclick="setCategory('مواشي')" data-cat="مواشي" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+                    <i data-lucide="wheat" class="w-3.5 h-3.5 text-emerald-700"></i>
+                    <span>مواشي وأعلاف</span>
+                    <span id="badge-livestock" class="bg-slate-200 px-1.5 py-0.5 rounded-full text-[10px] text-slate-700">0</span>
+                </button>
+            </div>
+
+            <!-- مربع البحث والترتيب -->
+            <div class="flex items-center gap-3">
+                <div class="relative flex-grow md:w-64">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="ابحث باسم المنتج أو المزرعة..." class="w-full text-xs pr-9 pl-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-mewa-600 focus:outline-none transition">
+                </div>
+                <select id="sort-select" onchange="handleSort(this.value)" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 font-bold focus:outline-none focus:border-mewa-600">
+                    <option value="featured">الأحدث والمميز</option>
+                    <option value="price-asc">السعر: من الأقل</option>
+                    <option value="price-desc">السعر: من الأعلى</option>
+                    <option value="stock-desc">الكمية الأكثر توفراً</option>
+                    <option value="rating-desc">الأعلى تقييماً ★</option>
+                </select>
             </div>
         </div>
 
