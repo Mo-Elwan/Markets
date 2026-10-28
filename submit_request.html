@@ -778,6 +778,44 @@
             return CATEGORY_UNITS[category] || ["كجم", "كرتون", "صندوق", "حبة", "كيس", "رأس"];
         }
 
+        function populateProductsForCategory(row, selectedCat, preselectedProductName = null) {
+            const nameSelect = row.querySelector('.item-name');
+            const customInput = row.querySelector('.item-custom-name');
+            if (!nameSelect) return;
+
+            // تصفية الأصناف من الكتالوج الوطني المعتمد حصراً وفق التصنيف المختار
+            const filteredItems = MASTER_CATALOG_ITEMS.filter(it => it.category === selectedCat);
+
+            let optsHtml = `<option value="">-- اختر الصنف من قائمة (${selectedCat}) --</option>`;
+            if (filteredItems.length > 0) {
+                filteredItems.forEach(p => {
+                    const isSel = (p.name === preselectedProductName) ? 'selected' : '';
+                    optsHtml += `<option value="${p.name}" ${isSel}>${p.name}</option>`;
+                });
+            } else {
+                optsHtml += `<option value="">لا توجد أصناف سابقة لهذا التصنيف</option>`;
+            }
+            optsHtml += `<option value="__custom__" ${preselectedProductName === '__custom__' ? 'selected' : ''}>➕ صنف مخصص آخر (إدخال يدوي مخصص)...</option>`;
+
+            nameSelect.innerHTML = optsHtml;
+
+            // تحديد الصنف وتحديث بياناته التلقائية
+            if (preselectedProductName && preselectedProductName !== '__custom__') {
+                nameSelect.value = preselectedProductName;
+                if (customInput) customInput.classList.add('hidden');
+                onProductCatalogSelect(nameSelect);
+            } else if (!preselectedProductName && filteredItems.length > 0) {
+                nameSelect.selectedIndex = 1; // اختيار أول صنف من هذا التصنيف تلقائياً
+                if (customInput) customInput.classList.add('hidden');
+                onProductCatalogSelect(nameSelect);
+            } else if (preselectedProductName === '__custom__') {
+                nameSelect.value = '__custom__';
+                if (customInput) customInput.classList.remove('hidden');
+            } else {
+                if (customInput) customInput.classList.add('hidden');
+            }
+        }
+
         function onCategoryChange(selectElement) {
             const row = selectElement.closest('.item-row');
             const unitSelect = row.querySelector('.item-unit');
@@ -785,12 +823,14 @@
             const units = getUnitsForCategory(selectedCat);
 
             unitSelect.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
+
+            // تصفية وتحديث قائمة الأصناف فوراً بناءً على التصنيف المختار
+            populateProductsForCategory(row, selectedCat);
         }
 
         function onProductCatalogSelect(selectElement) {
             const row = selectElement.closest('.item-row');
             const customInput = row.querySelector('.item-custom-name');
-            const catSelect = row.querySelector('.item-cat');
             const unitSelect = row.querySelector('.item-unit');
             const priceInput = row.querySelector('.item-price');
             const descInput = row.querySelector('.item-description');
@@ -812,12 +852,6 @@
 
             const itemMatch = MASTER_CATALOG_ITEMS.find(m => m.name === val);
             if (!itemMatch) return;
-
-            // تحديث التصنيف
-            if (itemMatch.category) {
-                catSelect.value = itemMatch.category;
-                onCategoryChange(catSelect);
-            }
 
             // تحديث الوحدة
             if (itemMatch.unit) {
@@ -872,42 +906,15 @@
             const div = document.createElement('div');
             div.className = "item-row bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3.5 relative shadow-2xs";
 
-            // بناء خيارات قائمة المنتجات المنسدلة وفق الأصناف المعرفة في لوحة التحكم
-            const currentCatList = cfg.categories || [];
-            const relevantCatalogItems = MASTER_CATALOG_ITEMS.filter(it => 
-                (it.forApplicant && it.forApplicant.includes(currentType)) || currentCatList.includes(it.category)
-            );
-            const otherCatalogItems = MASTER_CATALOG_ITEMS.filter(it => !relevantCatalogItems.includes(it));
+            const initialCat = item.cat || cfg.categories[0];
 
-            let productOptionsHtml = `<option value="">-- اختر الصنف المصرح به من لوحة الأصناف --</option>`;
-            
-            if (relevantCatalogItems.length > 0) {
-                productOptionsHtml += `<optgroup label="الأصناف المصرحة لسجلك / رخصتك المعتمدة">`;
-                relevantCatalogItems.forEach(p => {
-                    const isSel = (p.name === (item.name || '')) ? 'selected' : '';
-                    productOptionsHtml += `<option value="${p.name}" ${isSel}>${p.name} • (${p.category})</option>`;
-                });
-                productOptionsHtml += `</optgroup>`;
-            }
-
-            if (otherCatalogItems.length > 0) {
-                productOptionsHtml += `<optgroup label="باقي أصناف الكتالوج الوطني المعتمد">`;
-                otherCatalogItems.forEach(p => {
-                    const isSel = (p.name === (item.name || '')) ? 'selected' : '';
-                    productOptionsHtml += `<option value="${p.name}" ${isSel}>${p.name} • (${p.category})</option>`;
-                });
-                productOptionsHtml += `</optgroup>`;
-            }
-
-            productOptionsHtml += `<option value="__custom__">➕ صنف مخصص آخر (إدخال يدوي مخصص)...</option>`;
-
-            // قائمة التصنيف المصرح به
+            // قائمة التصنيف المصرح به أولاً
             const categoryOptions = (cfg.categories || []).map(c => 
-                `<option value="${c}" ${c === item.cat ? 'selected' : ''}>${c}</option>`
+                `<option value="${c}" ${c === initialCat ? 'selected' : ''}>${c}</option>`
             ).join('');
 
             // قائمة وحدة القياس المتوافقة مع التصنيف
-            const units = getUnitsForCategory(item.cat || cfg.categories[0]);
+            const units = getUnitsForCategory(initialCat);
             const unitOptions = units.map(u => 
                 `<option value="${u}" ${u === item.unit ? 'selected' : ''}>${u}</option>`
             ).join('');
@@ -921,24 +928,27 @@
                     <span>حذف</span>
                 </button>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                    <!-- 1. التصنيف المصرح به أولاً على اليمين -->
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1.5">
-                            <i data-lucide="layers" class="w-3.5 h-3.5 text-mewa-600"></i>
-                            <span>اسم الصنف المصرح به (من لوحة الأصناف) *</span>
-                        </label>
-                        <select onchange="onProductCatalogSelect(this)" class="item-name text-xs px-3 py-2.5 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-800" required>
-                            ${productOptionsHtml}
-                        </select>
-                        <input type="text" placeholder="اكتب اسم الصنف المخصص بالتفصيل..." class="item-custom-name text-xs px-3 py-2 rounded-xl border border-amber-400 w-full bg-amber-50/70 font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none mt-2 hidden" value="">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                        <label class="block text-[11px] font-bold text-slate-800 mb-1 flex items-center gap-1.5">
                             <i data-lucide="tag" class="w-3.5 h-3.5 text-mewa-600"></i>
-                            <span>التصنيف المصرح به *</span>
+                            <span>1. التصنيف المصرح به *</span>
                         </label>
-                        <select onchange="onCategoryChange(this)" class="item-cat text-xs px-3 py-2.5 rounded-xl border border-slate-300 w-full bg-white font-medium focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-800" required>
+                        <select onchange="onCategoryChange(this)" class="item-cat text-xs px-3 py-2.5 rounded-xl border-2 border-emerald-500/80 w-full bg-emerald-50/30 font-black focus:ring-2 focus:ring-mewa-600 focus:outline-none text-emerald-950 shadow-2xs" required>
                             ${categoryOptions}
                         </select>
+                    </div>
+
+                    <!-- 2. اسم الصنف المفلتر وفقاً للتصنيف ثانياً على اليسار -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-800 mb-1 flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 text-mewa-600"></i>
+                            <span>2. اسم الصنف المصرح به (مفلتر حسب التصنيف) *</span>
+                        </label>
+                        <select onchange="onProductCatalogSelect(this)" class="item-name text-xs px-3 py-2.5 rounded-xl border border-slate-300 w-full bg-white font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none text-slate-900" required>
+                            <!-- تعبأ ديناميكياً بناءً على التصنيف المختار -->
+                        </select>
+                        <input type="text" placeholder="اكتب اسم الصنف المخصص بالتفصيل..." class="item-custom-name text-xs px-3 py-2 rounded-xl border border-amber-400 w-full bg-amber-50/70 font-bold focus:ring-2 focus:ring-mewa-600 focus:outline-none mt-2 hidden" value="">
                     </div>
                 </div>
 
@@ -1013,6 +1023,8 @@
                 </div>
             `;
             container.appendChild(div);
+            // فلترة وتعبئة قائمة الأصناف فوراً وفق التصنيف المختار
+            populateProductsForCategory(div, initialCat, item.name);
             lucide.createIcons();
         }
 
