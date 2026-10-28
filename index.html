@@ -38,6 +38,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
         .naama-card {
             background: #ffffff;
@@ -129,97 +136,268 @@
             </div>
         </div>
 
-        <!-- بطاقات الخدمات المستقلة للمستفيدين (دون إظهار شاشة الأدمن هنا) -->
-        <div class="space-y-4">
-            <div class="flex items-center gap-2 border-r-4 border-naamaGold-500 pr-3">
-                <h3 class="text-xl font-black text-slate-900">بوابات وخدمات المنصة</h3>
-                <span class="text-xs text-slate-500 font-semibold">(مخصصة للتاجر والمزارع والمستهلك)</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
-                <!-- 1. شاشة تقديم الطلب (للتاجر/المزارع) -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600">
-                    <div class="space-y-3.5">
-                        <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
-                            <i data-lucide="file-plus-2" class="w-5 h-5"></i>
+        <!-- ==================== بوابات وخدمات المنصة المقسمة بحسب الأدوار ==================== -->
+        <div class="space-y-6">
+            <!-- ترويسة القسم وشريط التبديل التفاعلي بين الأدوار الثلاثة -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="flex items-center gap-3 border-r-4 border-naamaGold-500 pr-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-xl sm:text-2xl font-black text-slate-900">بوابات وخدمات المنصة</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-emerald-200">صلاحيات مخصصة</span>
                         </div>
-                        <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">بوابة التاجر والمزارع</span>
-                        <h4 class="text-base font-black text-slate-900">1. تقديم طلب إدراج جديد</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            إدخال بيانات المزرعة، وتحديد الأصناف والكميات والأسعار المقترحة وإرسالها للاعتماد الرقابي.
+                        <p class="text-xs text-slate-500 font-semibold mt-1" id="role-subtitle">
+                            اختر دورك لعرض الشاشات والأدوات والعمليات المصرحة لك
                         </p>
                     </div>
-                    <div class="pt-5">
-                        <a href="merchant_submit.html" class="w-full bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                </div>
+
+                <!-- تابات الأدوار التفاعلية (Role Switcher Pills) -->
+                <div class="flex items-center gap-1.5 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/90 overflow-x-auto no-scrollbar shadow-inner" id="role-tabs-bar">
+                    <!-- 1. البائع -->
+                    <button onclick="switchRole('seller')" id="role-tab-seller" class="role-tab-btn active px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 whitespace-nowrap bg-mewa-700 text-white shadow-sm border border-mewa-800">
+                        <i data-lucide="tractor" class="w-4 h-4 text-naamaGold-300"></i>
+                        <span>بوابة البائع (المزارع / مركز الخدمة)</span>
+                        <span class="role-count bg-white/25 text-white text-[10px] px-2 py-0.5 rounded-full font-black">4</span>
+                    </button>
+                    <!-- 2. المستهلك -->
+                    <button onclick="switchRole('consumer')" id="role-tab-consumer" class="role-tab-btn px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-white/80 border border-transparent">
+                        <i data-lucide="shopping-cart" class="w-4 h-4 text-emerald-600"></i>
+                        <span>بوابة المستهلك (المشتري والأفراد)</span>
+                        <span class="role-count bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-black">3</span>
+                    </button>
+                    <!-- 3. مدير النظام -->
+                    <button onclick="switchRole('admin')" id="role-tab-admin" class="role-tab-btn px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-white/80 border border-transparent">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-purple-600"></i>
+                        <span>بوابة مدير ومراقب النظام</span>
+                        <span class="role-count bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-black">2</span>
+                    </button>
+                    <!-- 4. عرض الكل -->
+                    <button onclick="switchRole('all')" id="role-tab-all" class="role-tab-btn px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap text-slate-500 hover:text-slate-800 hover:bg-white/80 border border-transparent">
+                        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+                        <span>عرض الكل</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- شريط توضيحي ديناميكي للدور النشط -->
+            <div id="role-context-badge" class="flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-emerald-50 via-white to-emerald-50/50 border border-emerald-200/90 text-xs shadow-2xs transition">
+                <div class="flex items-center gap-2.5 font-black text-mewa-900" id="role-context-title">
+                    <span class="w-7 h-7 rounded-lg bg-mewa-700 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <i data-lucide="tractor" class="w-4 h-4 text-naamaGold-300"></i>
+                    </span>
+                    <span>أنت تستعرض الآن: الشاشات والعمليات المخصصة للبائعين (المزارع ومراكز الخدمة)</span>
+                </div>
+                <span class="text-[11px] font-bold text-slate-500 hidden sm:inline" id="role-context-hint">
+                    يتيح للبائع إدخال المحاصيل، متابعة أرصدة المخزون، وإدارة أذونات التوريد والتسليم
+                </span>
+            </div>
+
+            <!-- شبكة كروت الشاشات التفاعلية المصنفة حسب الأدوار -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="roles-cards-grid">
+
+                <!-- ========== 1. شاشات دور البائع (مزارع / مركز خدمة) ========== -->
+                <!-- كرت بائع 1: تقديم طلب إدراج جديد -->
+                <div data-role="seller" class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600 naama-card">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100 shadow-2xs">
+                                <i data-lucide="file-plus-2" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-mewa-700 bg-mewa-50 px-2 py-0.5 rounded-md border border-mewa-200">بوابة المزارع</span>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900">1. تقديم طلب إدراج جديد</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            إدخال بيانات المزرعة وحصاد الحقل، وتحديد الأصناف والكميات والأسعار المقترحة وإرسالها للاعتماد الرقابي.
+                        </p>
+                    </div>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="merchant_submit.html" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
                             <span>تقديم الطلب</span>
                             <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- 2. شاشة متابعة الطلبات وقناة البيع (لوحة موحدة: التوريد + استلام الطلبات) -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500">
+                <!-- كرت بائع 2: متابعة الطلبات وقناة البيع -->
+                <div data-role="seller" class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
                     <div class="space-y-3.5">
-                        <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
-                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100 shadow-2xs">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-amber-900 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">بوابة المبيعات</span>
                         </div>
-                        <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">بوابة التاجر ومركز الخدمة</span>
                         <h4 class="text-base font-black text-slate-900">2. متابعة الطلبات وقناة البيع</h4>
                         <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            متابعة قرارات الاعتماد، استلام وتجهيز طلبات الشراء، وتعيين أسطول الشحن المبرد.
+                            متابعة قرارات الاعتماد، استلام وتجهيز طلبات الشراء الواردة، وتعيين أسطول الشحن المبرد للنقل والتسليم.
                         </p>
                     </div>
-                    <div class="pt-5">
-                        <a href="merchant_tracking.html" class="w-full bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
-                            <span>متابعة الطلبات</span>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="merchant_tracking.html" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>متابعة المبيعات والطلبات</span>
                             <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- 3. شاشة إدارة المخزون والوارد والمنصرف (جديد للمزارع ومراكز الخدمة) -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-blue-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-blue-600">
+                <!-- كرت بائع 3: إدارة المخزون والوارد والمنصرف -->
+                <div data-role="seller" class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-blue-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-blue-600 naama-card">
                     <div class="space-y-3.5">
-                        <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100">
-                            <i data-lucide="boxes" class="w-5 h-5"></i>
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100 shadow-2xs">
+                                <i data-lucide="boxes" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-blue-900 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">سلاسل الإمداد</span>
                         </div>
-                        <span class="text-[10.5px] font-bold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-lg inline-block border border-blue-100">سلاسل الإمداد والتخزين</span>
                         <h4 class="text-base font-black text-slate-900">3. إدارة المخزون والوارد والمنصرف</h4>
                         <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            متابعة لحظية لأرصدة الأصناف بالمستودعات، أذونات الوارد من الحقول، والمنصرف للمباسط والمتجر.
+                            متابعة لحظية لأرصدة الأصناف بالمستودع الخاص، أذونات الوارد، والمنصرف للمباسط وطلبات المتجر الإلكتروني.
                         </p>
                     </div>
-                    <div class="pt-5">
+                    <div class="pt-5 border-t border-slate-100 mt-4">
                         <a href="inventory.html" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
-                            <span>متابعة المخزون</span>
+                            <span>متابعة المخزون والرصيد</span>
                             <i data-lucide="arrow-left" class="w-4 h-4 text-blue-200"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- 4. متجر المستهلك والجمهور -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-emerald-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-emerald-600">
+                <!-- كرت بائع 4: اعتماد مركز خدمة زراعي -->
+                <div data-role="seller" class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-emerald-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-emerald-600 naama-card">
                     <div class="space-y-3.5">
-                        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100">
-                            <i data-lucide="store" class="w-5 h-5"></i>
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100 shadow-2xs">
+                                <i data-lucide="building-2" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">مراكز الخدمة</span>
                         </div>
-                        <span class="text-[10.5px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg inline-block border border-emerald-100">المتجر الإلكتروني</span>
-                        <h4 class="text-base font-black text-slate-900">4. متجر أسواق النفع العام</h4>
+                        <h4 class="text-base font-black text-slate-900">4. اعتماد مركز خدمة وتدريج</h4>
                         <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            استعراض وشراء المنتجات الزراعية الطازجة المعتمدة، مع حوكمة حصص المستهلكين والمباسط.
+                            تسجيل واعتماد منشأة الفرز والتدريج والتعبئة، وإصدار شهادات مطابقة سعودي جاب وفحص متبقيات المبيدات.
                         </p>
                     </div>
-                    <div class="pt-5">
-                        <a href="store.html" class="w-full bg-mewa-600 hover:bg-mewa-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
-                            <span>متجر المستهلك</span>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="service_center.html" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>طلب اعتماد مركز خدمة</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ========== 2. شاشات دور المستهلك (المشتري والأفراد) ========== -->
+                <!-- كرت مستهلك 1: متجر أسواق النفع العام -->
+                <div data-role="consumer" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-emerald-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-emerald-600 naama-card">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-100 shadow-2xs">
+                                <i data-lucide="store" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">متجر الويب</span>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900">1. متجر أسواق النفع العام</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            استعراض وشراء المنتجات الزراعية الطازجة المعتمدة، مع حوكمة حصص الأصناف المقيدة وغير المقيدة وسلة الشراء.
+                        </p>
+                    </div>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="store.html" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>تصفح المتجر والطلب</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- كرت مستهلك 2: تطبيق الجوال الذكي والخريطة التفاعلية -->
+                <div data-role="consumer" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100 shadow-2xs">
+                                <i data-lucide="smartphone" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-amber-900 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">تطبيق الجوال الذكي</span>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900">2. تطبيق الجوال والخريطة الذكية</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            تحديد موقعك الجغرافي بالـ GPS، واكتشاف أقرب سوق مركزي بالكيلومتر، والدفع الفوري الآمن مع تتبع الشاحنة المبردة.
+                        </p>
+                    </div>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="mobile_app.html" class="w-full bg-gradient-to-r from-mewa-800 to-emerald-700 hover:from-mewa-900 hover:to-emerald-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>فتح تطبيق الجوال</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-naamaGold-300"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- كرت مستهلك 3: تتبع الشحنة المبردة -->
+                <div data-role="consumer" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-blue-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-blue-600 naama-card">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100 shadow-2xs">
+                                <i data-lucide="truck" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-blue-900 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">النقل اللوجستي المبرد</span>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900">3. تتبع الشحنات المبردة</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            إدخال كود التتبع أو مسح الباركود لمتابعة خط سير الشاحنة المبردة لحظياً ومراقبة درجات الحرارة وضمان سلامة الغذاء.
+                        </p>
+                    </div>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="supply_chain.html" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>تتبع الشحنة بالكود</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-blue-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ========== 3. شاشات دور مدير ومراقب النظام (الوزارة) ========== -->
+                <!-- كرت إداري 1: مراجعة وتدقيق طلبات الانضمام والمراكز -->
+                <div data-role="admin" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-purple-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-purple-600 naama-card">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center border border-purple-100 shadow-2xs">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-purple-900 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">الرقابة والاعتماد</span>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900">1. مراجعة وتدقيق الطلبات</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            فحص وتدقيق طلبات الإدراج الواردة من المزارعين ومراكز الخدمة، مطابقة رخص الوزارة وسعودي جاب، واعتماد التسعير والكميات.
+                        </p>
+                    </div>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="review_requests.html" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>مراجعة وتدقيق الطلبات</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-purple-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- كرت إداري 2: لوحة المؤشرات المركزية والرقابة -->
+                <div data-role="admin" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-700 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-700 naama-card">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-700 flex items-center justify-center border border-mewa-100 shadow-2xs">
+                                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-mewa-900 bg-mewa-50 px-2 py-0.5 rounded-md border border-mewa-200">المؤشرات الوطنية</span>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900">2. لوحة الرقابة والمؤشرات المركزية</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            متابعة حجم التداول اللحظي، مؤشرات وفرة المخزون الغذائي والسلع الاستراتيجية، ونسب الامتثال وحصص المبيعات بالمملكة.
+                        </p>
+                    </div>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="dashboard.html" class="w-full bg-mewa-800 hover:bg-mewa-900 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>عرض المؤشرات والرقابة</span>
                             <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
                         </a>
                     </div>
                 </div>
 
             </div>
-
             <!-- بنر تطبيق الجوال (متجر أبل ومتجر جوجل) بهوية منصة نما -->
             <div class="bg-gradient-to-r from-emerald-50/70 via-white to-amber-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
                 <div class="flex items-center gap-4">
@@ -292,5 +470,97 @@
     <script>
         lucide.createIcons();
     </script>
+
+    <script>
+        // دالة التبديل التفاعلي بين أدوار المستفيدين (البائع / المستهلك / مدير النظام / الكل)
+        function switchRole(role) {
+            // تحديث حالة الأزرار العلوية (Tabs)
+            const tabs = document.querySelectorAll('.role-tab-btn');
+            tabs.forEach(t => {
+                t.className = "role-tab-btn px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-white/80 border border-transparent";
+                const badge = t.querySelector('.role-count');
+                if (badge) {
+                    badge.className = "role-count bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-black";
+                }
+            });
+
+            const activeTab = document.getElementById('role-tab-' + role);
+            if (activeTab) {
+                activeTab.className = "role-tab-btn active px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 whitespace-nowrap bg-mewa-700 text-white shadow-sm border border-mewa-800";
+                const badge = activeTab.querySelector('.role-count');
+                if (badge) {
+                    badge.className = "role-count bg-white/25 text-white text-[10px] px-2 py-0.5 rounded-full font-black";
+                }
+            }
+
+            // فلترة كروت الشاشات بناء على الدور المختار
+            const cards = document.querySelectorAll('.role-card');
+            cards.forEach(card => {
+                const cardRole = card.getAttribute('data-role');
+                if (role === 'all' || cardRole === role) {
+                    card.classList.remove('hidden');
+                    card.classList.add('fade-in');
+                } else {
+                    card.classList.add('hidden');
+                    card.classList.remove('fade-in');
+                }
+            });
+
+            // تحديث الشريط التوضيحي والسياق
+            const badgeContainer = document.getElementById('role-context-badge');
+            const badgeTitle = document.getElementById('role-context-title');
+            const badgeHint = document.getElementById('role-context-hint');
+
+            if (role === 'seller') {
+                badgeContainer.className = "flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-emerald-50 via-white to-emerald-50/50 border border-emerald-200/90 text-xs shadow-2xs transition";
+                badgeTitle.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg bg-mewa-700 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <i data-lucide="tractor" class="w-4 h-4 text-naamaGold-300"></i>
+                    </span>
+                    <span>أنت تستعرض الآن: الشاشات والعمليات المخصصة للبائعين (المزارع ومراكز الخدمة)</span>
+                `;
+                badgeHint.innerText = "إدخال المحاصيل، متابعة أرصدة المخزون، وإدارة أذونات التوريد والتسليم";
+            } else if (role === 'consumer') {
+                badgeContainer.className = "flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 via-white to-amber-50/50 border border-amber-200/90 text-xs shadow-2xs transition";
+                badgeTitle.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <i data-lucide="shopping-cart" class="w-4 h-4 text-white"></i>
+                    </span>
+                    <span>أنت تستعرض الآن: الشاشات والخدمات المخصصة للمستهلكين والمشترين</span>
+                `;
+                badgeHint.innerText = "تصفح المتجر، تطبيق الجوال مع الخريطة والـ GPS، وتتبع الشحنات المبردة";
+            } else if (role === 'admin') {
+                badgeContainer.className = "flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-purple-50 via-white to-purple-50/50 border border-purple-200/90 text-xs shadow-2xs transition";
+                badgeTitle.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg bg-purple-700 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-naamaGold-300"></i>
+                    </span>
+                    <span>أنت تستعرض الآن: شاشات الإشراف والرقابة لمدراء ومراقبي إدارة الأسواق</span>
+                `;
+                badgeHint.innerText = "فحص وتدقيق طلبات الإدراج، مطابقة التراخيص، ومتابعة المؤشرات الوطنية";
+            } else {
+                badgeContainer.className = "flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-slate-50 via-white to-slate-50/50 border border-slate-200/90 text-xs shadow-2xs transition";
+                badgeTitle.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg bg-slate-800 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <i data-lucide="layout-grid" class="w-4 h-4 text-naamaGold-400"></i>
+                    </span>
+                    <span>أنت تستعرض الآن: كافة بوابات وخدمات المنصة لجميع الفئات</span>
+                `;
+                badgeHint.innerText = "عرض شامل لكافة الشاشات (البائع، المستهلك، مدير ومراقب النظام)";
+            }
+
+            try { localStorage.setItem('mewa_active_role', role); } catch(e){}
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // استعادة الدور المفضل للمستخدم عند التحميل
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('mewa_active_role');
+            if (saved && ['seller', 'consumer', 'admin', 'all'].includes(saved)) {
+                switchRole(saved);
+            }
+        });
+    </script>
+
 </body>
 </html>
