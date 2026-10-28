@@ -1461,6 +1461,10 @@
         window.addEventListener('DOMContentLoaded', () => {
             loadAnalytics();
             loadAdminRequests();
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('tab') === 'quotas' || window.location.hash === '#quotas') {
+                switchAdminTab('quotas');
+            }
         });
     </script>
     <script src="static/js/nafath.js"></script>

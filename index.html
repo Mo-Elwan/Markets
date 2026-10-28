@@ -156,7 +156,7 @@
                 <button onclick="switchRole('admin')" id="role-tab-admin" class="role-tab-btn flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 whitespace-nowrap text-slate-700 hover:text-mewa-800 hover:bg-slate-100/70 border border-transparent">
                     <i data-lucide="shield-check" class="w-4 h-4 text-naamaGold-600"></i>
                     <span>بوابة مدير ومراقب النظام</span>
-                    <span class="role-count bg-slate-100 text-slate-700 text-[11px] px-2 py-0.5 rounded-full font-black">2</span>
+                    <span class="role-count bg-slate-100 text-slate-700 text-[11px] px-2 py-0.5 rounded-full font-black">3</span>
                 </button>
                 <!-- 4. عرض الكل -->
                 <button onclick="switchRole('all')" id="role-tab-all" class="role-tab-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 whitespace-nowrap text-slate-500 hover:text-slate-800 hover:bg-slate-100/70 border border-transparent">
@@ -325,16 +325,38 @@
                 </div>
 
                 <!-- ========== 3. شاشات دور مدير ومراقب النظام (الوزارة) ========== -->
-                <!-- كرت إداري 1: مراجعة وتدقيق طلبات الانضمام والمراكز -->
+                <!-- كرت إداري 1: إدارة الأصناف (حوكمة قيود الأصناف وهوامش المستهلك والمباسط) -->
                 <div data-role="admin" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600 naama-card">
                     <div class="space-y-3.5">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">الرقابة والاعتماد</span>
+                            <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">حوكمة السلع والقيود</span>
                             <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
+                                <i data-lucide="scale" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900">1. إدارة الأصناف</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            حوكمة قيود الأصناف وهوامش المستهلك (الأفراد والمباسط)، وتحديد السقوف الاستهلاكية والحدود القصوى ومنع الاحتكار.
+                        </p>
+                    </div>
+                    <div class="pt-5 border-t border-slate-100 mt-4">
+                        <a href="review_requests.html?tab=quotas" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                            <span>إدارة الأصناف</span>
+                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- كرت إداري 2: مراجعة وتدقيق طلبات الانضمام والمراكز -->
+                <div data-role="admin" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">الرقابة والاعتماد</span>
+                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
                                 <i data-lucide="shield-check" class="w-5 h-5"></i>
                             </div>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">1. مراجعة وتدقيق الطلبات</h4>
+                        <h4 class="text-base font-black text-slate-900">2. مراجعة وتدقيق الطلبات</h4>
                         <p class="text-xs text-slate-600 leading-relaxed font-medium">
                             فحص وتدقيق طلبات الإدراج الواردة من المزارعين ومراكز الخدمة، مطابقة رخص الوزارة وسعودي جاب، واعتماد التسعير والكميات.
                         </p>
@@ -347,16 +369,16 @@
                     </div>
                 </div>
 
-                <!-- كرت إداري 2: لوحة المؤشرات المركزية والرقابة -->
-                <div data-role="admin" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
+                <!-- كرت إداري 3: لوحة المؤشرات المركزية والرقابة -->
+                <div data-role="admin" class="role-card hidden bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600 naama-card">
                     <div class="space-y-3.5">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">المؤشرات الوطنية</span>
-                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
+                            <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">المؤشرات الوطنية</span>
+                            <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
                                 <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
                             </div>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">2. لوحة الرقابة والمؤشرات المركزية</h4>
+                        <h4 class="text-base font-black text-slate-900">3. لوحة الرقابة والمؤشرات المركزية</h4>
                         <p class="text-xs text-slate-600 leading-relaxed font-medium">
                             متابعة حجم التداول اللحظي، مؤشرات وفرة المخزون الغذائي والسلع الاستراتيجية، ونسب الامتثال وحصص المبيعات بالمملكة.
                         </p>
