@@ -437,8 +437,19 @@ def get_analytics():
 
 @app.get("/", response_class=HTMLResponse)
 @app.get("/index.html", response_class=HTMLResponse)
+@app.get("/cover", response_class=HTMLResponse)
+@app.get("/cover.html", response_class=HTMLResponse)
 def index_page():
     html_file = os.path.join(os.path.dirname(__file__), "index.html")
+    with open(html_file, "r", encoding="utf-8") as f:
+        return f.read()
+
+@app.get("/portal", response_class=HTMLResponse)
+@app.get("/portal.html", response_class=HTMLResponse)
+@app.get("/presentation", response_class=HTMLResponse)
+@app.get("/presentation.html", response_class=HTMLResponse)
+def portal_page():
+    html_file = os.path.join(os.path.dirname(__file__), "portal.html")
     with open(html_file, "r", encoding="utf-8") as f:
         return f.read()
 
