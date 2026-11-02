@@ -20,6 +20,7 @@
                         },
                         naamaGold: {
                             100: '#fcf8ec',
+                            300: '#f0d27e',
                             400: '#e3b84c',
                             500: '#c59b27',
                             600: '#a7801a',
@@ -37,294 +38,303 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Tajawal', sans-serif; background-color: #f7f9fa; }
-        .fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f7f9fa;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        .gold-line {
+            background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%);
         }
-        .gold-line { background: linear-gradient(90deg, #c59b27 0%, #e3b84c 50%, #c59b27 100%); }
         .naama-card {
             background: #ffffff;
             border: 1px solid #e9ecef;
-            box-shadow: 0 4px 20px -2px rgba(0, 104, 55, 0.05);
-            transition: all 0.25s ease-in-out;
+            box-shadow: 0 4px 18px -2px rgba(0, 104, 55, 0.05);
+            transition: all 0.2s ease-in-out;
         }
         .naama-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px -4px rgba(0, 104, 55, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px -3px rgba(0, 104, 55, 0.1);
             border-color: #c59b27;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .pulse-gold {
+            box-shadow: 0 0 0 0 rgba(197, 155, 39, 0.5);
+            animation: pulseGoldAnim 2.2s infinite;
+        }
+        @keyframes pulseGoldAnim {
+            0% { box-shadow: 0 0 0 0 rgba(197, 155, 39, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(197, 155, 39, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(197, 155, 39, 0); }
+        }
+        /* إتاحة استعراض ملخص الصفحة كاملاً في شاشة واحدة بدون سكرول على جميع أجهزة الكمبيوتر والمحمول */
+        @media (min-height: 600px) and (min-width: 1024px) {
+            .one-screen-container {
+                height: 100vh;
+                max-height: 100vh;
+                overflow: hidden;
+            }
+        }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+<body class="text-slate-800 antialiased one-screen-container flex flex-col justify-between min-h-screen">
 
-    <!-- الشريط الذهبي العلوي -->
-    <div class="h-1.5 gold-line w-full"></div>
+    <!-- 1. الشريط الذهبي العلوي السيادي -->
+    <div class="h-1 gold-line w-full shrink-0"></div>
 
-    <!-- ترويسة الصفحة الرسمية الموحدة مع لوجو الوزارة والنفاذ الوطني -->
-    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-24 gap-2 sm:gap-4">
+    <!-- 2. الترويسة الرسمية الموحدة (مدمجة بدون سكرول) -->
+    <header class="bg-white border-b border-slate-200/90 shadow-2xs py-2 px-4 sm:px-6 lg:px-8 shrink-0">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
             
-            <!-- الشعار وعنوان المنصة -->
-            <a href="index.html" class="flex items-center gap-2 sm:gap-4 min-w-0">
-                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-10 sm:h-16 w-auto object-contain flex-shrink-0">
-                <div class="border-r-2 border-slate-200 pr-2.5 sm:pr-4 flex flex-col justify-center min-w-0">
-                    <h1 class="text-sm sm:text-xl md:text-2xl font-black text-mewa-800 tracking-tight leading-tight truncate">أسواق النفع العام</h1>
-                    <p class="hidden md:block text-[11px] sm:text-xs text-slate-500 font-medium leading-tight mt-0.5 truncate">البوابة الموحدة لإدارة وتداول المنتجات الزراعية والغذائية</p>
+            <!-- الشعار وعنوان المنظومة -->
+            <div class="flex items-center gap-3">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-10 sm:h-12 w-auto object-contain">
+                <div class="border-r-2 border-slate-200 pr-3 flex flex-col justify-center">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs sm:text-base font-black text-mewa-800 tracking-tight leading-tight">أسواق النفع العام</span>
+                        <span class="bg-naamaGold-100 text-amber-900 border border-amber-300/80 text-[10px] font-black px-2 py-0.2 rounded-full">
+                            الملخص التنفيذي 2026
+                        </span>
+                    </div>
+                    <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium leading-tight mt-0.5">
+                        البوابة الموحدة لإدارة وتداول المنتجات الزراعية والغذائية • منظومة نما
+                    </p>
                 </div>
-            </a>
+            </div>
 
-            <!-- النفاذ الوطني الموحد -->
-            <div id="nafath-auth-container" class="flex-shrink-0"></div>
+            <!-- وسم رؤية 2030 والنفاذ الوطني -->
+            <div class="flex items-center gap-2.5">
+                <div class="hidden md:flex items-center gap-1.5 bg-slate-50 border border-slate-200 py-1 px-2.5 rounded-xl text-[11px] font-bold text-slate-600">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>المملكة العربية السعودية • رؤية 2030</span>
+                </div>
+                <div id="nafath-auth-container" class="shrink-0"></div>
+            </div>
+
         </div>
     </header>
 
-    <!-- المحتوى الرئيسي للغلاف والملخص التنفيذي -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex-grow w-full space-y-10">
+    <!-- 3. المحتوى التنفيذي في شاشة واحدة (Single Screen Body) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 flex-1 flex flex-col justify-evenly gap-2.5 sm:gap-3.5 w-full">
         
-        <!-- ==================== البنر التنفيذي الرئيسي (Hero Cover) ==================== -->
-        <div class="relative bg-gradient-to-r from-mewa-900 via-mewa-800 to-mewa-700 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl p-6 sm:p-10 md:p-12 text-white border-b-4 border-naamaGold-500">
-            <div class="relative z-10 max-w-4xl space-y-4">
+        <!-- ==================== البنر التنفيذي المدمج (المقدمة وزر الدخول الرئيسي) ==================== -->
+        <div class="relative bg-gradient-to-r from-mewa-900 via-mewa-800 to-mewa-700 rounded-2xl overflow-hidden shadow-md p-4 sm:p-5 text-white border-b-3 border-naamaGold-500 shrink-0">
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 
-                <div class="flex flex-wrap items-center gap-2">
-                    <span class="bg-naamaGold-500 text-mewa-950 text-[11px] sm:text-xs font-black px-3.5 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5 shadow-xs">
-                        <i data-lucide="shield-check" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> تحت إشراف وزارة البيئة والمياه والزراعة
-                    </span>
-                    <span class="bg-white/15 text-emerald-200 border border-white/20 text-[11px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1">
-                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                        <span>وثيقة الملخص التنفيذي 2026</span>
-                    </span>
+                <!-- النص التنفيذي الموجز -->
+                <div class="space-y-1.5 max-w-3xl">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-naamaGold-500 text-mewa-950 text-[10px] font-black px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> مبادرة التحول الوطني • الأمن الغذائي المستدام
+                        </span>
+                        <span class="text-emerald-200 text-[11px] font-bold hidden sm:inline">تحت إشراف وزارة البيئة والمياه والزراعة</span>
+                    </div>
+
+                    <h2 class="text-lg sm:text-2xl lg:text-3xl font-black text-white leading-tight">
+                        المنصة الوطنية لربط وحوكمة أسواق النفع العام
+                    </h2>
+
+                    <p class="text-[11px] sm:text-xs text-emerald-100 leading-relaxed font-normal max-w-2xl">
+                        منظومة رقمية تضمن حوكمة تدفق المنتجات الزراعية والحيوانية والغذائية، وتمكّن المزارع والتاجر من عرض منتجاته ومتابعة اعتمادها واختيار قنوات التوصيل، وصولاً للمستهلك النهائي، مع رقابة مركزية تضمن عدالة الأسعار وسلامة التبريد.
+                    </p>
                 </div>
 
-                <h2 class="text-2xl sm:text-4xl md:text-5xl font-black leading-snug sm:leading-tight text-white">
-                    المنصة الوطنية لربط أسواق النفع العام
-                </h2>
-                
-                <h3 class="text-xs sm:text-sm font-bold text-naamaGold-300 tracking-wide">
-                    National Public Benefit Markets Digital Platform
-                </h3>
-
-                <p class="text-xs sm:text-base text-emerald-100 leading-relaxed font-normal max-w-3xl">
-                    منظومة رقمية وطنية متكاملة تضمن حوكمة تدفق المنتجات الزراعية والحيوانية والغذائية، وتمكّن المزارع والتاجر من عرض منتجاته ومتابعة اعتمادها واختيار قنوات التوصيل، وصولاً للمستهلك النهائي، مع لوحة رقابة ومؤشرات مركزية لرصد الأسعار ووفرة المخزون الاستراتيجي.
-                </p>
-
-                <!-- أزرار الإجراء والتحويل للعرض التقديمي -->
-                <div class="pt-3 flex flex-wrap items-center gap-3">
-                    <a href="portal.html" class="bg-naamaGold-500 hover:bg-naamaGold-400 text-mewa-950 font-black px-6 sm:px-8 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs sm:text-sm">
+                <!-- الزر الرئيسي الأكبر: الدخول إلى العرض التقديمي -->
+                <div class="flex sm:flex-col items-center justify-center gap-2 shrink-0">
+                    <a href="portal.html" class="pulse-gold w-full sm:w-auto bg-naamaGold-500 hover:bg-naamaGold-400 text-mewa-950 font-black px-6 sm:px-8 py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs sm:text-sm whitespace-nowrap">
+                        <i data-lucide="play-circle" class="w-4 h-4 text-mewa-950"></i>
                         <span>الدخول إلى العرض التقديمي</span>
                         <i data-lucide="arrow-left" class="w-4 h-4 text-mewa-950"></i>
                     </a>
 
-                    <a href="dashboard.html" class="bg-white/10 hover:bg-white/20 text-white font-bold px-5 py-3.5 rounded-xl border border-white/20 transition flex items-center justify-center gap-2 text-xs sm:text-sm">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4 text-naamaGold-400"></i>
-                        <span>لوحة الرقابة والمؤشرات المركزية</span>
+                    <a href="dashboard.html" class="hidden sm:flex items-center justify-center gap-1 text-[11px] text-emerald-200 hover:text-white font-bold transition">
+                        <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-naamaGold-400"></i>
+                        <span>أو استعراض المؤشرات المركزية</span>
                     </a>
                 </div>
 
             </div>
         </div>
 
-        <!-- ==================== الركائز الاستراتيجية الأربع ==================== -->
-        <div class="space-y-4">
-            <div class="border-b border-slate-200 pb-3">
-                <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100 mb-1">
-                    الأهداف الاستراتيجية والأثر الوطني
-                </span>
-                <h3 class="text-base sm:text-lg font-black text-slate-900">الركائز التشغيلية الأربع لحوكمة أسواق النفع العام</h3>
-                <p class="text-xs text-slate-500 font-medium">مستهدفات الأمن الغذائي، كفاءة سلاسل الإمداد، وضبط الأسعار العادلة</p>
+        <!-- ==================== الركائز التشغيلية الأربع للحوكمة ==================== -->
+        <div class="space-y-1.5 shrink-0">
+            <div class="flex items-center justify-between">
+                <h4 class="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-mewa-600"></span>
+                    <span>الركائز التشغيلية الأربع لحوكمة أسواق النفع العام:</span>
+                </h4>
+                <span class="text-[10px] font-bold text-slate-400">الأثر الاستراتيجي والرقابي</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
                 
                 <!-- ركيزة 1 -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600 naama-card">
-                    <div class="space-y-3.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">سلاسل الإمداد</span>
-                            <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
-                                <i data-lucide="route" class="w-5 h-5"></i>
-                            </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200 border-t-3 border-t-mewa-600 naama-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[9px] font-bold text-mewa-700 bg-mewa-50 px-1.5 py-0.2 rounded border border-mewa-100">سلاسل الإمداد</span>
+                            <i data-lucide="route" class="w-4 h-4 text-mewa-600"></i>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">1. حوكمة وتتبع سلاسل الإمداد</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            تتبع تدفق المنتجات الزراعية والحيوانية من الحقل ومركز الفرز إلى السوق المركزي، وإصدار بوالص إلكترونية وأذونات توريد موحدة تمنع التداول العشوائي.
+                        <h5 class="text-xs font-black text-slate-900">1. حوكمة وتتبع سلاسل الإمداد</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug mt-1 font-medium">
+                            تتبع تدفق المنتجات من الحقل ومراكز التدريج إلى السوق المركزي بأذونات إلكترونية موحدة.
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4 flex items-center gap-1.5 text-xs font-bold text-mewa-700">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
-                        <span>تتبع لحظي بالـ QR والبوالص</span>
-                    </div>
+                    <span class="text-[9.5px] font-bold text-mewa-700 mt-2 flex items-center gap-1">
+                        <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i> تتبع بالـ QR والبوالص
+                    </span>
                 </div>
 
                 <!-- ركيزة 2 -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
-                    <div class="space-y-3.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">الإنتاج الزراعي</span>
-                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
-                                <i data-lucide="sprout" class="w-5 h-5"></i>
-                            </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200 border-t-3 border-t-naamaGold-500 naama-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[9px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-100">الإنتاج الزراعي</span>
+                            <i data-lucide="sprout" class="w-4 h-4 text-naamaGold-600"></i>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">2. تمكين المزارع والمنتج المحلي</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            إتاحة البيع المباشر للمزارعين بدون وسطاء غير مرخصين، أو الاستعانة بمراكز خدمة معتمدة للفرز والتعبئة والشحن المبرد بأجور عادلة ومقاصة فورية.
+                        <h5 class="text-xs font-black text-slate-900">2. تمكين المزارع المحلي</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug mt-1 font-medium">
+                            إتاحة البيع المباشر أو عبر مراكز خدمة وفرز معتمدة بأجور عادلة ومقاصة مالية فورية.
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4 flex items-center gap-1.5 text-xs font-bold text-amber-800">
-                        <i data-lucide="check" class="w-4 h-4 text-amber-600"></i>
-                        <span>قنوات بيع معتمدة ومقاصة آلية</span>
-                    </div>
+                    <span class="text-[9.5px] font-bold text-amber-800 mt-2 flex items-center gap-1">
+                        <i data-lucide="check" class="w-3 h-3 text-amber-600"></i> مقاصة وبيع معتمد
+                    </span>
                 </div>
 
                 <!-- ركيزة 3 -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600 naama-card">
-                    <div class="space-y-3.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">حماية السوق</span>
-                            <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
-                                <i data-lucide="scale" class="w-5 h-5"></i>
-                            </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200 border-t-3 border-t-mewa-600 naama-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[9px] font-bold text-mewa-700 bg-mewa-50 px-1.5 py-0.2 rounded border border-mewa-100">حماية السوق</span>
+                            <i data-lucide="scale" class="w-4 h-4 text-mewa-600"></i>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">3. حماية المستهلك وعدالة الأسعار</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            تطبيق سقوف استهلاكية عادلة للأصناف الاستراتيجية، وإلزامية توثيق المباسط والدلالين لمنع الاحتكار والتستر، وتوفير مؤشرات أسعار عادلة لحظياً.
+                        <h5 class="text-xs font-black text-slate-900">3. حماية المستهلك والأسعار</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug mt-1 font-medium">
+                            سقوف استهلاكية عادلة للأصناف الاستراتيجية وإلزامية توثيق المباسط والدلالين لمنع الاحتكار.
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4 flex items-center gap-1.5 text-xs font-bold text-mewa-700">
-                        <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
-                        <span>حوكمة الحصص وسقوف المباسط</span>
-                    </div>
+                    <span class="text-[9.5px] font-bold text-mewa-700 mt-2 flex items-center gap-1">
+                        <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i> ضبط السقوف والمباسط
+                    </span>
                 </div>
 
                 <!-- ركيزة 4 -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
-                    <div class="space-y-3.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">الجودة والسلامة</span>
-                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
-                                <i data-lucide="snowflake" class="w-5 h-5"></i>
-                            </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200 border-t-3 border-t-naamaGold-500 naama-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[9px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-100">الجودة والسلامة</span>
+                            <i data-lucide="snowflake" class="w-4 h-4 text-naamaGold-600"></i>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">4. سلامة الغذاء وسلاسل التبريد</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            إلزامية مطابقة رخص الوزارة وسعودي جاب وفحص متبقيات المبيدات، ومراقبة حرارة الشاحنات المبردة بحساسات IoT لحظية (4°C) لضمان طزاجة المحاصيل.
+                        <h5 class="text-xs font-black text-slate-900">4. سلامة الغذاء والتبريد</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug mt-1 font-medium">
+                            فحص متبقيات المبيدات ومطابقة سعودي جاب، ورصد حرارة الشحن المبرد المستمر (4°C).
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4 flex items-center gap-1.5 text-xs font-bold text-amber-800">
-                        <i data-lucide="check" class="w-4 h-4 text-amber-600"></i>
-                        <span>شهادات فحص وتبريد مستمر 4°C</span>
-                    </div>
+                    <span class="text-[9.5px] font-bold text-amber-800 mt-2 flex items-center gap-1">
+                        <i data-lucide="check" class="w-3 h-3 text-amber-600"></i> فحص وسلاسل تبريد 4°م
+                    </span>
                 </div>
 
             </div>
         </div>
 
         <!-- ==================== محاور وبوابات العرض التقديمي (الأدوار الأربعة) ==================== -->
-        <div class="space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
-                <div>
-                    <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100 mb-1">
-                        خريطة العرض التقديمي التفاعلي
-                    </span>
-                    <h3 class="text-base sm:text-lg font-black text-slate-900">بوابات وشاشات المنظومة المعتمدة</h3>
-                    <p class="text-xs text-slate-500 font-medium">اختر المحور الذي تود استعراضه مباشرة ضمن العرض التقديمي</p>
-                </div>
-                <a href="portal.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-mewa-700 hover:text-mewa-800 transition">
-                    <span>فتح البوابة الشاملة للعرض</span>
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <div class="space-y-1.5 shrink-0">
+            <div class="flex items-center justify-between">
+                <h4 class="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-naamaGold-500"></span>
+                    <span>بوابات وشاشات العرض التقديمي التفاعلي:</span>
+                </h4>
+                <a href="portal.html" class="text-[10px] font-bold text-mewa-700 hover:underline flex items-center gap-1">
+                    <span>عرض الكل في البوابة</span>
+                    <i data-lucide="arrow-left" class="w-3 h-3"></i>
                 </a>
             </div>
 
-            <!-- الكروت الأربعة بنفس التنسيق المعتمد بالصورة تماماً -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- الكروت الأربعة المتطابقة تماماً مع التصميم المطلوب -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
 
-                <!-- كرت المحور 1: بوابة البائع -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600 naama-card">
-                    <div class="space-y-3.5">
+                <!-- 1. بوابة البائع -->
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-t-3 border-t-mewa-600 naama-card flex flex-col justify-between">
+                    <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">بوابة المزارع والمنتج</span>
-                            <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
-                                <i data-lucide="tractor" class="w-5 h-5"></i>
+                            <span class="text-[9px] font-bold text-mewa-700 bg-mewa-50 px-2 py-0.5 rounded border border-mewa-100">بوابة المزارع والمنتج</span>
+                            <div class="w-7 h-7 rounded-lg bg-mewa-50 text-mewa-600 flex items-center justify-center">
+                                <i data-lucide="tractor" class="w-4 h-4"></i>
                             </div>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">المحور 1: بوابة البائع والمزارع</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            تقديم طلبات الإدراج، تعيين قنوات البيع المباشر أو عبر مراكز الخدمة، إدارة المخزون اللحظي، ومتابعة تجهيز وتسليم الطلبات.
+                        <h5 class="text-xs font-black text-slate-900">بوابة البائع والمزارع</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug font-medium">
+                            إدراج المحاصيل، تعيين قنوات البيع المباشر أو الوسيط، وإدارة المخزون وتجهيز الطلبات.
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4">
-                        <a href="portal.html?role=seller" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                    <div class="pt-2 mt-2 border-t border-slate-100">
+                        <a href="portal.html?role=seller" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-1.5 px-3 rounded-lg text-[10.5px] flex items-center justify-center gap-1.5 transition">
                             <span>استعراض بوابة البائع</span>
-                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                            <i data-lucide="arrow-left" class="w-3 h-3 text-emerald-200"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- كرت المحور 2: متجر وتطبيق المستهلك -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
-                    <div class="space-y-3.5">
+                <!-- 2. متجر وتطبيق المستهلك -->
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-t-3 border-t-naamaGold-500 naama-card flex flex-col justify-between">
+                    <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">بوابة المستهلك والأفراد</span>
-                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
-                                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                            <span class="text-[9px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">المتجر والتطبيق</span>
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 text-naamaGold-600 flex items-center justify-center">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                             </div>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">المحور 2: متجر وتطبيق المستهلك</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            متجر إلكتروني طازج، تطبيق جوال ذكي بالـ GPS، سلة تسوق محوكمة بحصص عادلة، دفع فوري (Apple Pay / مدى)، وتتبع الشحنات.
+                        <h5 class="text-xs font-black text-slate-900">متجر وتطبيق المستهلك</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug font-medium">
+                            تصفح المنتجات الطازجة، محدد الـ GPS، حصص استهلاكية عادلة، ودفع إلكتروني وتتبع مبرد.
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4">
-                        <a href="portal.html?role=consumer" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
-                            <span>استعراض بوابة المستهلك</span>
-                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                    <div class="pt-2 mt-2 border-t border-slate-100">
+                        <a href="portal.html?role=consumer" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-1.5 px-3 rounded-lg text-[10.5px] flex items-center justify-center gap-1.5 transition">
+                            <span>استعراض متجر المستهلك</span>
+                            <i data-lucide="arrow-left" class="w-3 h-3 text-emerald-200"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- كرت المحور 3: بوابة الرقابة وحوكمة الأصناف -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-mewa-600 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-mewa-600 naama-card">
-                    <div class="space-y-3.5">
+                <!-- 3. بوابة الرقابة وحوكمة الأصناف -->
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-t-3 border-t-mewa-600 naama-card flex flex-col justify-between">
+                    <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-mewa-700 bg-mewa-50 px-2.5 py-1 rounded-lg inline-block border border-mewa-100">الرقابة والاعتماد</span>
-                            <div class="w-11 h-11 rounded-xl bg-mewa-50 text-mewa-600 flex items-center justify-center border border-mewa-100">
-                                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                            <span class="text-[9px] font-bold text-mewa-700 bg-mewa-50 px-2 py-0.5 rounded border border-mewa-100">الرقابة والاعتماد</span>
+                            <div class="w-7 h-7 rounded-lg bg-mewa-50 text-mewa-600 flex items-center justify-center">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i>
                             </div>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">المحور 3: الرقابة وحوكمة الأصناف</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            مراجعة واعتماد طلبات التوريد، مطابقة رخص الوزارة وسعودي جاب، حوكمة قيود الأصناف وهوامش المستهلك، وإلزامية توثيق المباسط.
+                        <h5 class="text-xs font-black text-slate-900">الرقابة وحوكمة الأصناف</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug font-medium">
+                            تدقيق الطلبات، مطابقة سعودي جاب، حوكمة قيود الأصناف، وإلزامية توثيق المباسط.
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4">
-                        <a href="portal.html?role=admin" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                    <div class="pt-2 mt-2 border-t border-slate-100">
+                        <a href="portal.html?role=admin" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-1.5 px-3 rounded-lg text-[10.5px] flex items-center justify-center gap-1.5 transition">
                             <span>استعراض شاشة الرقابة</span>
-                            <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
+                            <i data-lucide="arrow-left" class="w-3 h-3 text-emerald-200"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- كرت المحور 4: مركز القيادة والمؤشرات المركزية -->
-                <div class="role-card bg-white p-6 rounded-2xl border border-slate-200 hover:border-naamaGold-500 hover:shadow-lg transition-all duration-300 flex flex-col justify-between border-t-4 border-t-naamaGold-500 naama-card">
-                    <div class="space-y-3.5">
+                <!-- 4. مركز القيادة والمؤشرات المركزية -->
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 border-t-3 border-t-naamaGold-500 naama-card flex flex-col justify-between">
+                    <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10.5px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg inline-block border border-amber-100">المؤشرات الوطنية</span>
-                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-naamaGold-600 flex items-center justify-center border border-amber-100">
-                                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                            <span class="text-[9px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">المؤشرات الوطنية</span>
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 text-naamaGold-600 flex items-center justify-center">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
                             </div>
                         </div>
-                        <h4 class="text-base font-black text-slate-900">المحور 4: لوحة المؤشرات المركزية</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                            خريطة تفاعلية لـ 11 سوقاً مركزياً، تصفية فورية لإحصائيات ومخططات كل سوق، كفاية المخزون الغذائي، وتتبع أسطول الشحن المبرد.
+                        <h5 class="text-xs font-black text-slate-900">لوحة المؤشرات والقيادة</h5>
+                        <p class="text-[10px] text-slate-600 leading-snug font-medium">
+                            خريطة تفاعلية لـ 11 سوقاً، تصفية فورية للبيانات، كفاية المخزون الغذائي، وتتبع الشحن.
                         </p>
                     </div>
-                    <div class="pt-5 border-t border-slate-100 mt-4">
-                        <a href="dashboard.html" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2 text-xs">
+                    <div class="pt-2 mt-2 border-t border-slate-100">
+                        <a href="dashboard.html" class="w-full bg-mewa-700 hover:bg-mewa-800 text-white font-bold py-1.5 px-3 rounded-lg text-[10.5px] flex items-center justify-center gap-1.5 transition">
                             <span>عرض المؤشرات المركزية</span>
                             <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
                         </a>
@@ -334,95 +344,19 @@
             </div>
         </div>
 
-        <!-- ==================== رحلة تداول المنتج والمسار التشغيلي ==================== -->
-        <div class="naama-card p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-6">
-            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-mewa-50 text-mewa-700 flex items-center justify-center border border-mewa-200">
-                        <i data-lucide="git-merge" class="w-4 h-4"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-base font-black text-slate-900">رحلة تداول المنتج وسلاسل الإمداد في المنصة</h4>
-                        <p class="text-xs text-slate-500 font-medium">المسار الرقمي الكامل من الحقل إلى المائدة وفق معايير الحوكمة الوطنية</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- خطوات الرحلة الخمس -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 text-center">
-                
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span class="w-7 h-7 rounded-full bg-mewa-700 text-white text-xs font-black inline-flex items-center justify-center">1</span>
-                    <h5 class="text-xs font-black text-slate-900">تسجيل وحصاد المزرعة</h5>
-                    <p class="text-[11px] text-slate-600 font-medium">إدخال بيانات المحصول والكمية والسعر، وربط ترخيص الوزارة وسعودي جاب.</p>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span class="w-7 h-7 rounded-full bg-mewa-700 text-white text-xs font-black inline-flex items-center justify-center">2</span>
-                    <h5 class="text-xs font-black text-slate-900">الفرز والتدريج المبرد</h5>
-                    <p class="text-[11px] text-slate-600 font-medium">استلام مراكز الخدمة المعتمدة للشحنات وتدريجها وفحصها وسلاسل تبريد 4°C.</p>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span class="w-7 h-7 rounded-full bg-naamaGold-600 text-white text-xs font-black inline-flex items-center justify-center">3</span>
-                    <h5 class="text-xs font-black text-slate-900">الاعتماد الرقابي الآلي</h5>
-                    <p class="text-[11px] text-slate-600 font-medium">مراجعة مراقبي السوق والاعتماد الكلي أو الجزئي وتحديد السقوف لمنع الإغراق.</p>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span class="w-7 h-7 rounded-full bg-mewa-700 text-white text-xs font-black inline-flex items-center justify-center">4</span>
-                    <h5 class="text-xs font-black text-slate-900">العرض بالمتجر والأسواق</h5>
-                    <p class="text-[11px] text-slate-600 font-medium">طرح المنتجات في المتجر الحي والأسواق المركزية مع حوكمة حصص الأفراد والمباسط.</p>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span class="w-7 h-7 rounded-full bg-emerald-700 text-white text-xs font-black inline-flex items-center justify-center">5</span>
-                    <h5 class="text-xs font-black text-slate-900">التسليم والمقاصة الفورية</h5>
-                    <p class="text-[11px] text-slate-600 font-medium">تسليم مبرد موثق، فواتير إلكترونية ZATCA، وتحويل مستحقات المزارع آلياً.</p>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ==================== بنر الدعوة الختامي ==================== -->
-        <div class="bg-gradient-to-r from-emerald-50/80 via-white to-amber-50/60 p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-white text-mewa-700 border border-emerald-200 shadow-xs flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="play-circle" class="w-6 h-6"></i>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="bg-mewa-700 text-white font-black text-[10px] px-2.5 py-0.5 rounded-full">جاهز للعرض التفاعلي</span>
-                        <h4 class="text-sm sm:text-base font-black text-slate-900">استكشف العرض التقديمي الشامل لمنصة أسواق النفع العام</h4>
-                    </div>
-                    <p class="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
-                        انتقل إلى بوابات المنظومة وتجربة دور البائع والمستهلك ومدير النظام ولوحة المؤشرات التفاعلية.
-                    </p>
-                </div>
-            </div>
-            <div class="flex-shrink-0 w-full sm:w-auto">
-                <a href="portal.html" class="w-full sm:w-auto bg-mewa-700 hover:bg-mewa-800 text-white font-black py-3 px-8 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-xs sm:text-sm">
-                    <span>بدء العرض التقديمي الآن</span>
-                    <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-200"></i>
-                </a>
-            </div>
-        </div>
-
     </main>
 
-    <!-- التذييل الرسمي المعتمد الموحد لجميع الصفحات -->
-    <footer class="bg-slate-900 text-slate-400 text-xs border-t-2 border-naamaGold-500 mt-12 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-9 w-auto bg-white/95 p-1 rounded">
-                <span class="text-slate-300 font-bold">وزارة البيئة والمياه والزراعة © 2026 | منصة أسواق النفع العام</span>
+    <!-- 4. التذييل الرسمي المصغر الموحد (لا يسبب سكرول) -->
+    <footer class="bg-slate-900 text-slate-400 text-[10.5px] border-t-2 border-naamaGold-500 py-2.5 px-4 sm:px-6 lg:px-8 shrink-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-2">
+                <img src="static/images/mewa_logo.png" alt="وزارة البيئة والمياه والزراعة" class="h-6 w-auto bg-white/95 p-0.5 rounded">
+                <span class="text-slate-300 font-bold">وزارة البيئة والمياه والزراعة © 2026 | منصة أسواق النفع العام الوطنية</span>
             </div>
-            <div class="flex flex-wrap items-center gap-4 text-slate-400">
-                <a href="index.html" class="hover:text-white font-bold text-white">الغلاف والملخص التنفيذي</a>
+            <div class="flex items-center gap-3 text-slate-400 text-[10.5px]">
+                <a href="portal.html" class="hover:text-white font-bold text-naamaGold-400">العرض التقديمي للمنصة</a>
                 <span>•</span>
-                <a href="portal.html" class="hover:text-white">العرض التقديمي (البوابات)</a>
-                <span>•</span>
-                <a href="dashboard.html" class="hover:text-white">لوحة الرقابة والمؤشرات</a>
+                <a href="dashboard.html" class="hover:text-white">لوحة المؤشرات</a>
                 <span>•</span>
                 <a href="store.html" class="hover:text-white">متجر المستهلك</a>
                 <span>•</span>
