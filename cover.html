@@ -17,9 +17,9 @@
         }
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #081a10;
+            background-color: #07170e;
             background-image: 
-                radial-gradient(circle at 50% 30%, rgba(0, 104, 55, 0.4) 0%, rgba(1, 40, 20, 0.95) 75%, #04140b 100%);
+                radial-gradient(circle at 50% 25%, rgba(0, 104, 55, 0.45) 0%, rgba(1, 35, 18, 0.96) 70%, #030e08 100%);
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -29,22 +29,22 @@
             overflow-x: hidden;
         }
 
-        /* حاوية العرض التقديمي فائقة الدقة بنسبة 16:9 */
-        .presentation-container {
+        /* حاوية العرض التقديمي فائقة الدقة للشريحة بنسبة 3:2 */
+        .presentation-frame {
             position: relative;
             width: 100%;
-            max-width: 1360px;
-            aspect-ratio: 982 / 648;
+            max-width: 1380px;
+            aspect-ratio: 3072 / 2046;
             margin: auto;
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(197, 155, 39, 0.35);
+            box-shadow: 0 25px 75px -15px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(197, 155, 39, 0.35);
             background-color: #ffffff;
             transition: all 0.3s ease;
         }
 
-        /* صورة الشريحة فائقة الدقة 3K/4K */
-        .slide-hd-image {
+        /* صورة الشريحة فائقة النقاء والدقة 3K */
+        .slide-image-hd {
             width: 100%;
             height: 100%;
             display: block;
@@ -55,82 +55,69 @@
             -webkit-user-drag: none;
         }
 
-        /* منطقة النقر التفاعلية على دائرة المنصة المركزية */
-        .platform-hotspot {
+        /* منطقة النقر التفاعلية الدائرية على "منصة أسواق النفع العام" */
+        .platform-circle-hotspot {
             position: absolute;
-            top: 23.5%;
-            left: 32.5%;
-            width: 17.8%;
-            height: 27%;
+            top: 14.5%;
+            left: 38.8%;
+            width: 22.4%;
+            height: 35.8%;
             border-radius: 50%;
             cursor: pointer;
-            z-index: 40;
+            z-index: 50;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: pulseHubGlow 2.4s infinite;
+            animation: pulseGlowCircle 2.6s infinite ease-in-out;
         }
 
-        .platform-hotspot:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 4px #c59b27, 0 0 40px 10px rgba(197, 155, 39, 0.8);
+        .platform-circle-hotspot:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 0 5px #c59b27, 0 0 45px 12px rgba(197, 155, 39, 0.85);
         }
 
-        @keyframes pulseHubGlow {
+        /* نبض الهالة المذهبة التفاعلية */
+        @keyframes pulseGlowCircle {
             0% {
-                box-shadow: 0 0 0 0 rgba(197, 155, 39, 0.85), 0 0 0 2px rgba(197, 155, 39, 0.5);
+                box-shadow: 0 0 0 0 rgba(197, 155, 39, 0.85), 0 0 0 2px rgba(197, 155, 39, 0.6);
             }
             60% {
-                box-shadow: 0 0 0 18px rgba(197, 155, 39, 0), 0 0 30px 6px rgba(197, 155, 39, 0.5);
+                box-shadow: 0 0 0 20px rgba(197, 155, 39, 0), 0 0 35px 8px rgba(197, 155, 39, 0.5);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(197, 155, 39, 0), 0 0 0 2px rgba(197, 155, 39, 0.5);
+                box-shadow: 0 0 0 0 rgba(197, 155, 39, 0), 0 0 0 2px rgba(197, 155, 39, 0.6);
             }
         }
 
-        /* تلميح النقر المنبثق التفاعلي للزائر */
-        .hub-tag {
+        /* شارة التوجيه المنبثقة التفاعلية */
+        .hub-floating-tag {
             position: absolute;
             bottom: -32px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #02381e 0%, #00542c 100%);
+            background: linear-gradient(135deg, #012e18 0%, #00542c 100%);
             color: #ffffff;
             border: 1.5px solid #c59b27;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 9999px;
             font-size: 11px;
             font-weight: 800;
             white-space: nowrap;
             pointer-events: none;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             transition: all 0.25s ease;
         }
 
-        .platform-hotspot:hover .hub-tag {
+        .platform-circle-hotspot:hover .hub-floating-tag {
             background: #006837;
-            border-color: #facc15;
-            transform: translateX(-50%) scale(1.08);
-            box-shadow: 0 8px 24px rgba(197, 155, 39, 0.4);
+            border-color: #ffd700;
+            transform: translateX(-50%) scale(1.07);
+            box-shadow: 0 10px 28px rgba(197, 155, 39, 0.5);
         }
 
-        /* مناطق النقر الشفافة للأدوار الثلاثة */
-        .card-hotspot {
-            position: absolute;
-            cursor: pointer;
-            z-index: 30;
-            border-radius: 16px;
-            transition: all 0.25s ease;
-        }
-        .card-hotspot:hover {
-            background-color: rgba(0, 104, 55, 0.05);
-            outline: 2px dashed rgba(197, 155, 39, 0.7);
-            outline-offset: -3px;
-        }
-
-        /* وضع الشاشة الكاملة Presentation Mode */
-        :fullscreen .presentation-container {
+        /* وضع ملء الشاشة */
+        :fullscreen .presentation-frame {
             max-width: 100vw;
             max-height: 100vh;
             border-radius: 0;
@@ -140,20 +127,20 @@
 </head>
 <body class="selection:bg-emerald-700 selection:text-white">
 
-    <!-- شريط علوي ذهبي رفيع -->
+    <!-- شريط ذهبي علوي رفيع -->
     <div class="h-1 w-full bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 shrink-0"></div>
 
-    <!-- ترويسة شريط التحكم السريع الأنيق -->
-    <header class="w-full bg-[#032313]/90 backdrop-blur-md border-b border-amber-500/30 text-white py-2 px-4 sm:px-6 z-50 shrink-0">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <!-- شريط التحكم العلوي المدمج -->
+    <header class="w-full bg-[#021d10]/95 backdrop-blur-md border-b border-amber-500/30 text-white py-2 px-4 sm:px-6 z-50 shrink-0">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
             
             <div class="flex items-center gap-2.5">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span class="font-black text-xs sm:text-sm text-white">المملكة العربية السعودية | وزارة البيئة والمياه والزراعة</span>
-                <span class="text-amber-400 text-xs hidden md:inline font-bold">• منظومة نما</span>
+                <span class="text-amber-400 text-xs hidden sm:inline font-bold">• منظومة نما</span>
             </div>
 
-            <!-- أزرار التحكم: دخول التصميم المبدئي + وضع الشاشة الكاملة -->
+            <!-- زر الدخول المباشر إلى التصميم المبدئي وزر الشاشة الكاملة -->
             <div class="flex items-center gap-2 sm:gap-3">
                 <button onclick="toggleFullScreen()" title="عرض الشريحة بملء الشاشة للعرض والاجتماعات" class="bg-white/10 hover:bg-white/20 text-white font-bold px-3 py-1.5 rounded-full text-xs border border-white/20 flex items-center gap-1.5 transition">
                     <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-300"></i>
@@ -169,51 +156,34 @@
         </div>
     </header>
 
-    <!-- منطقة عرض الشريحة المتطابقة 100% بأعلى دقة 3K/4K -->
+    <!-- مساحة عرض الشريحة الأصلية فائقة الدقة 3K -->
     <main class="w-full flex-1 flex items-center justify-center p-2 sm:p-4 lg:p-6" id="presentation-viewport">
         
-        <div class="presentation-container" id="slide-box">
+        <div class="presentation-frame" id="slide-box">
             
-            <!-- صورة الشريحة المعتمدة الأصلية بعد رفع دقتها إلى فائقة الوضوح (2946x1944) -->
-            <img src="static/images/executive_slide_hd.png" alt="المنصة الوطنية لربط أسواق النفع العام - واجهة ذكية موحدة" class="slide-hd-image">
+            <!-- صورة الشريحة الأصلية المعالجة بأعلى دقة ووضوح فائق للنصوص 3K -->
+            <img src="static/images/slide_official_hd.png" alt="المنصة الوطنية لربط أسواق النفع العام - واجهة ذكية موحدة لخدمة جميع المستفيدين" class="slide-image-hd">
 
-            <!-- ==================== 1. منطقة النقر على دائرة المنصة ("منصة أسواق النفع العام") ==================== -->
-            <!-- عند الضغط على المنصة يتم التحويل مباشرة إلى رابط التصميم المبدئي portal.html -->
-            <a href="portal.html" class="platform-hotspot" title="اضغط هنا للدخول إلى التصميم المبدئي للمنصة">
-                <div class="hub-tag">
+            <!-- ==================== منطقة النقر التفاعلية على "منصة أسواق النفع العام" ==================== -->
+            <!-- عند الضغط على دائرة المنصة يتم التحويل مباشرة إلى رابط التصميم المبدئي التفاعلي portal.html -->
+            <a href="portal.html" class="platform-circle-hotspot" title="اضغط هنا للدخول إلى التصميم المبدئي التفاعلي للمنصة">
+                <div class="hub-floating-tag">
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
                     <span>اضغط هنا للدخول للتصميم المبدئي</span>
                     <i data-lucide="arrow-left" class="w-3 h-3 text-amber-300"></i>
                 </div>
             </a>
 
-            <!-- وسام التخصيص التلقائي أسفل الدائرة -->
-            <a href="portal.html" style="position: absolute; top: 51.5%; left: 32%; width: 19%; height: 7.5%; z-index: 35; cursor: pointer; border-radius: 9999px;" title="الدخول إلى التصميم المبدئي"></a>
-
-            <!-- ==================== 2. مناطق النقر المباشرة على الكروت الثلاثة ==================== -->
-            
-            <!-- كرت مدير النظام (اليمين) -->
-            <a href="portal.html?role=admin" class="card-hotspot" style="top: 18.5%; left: 73.2%; width: 24.5%; height: 41%;" title="استعراض شاشات مدير ومراقب النظام"></a>
-
-            <!-- كرت المستهلك (الوسط) -->
-            <a href="portal.html?role=consumer" class="card-hotspot" style="top: 18.5%; left: 50.2%; width: 22.8%; height: 41%;" title="استعراض متجر وتطبيق المستهلك"></a>
-
-            <!-- كرت البائع / المزرعة / مركز الخدمة (اليسار) -->
-            <a href="portal.html?role=seller" class="card-hotspot" style="top: 18.5%; left: 2.5%; width: 30%; height: 41%;" title="استعراض بوابة البائع والمزارع"></a>
-
-            <!-- البنر السفلي (مستخدم واحد .. منصة واحدة) -->
-            <a href="portal.html" class="card-hotspot" style="bottom: 4%; left: 2%; width: 96%; height: 12%;" title="الانتقال إلى البوابة الموحدة"></a>
-
         </div>
 
     </main>
 
     <!-- شريط التذييل الخفيف -->
-    <footer class="w-full bg-[#02180c] border-t border-white/10 text-slate-400 py-2 px-4 text-center text-[10.5px] sm:text-xs shrink-0">
+    <footer class="w-full bg-[#01140a] border-t border-white/10 text-slate-400 py-2 px-4 text-center text-[10.5px] sm:text-xs shrink-0">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5">
             <span>وزارة البيئة والمياه والزراعة © 2026 | المنصة الوطنية لربط أسواق النفع العام • واجهة ذكية موحدة</span>
             <div class="flex items-center gap-2 text-amber-400 font-bold">
-                <span>توجيه: اضغط على دائرة المنصة للدخول إلى العرض التقديمي المبدئي التفاعلي</span>
+                <span>توجيه: اضغط على دائرة "منصة أسواق النفع العام" في الوسط للدخول إلى التصميم المبدئي</span>
                 <i data-lucide="mouse-pointer-click" class="w-3.5 h-3.5"></i>
             </div>
         </div>
@@ -222,7 +192,7 @@
     <script>
         lucide.createIcons();
 
-        // وظيفة تفعيل الشاشة الكاملة للعروض التقديمية
+        // وظيفة تفعيل الشاشة الكاملة
         function toggleFullScreen() {
             const elem = document.getElementById("slide-box");
             if (!document.fullscreenElement) {
